@@ -1,0 +1,510 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tender | Officer Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            position: relative;
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+
+        /* Animated background elements */
+        body::before {
+            content: '';
+            position: fixed;
+            width: 2000px;
+            height: 2000px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            top: -1000px;
+            right: -500px;
+            transform: rotate(45deg);
+            animation: float 20s infinite linear;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            width: 1500px;
+            height: 1500px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+            bottom: -800px;
+            left: -300px;
+            transform: rotate(-30deg);
+            animation: float 15s infinite linear reverse;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .register-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .register-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 40px 35px;
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.25), 
+                        0 15px 35px rgba(0, 0, 0, 0.2),
+                        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .register-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 60px 120px rgba(0, 0, 0, 0.3), 
+                        0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .logo span {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2d3748, #1a202c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 1.5;
+            padding: 0 10px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            color: #a0aec0;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+            color: #2d3748;
+            font-weight: 500;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        input:focus + .input-icon {
+            color: #667eea;
+        }
+
+        input::placeholder {
+            color: #cbd5e0;
+            font-weight: 400;
+        }
+
+        .password-strength {
+            margin-top: 8px;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #fc8181, #fbbf24, #34d399);
+            transition: width 0.3s ease;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px 0 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .register-btn:active {
+            transform: translateY(0);
+        }
+
+        .register-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .register-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-link {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px solid #edf2f7;
+        }
+
+        .login-link p {
+            color: #718096;
+            font-size: 15px;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 700;
+            margin-left: 5px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .login-link a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+
+        .login-link a:hover::after {
+            width: 100%;
+        }
+
+        .message {
+            background: #fed7d7;
+            border-left: 4px solid #f56565;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            color: #c53030;
+            font-weight: 500;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .terms {
+            display: flex;
+            align-items: center;
+            margin: 15px 0 10px;
+        }
+
+        .terms input {
+            width: auto;
+            margin-right: 12px;
+            accent-color: #667eea;
+            transform: scale(1.1);
+        }
+
+        .terms label {
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .terms a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .terms a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            body {
+                padding: 20px 15px;
+            }
+            
+            .register-card {
+                padding: 30px 20px;
+            }
+            
+            h2 {
+                font-size: 28px;
+            }
+            
+            .subtitle {
+                font-size: 14px;
+            }
+            
+            input {
+                padding: 14px 16px 14px 45px;
+                font-size: 15px;
+            }
+            
+            .input-icon {
+                left: 14px;
+                font-size: 16px;
+            }
+        }
+
+        /* Ensure content is always visible */
+        .register-card {
+            max-height: none;
+            overflow-y: visible;
+        }
+
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-card">
+            <div class="header">
+                <div class="logo">
+                    <span>AI</span>
+                </div>
+                <h2>Officer Registration</h2>
+                <p class="subtitle">Create your official account to access the tender management system</p>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="message">
+                        <svg style="width: 20px; height: 20px; margin-right: 10px; flex-shrink: 0;" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST" id="registerForm">
+                {% csrf_token %}
+                
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">👤</span>
+                        <input type="text" name="name" placeholder="Dr. John Smith" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Official Email</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📧</span>
+                        <input type="email" name="email" placeholder="john.smith@gov.in" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Employee ID</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🆔</span>
+                        <input type="text" name="emp_id" placeholder="EMP-2024-001" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">📱</span>
+                        <input type="text" name="phone" placeholder="+91 98765 43210" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Password</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" name="password" id="password" placeholder="Create a strong password" required>
+                    </div>
+                    <div class="password-strength">
+                        <div class="strength-bar" id="strengthBar"></div>
+                    </div>
+                </div>
+
+                <div class="terms">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                </div>
+
+                <button type="submit" class="register-btn">
+                    Create Account
+                </button>
+
+                <div class="login-link">
+                    <p>Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Password strength indicator
+        const password = document.getElementById('password');
+        const strengthBar = document.getElementById('strengthBar');
+
+        password.addEventListener('input', function() {
+            const strength = calculatePasswordStrength(this.value);
+            strengthBar.style.width = strength + '%';
+            
+            if (strength < 30) {
+                strengthBar.style.background = '#fc8181';
+            } else if (strength < 60) {
+                strengthBar.style.background = '#fbbf24';
+            } else {
+                strengthBar.style.background = '#34d399';
+            }
+        });
+
+        function calculatePasswordStrength(password) {
+            let strength = 0;
+            if (password.length > 6) strength += 20;
+            if (password.length > 10) strength += 20;
+            if (/[A-Z]/.test(password)) strength += 20;
+            if (/[0-9]/.test(password)) strength += 20;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 20;
+            return Math.min(100, strength);
+        }
+
+        // Form submission animation
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            const btn = document.querySelector('.register-btn');
+            btn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                btn.style.transform = '';
+            }, 200);
+        });
+
+        // Ensure smooth scrolling on all devices
+        if (window.innerHeight < document.body.scrollHeight) {
+            document.body.style.overflowY = 'auto';
+        }
+    </script>
+</body>
+</html>

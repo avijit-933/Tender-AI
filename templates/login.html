@@ -413,13 +413,16 @@
                     <p><i class="fas fa-user-shield"></i> Super Admin / Financial Evaluation</p>
                 </div>
 
-                <form id="loginForm" onsubmit="return false;">
+                    <form method="POST">
+                    {% csrf_token %}
+
                     <!-- OFFICE EMAIL -->
                     <div class="input-group">
                         <label>Office Email <span style="color:#b22234;">*</span></label>
                         <div class="input-icon">
                             <i class="fas fa-envelope"></i>
-                            <input type="email" id="email" placeholder="officer@gov.in" value="admin@procurement.gov.in" required>
+                            <input type="email" name="email" placeholder="officer@gov.in" required>
+
                         </div>
                     </div>
 
@@ -428,7 +431,8 @@
                         <label>Employee ID <span style="color:#b22234;">*</span></label>
                         <div class="input-icon">
                             <i class="fas fa-id-card"></i>
-                            <input type="text" id="empId" placeholder="e.g., GOV/2024/312" value="GOV/SUPER/001" required>
+                            <input type="text" name="emp_id" placeholder="e.g., GOV/2024/312" required>
+
                         </div>
                     </div>
 
@@ -437,25 +441,15 @@
                         <label>Password <span style="color:#b22234;">*</span></label>
                         <div class="input-icon">
                             <i class="fas fa-key"></i>
-                            <input type="password" id="password" placeholder="············" value="Gov@123456" required>
+                            <input type="password" name="password" placeholder="********" required>
+
                             <button type="button" class="password-toggle" id="togglePassword" aria-label="show/hide password">
                                 <i class="far fa-eye" id="toggleIcon"></i>
                             </button>
                         </div>
                     </div>
 
-                    <!-- ROLE SELECTOR DROPDOWN -->
-                    <div class="input-group">
-                        <label>Select role <span style="color:#b22234;">*</span></label>
-                        <div class="input-icon">
-                            <i class="fas fa-user-tag"></i>
-                            <select id="roleSelect" required>
-                                <option value="" disabled selected>–– Choose officer role ––</option>
-                                <option value="superAdmin" selected>Super Admin (Govt. Officer)</option>
-                                <option value="financialOfficer">Financial Evaluation Officer</option>
-                            </select>
-                        </div>
-                    </div>
+                 
 
                     <!-- REMEMBER ME & FORGOT PASSWORD -->
                     <div class="row-actions">
