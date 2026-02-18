@@ -1,0 +1,482 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Tender Evaluation System | Odisha Government</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <!-- Canvas Background -->
+  <canvas id="networkCanvas"></canvas>
+
+  <!-- NAV -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <div class="gov-emblem">
+          <i class="fas fa-landmark"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">AITEDS</span>
+          <span class="brand-sub">AI Tender Evaluation & Decision Support</span>
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#tenders" class="nav-link">Tenders</a></li>
+        <li><a href="#about" class="nav-link">About System</a></li>
+        <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+        <li><a href="#dashboard-preview" class="nav-link">Departments</a></li>
+        <li><a href="#security" class="nav-link">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn-login" onclick="window.location.href='#tenders'">View Tenders</button>
+        <button class="btn-register" onclick="window.location.href='#tenders'">Register</button>
+        <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-inner">
+      <!-- Left -->
+      <div class="hero-left" data-animate="fadeLeft">
+        <div class="trust-badges">
+          <span class="badge"><i class="fas fa-shield-halved"></i> Secure</span>
+          <span class="badge"><i class="fas fa-eye"></i> Transparent</span>
+          <span class="badge"><i class="fas fa-clipboard-check"></i> Audit-Ready</span>
+        </div>
+        <h1 class="hero-heading">
+          Odisha Government<br/>
+          <span class="gradient-text">AI-Powered Tender</span><br/>
+          Evaluation System
+        </h1>
+        <p class="hero-sub">Enhancing transparency, compliance, and efficiency in public procurement through next-generation artificial intelligence for the State of Odisha.</p>
+        <div class="hero-cta">
+          <button class="btn-primary" onclick="window.location.href='#tenders'">
+            <span>Browse Tenders</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+          <button class="btn-ghost" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+            <i class="fas fa-play-circle"></i>
+            <span>Learn More</span>
+          </button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><span class="stat-num" data-count="98">0</span><span>%</span><span class="stat-label">Accuracy</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-num" data-count="10">0</span><span>x</span><span class="stat-label">Faster</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-num" data-count="500">0</span><span>+</span><span class="stat-label">Tenders Processed</span></div>
+        </div>
+      </div>
+
+      <!-- Right: 3D Odisha Government Image -->
+      <div class="hero-right" data-animate="fadeRight">
+        <div class="odisha-3d-container">
+          <div class="odisha-3d-card">
+            <div class="odisha-3d-outer">
+              <div class="odisha-3d-inner">
+                <div class="odisha-emblem-3d">
+                  <i class="fas fa-landmark"></i>
+                </div>
+                <div class="odisha-text">
+                  <h3>Government of Odisha</h3>
+                  <p>Directorate of Public Procurement</p>
+                </div>
+                <div class="odisha-3d-elements">
+                  <div class="element-3d cone"></div>
+                  <div class="element-3d pyramid"></div>
+                  <div class="element-3d cube"></div>
+                </div>
+                <div class="odisha-temple-silhouette">
+                  <svg viewBox="0 0 200 100" width="150" height="70">
+                    <path d="M50,70 L60,40 L70,70 L80,30 L90,70 L100,20 L110,70 L120,40 L130,70" stroke="rgba(255,255,255,0.3)" fill="none" stroke-width="2"/>
+                    <rect x="40" y="70" width="100" height="10" fill="rgba(255,255,255,0.2)"/>
+                  </svg>
+                </div>
+                <div class="odisha-3d-footer">
+                  <span><i class="fas fa-gopuram"></i> Bhubaneswar</span>
+                  <span><i class="fas fa-file-contract"></i> Active Tenders: 156</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="odisha-3d-glow"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wave decoration -->
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#f0f4f8"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- TENDERS SECTION (NEW) -->
+  <section class="tenders-section" id="tenders">
+    <div class="section-inner">
+      <div class="section-label">Active Tenders</div>
+      <h2 class="section-heading">Current <span class="gradient-text">Tender Opportunities</span></h2>
+      <p class="section-sub">Browse and apply for latest government tenders from various departments of Odisha.</p>
+      
+      <div class="tenders-filter">
+        <button class="filter-btn active">All Departments</button>
+        <button class="filter-btn">Works</button>
+        <button class="filter-btn">Goods</button>
+        <button class="filter-btn">Services</button>
+        <button class="filter-btn">Consultancy</button>
+      </div>
+
+      <div class="tenders-grid">
+        <!-- Tender Card 1 -->
+        <div class="tender-card">
+          <div class="tender-header">
+            <span class="tender-dept">Public Works Dept</span>
+            <span class="tender-ref">REF: PWD/2025/89</span>
+          </div>
+          <h3 class="tender-title">Construction of Flyover at Master Canteen Square</h3>
+          <div class="tender-details">
+            <div><i class="fas fa-map-marker-alt"></i> Bhubaneswar</div>
+            <div><i class="fas fa-calendar"></i> Due: 15 Mar 2025</div>
+            <div><i class="fas fa-tag"></i> ₹4.5 Cr</div>
+          </div>
+          <div class="tender-footer">
+            <span class="tender-status open">Open</span>
+            <button class="tender-view-btn">View Details <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- Tender Card 2 -->
+        <div class="tender-card">
+          <div class="tender-header">
+            <span class="tender-dept">Water Resources</span>
+            <span class="tender-ref">REF: WRD/2025/42</span>
+          </div>
+          <h3 class="tender-title">Modernization of Hirakud Dam Irrigation System</h3>
+          <div class="tender-details">
+            <div><i class="fas fa-map-marker-alt"></i> Sambalpur</div>
+            <div><i class="fas fa-calendar"></i> Due: 20 Mar 2025</div>
+            <div><i class="fas fa-tag"></i> ₹12.2 Cr</div>
+          </div>
+          <div class="tender-footer">
+            <span class="tender-status open">Open</span>
+            <button class="tender-view-btn">View Details <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- Tender Card 3 -->
+        <div class="tender-card">
+          <div class="tender-header">
+            <span class="tender-dept">Health & Family Welfare</span>
+            <span class="tender-ref">REF: HFW/2025/23</span>
+          </div>
+          <h3 class="tender-title">Supply of Medical Equipment to District Hospitals</h3>
+          <div class="tender-details">
+            <div><i class="fas fa-map-marker-alt"></i> Cuttack</div>
+            <div><i class="fas fa-calendar"></i> Due: 10 Apr 2025</div>
+            <div><i class="fas fa-tag"></i> ₹2.8 Cr</div>
+          </div>
+          <div class="tender-footer">
+            <span class="tender-status open">Open</span>
+            <button class="tender-view-btn">View Details <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- Tender Card 4 -->
+        <div class="tender-card">
+          <div class="tender-header">
+            <span class="tender-dept">Rural Development</span>
+            <span class="tender-ref">REF: RD/2025/67</span>
+          </div>
+          <h3 class="tender-title">PMGSY Road Construction in Ganjam District</h3>
+          <div class="tender-details">
+            <div><i class="fas fa-map-marker-alt"></i> Ganjam</div>
+            <div><i class="fas fa-calendar"></i> Due: 5 Apr 2025</div>
+            <div><i class="fas fa-tag"></i> ₹6.7 Cr</div>
+          </div>
+          <div class="tender-footer">
+            <span class="tender-status open">Open</span>
+            <button class="tender-view-btn">View Details <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- Tender Card 5 -->
+        <div class="tender-card">
+          <div class="tender-header">
+            <span class="tender-dept">Energy Department</span>
+            <span class="tender-ref">REF: ENERGY/2025/18</span>
+          </div>
+          <h3 class="tender-title">Solar Power Installation at Government Buildings</h3>
+          <div class="tender-details">
+            <div><i class="fas fa-map-marker-alt"></i> Rourkela</div>
+            <div><i class="fas fa-calendar"></i> Due: 12 Apr 2025</div>
+            <div><i class="fas fa-tag"></i> ₹3.1 Cr</div>
+          </div>
+          <div class="tender-footer">
+            <span class="tender-status open">Open</span>
+            <button class="tender-view-btn">View Details <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- Tender Card 6 -->
+        <div class="tender-card">
+          <div class="tender-header">
+            <span class="tender-dept">Urban Development</span>
+            <span class="tender-ref">REF: UDD/2025/91</span>
+          </div>
+          <h3 class="tender-title">Smart City Project: Phase 2 Implementation</h3>
+          <div class="tender-details">
+            <div><i class="fas fa-map-marker-alt"></i> Bhubaneswar</div>
+            <div><i class="fas fa-calendar"></i> Due: 18 Apr 2025</div>
+            <div><i class="fas fa-tag"></i> ₹15.0 Cr</div>
+          </div>
+          <div class="tender-footer">
+            <span class="tender-status closing">Closing Soon</span>
+            <button class="tender-view-btn">View Details <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tenders-view-all">
+        <button class="btn-outline">View All Tenders <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about-section" id="about">
+    <div class="section-inner">
+      <div class="section-label">Core Capabilities</div>
+      <h2 class="section-heading">Transforming Public Procurement <span class="gradient-text">with AI</span></h2>
+      <p class="section-sub">A comprehensive suite of AI modules designed specifically for government procurement workflows, ensuring fairness, speed, and full auditability.</p>
+      <div class="cards-grid">
+        <div class="feature-card" data-animate="fadeUp" data-delay="0">
+          <div class="card-icon teal"><i class="fas fa-robot"></i></div>
+          <h3>Automated Technical Evaluation</h3>
+          <p>Machine learning models auto-score technical bid parameters against pre-defined criteria, eliminating human bias and inconsistency.</p>
+          <div class="card-tag">AI Engine</div>
+        </div>
+        <div class="feature-card" data-animate="fadeUp" data-delay="100">
+          <div class="card-icon navy"><i class="fas fa-file-waveform"></i></div>
+          <h3>NLP-Based Document Intelligence</h3>
+          <p>Advanced natural language processing extracts, validates, and cross-references information from complex tender documents at scale.</p>
+          <div class="card-tag">NLP</div>
+        </div>
+        <div class="feature-card" data-animate="fadeUp" data-delay="200">
+          <div class="card-icon gold"><i class="fas fa-chart-bar"></i></div>
+          <h3>Financial Bid Analysis Engine</h3>
+          <p>Real-time L1 identification, outlier detection, and cost-reasonableness analysis across multiple vendor bids with detailed comparison.</p>
+          <div class="card-tag">Analytics</div>
+        </div>
+        <div class="feature-card" data-animate="fadeUp" data-delay="300">
+          <div class="card-icon teal"><i class="fas fa-scale-balanced"></i></div>
+          <h3>Audit & Explainability Layer</h3>
+          <p>Every AI decision comes with traceable reasoning, audit trails, and legally defensible explanations satisfying RTI and compliance norms.</p>
+          <div class="card-tag">Compliance</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section" id="how-it-works">
+    <div class="section-inner">
+      <div class="section-label">Process Flow</div>
+      <h2 class="section-heading">How It <span class="gradient-text">Works</span></h2>
+      <div class="steps-timeline">
+        <div class="step" data-animate="fadeUp" data-delay="0">
+          <div class="step-icon"><i class="fas fa-file-arrow-up"></i></div>
+          <div class="step-num">01</div>
+          <h4>Tender Submission</h4>
+          <p>Vendors securely submit technical and financial bids via encrypted portal.</p>
+        </div>
+        <div class="step-connector"><i class="fas fa-chevron-right"></i></div>
+        <div class="step" data-animate="fadeUp" data-delay="100">
+          <div class="step-icon"><i class="fas fa-microchip"></i></div>
+          <div class="step-num">02</div>
+          <h4>AI Document Processing</h4>
+          <p>NLP engine parses, validates, and extracts structured data from all documents.</p>
+        </div>
+        <div class="step-connector"><i class="fas fa-chevron-right"></i></div>
+        <div class="step" data-animate="fadeUp" data-delay="200">
+          <div class="step-icon"><i class="fas fa-list-check"></i></div>
+          <div class="step-num">03</div>
+          <h4>Compliance Validation</h4>
+          <p>Automated rule engine checks eligibility criteria and regulatory compliance.</p>
+        </div>
+        <div class="step-connector"><i class="fas fa-chevron-right"></i></div>
+        <div class="step" data-animate="fadeUp" data-delay="300">
+          <div class="step-icon"><i class="fas fa-trophy"></i></div>
+          <div class="step-num">04</div>
+          <h4>Technical & Financial Scoring</h4>
+          <p>Multi-parameter AI scoring with weighted evaluation and outlier detection.</p>
+        </div>
+        <div class="step-connector"><i class="fas fa-chevron-right"></i></div>
+        <div class="step" data-animate="fadeUp" data-delay="400">
+          <div class="step-icon"><i class="fas fa-gauge-high"></i></div>
+          <div class="step-num">05</div>
+          <h4>Decision Dashboard</h4>
+          <p>Officers receive ranked recommendations with full AI explainability reports.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD PREVIEW -->
+  <section class="dashboard-section" id="dashboard-preview">
+    <div class="section-inner">
+      <div class="section-label">System Preview</div>
+      <h2 class="section-heading">Government <span class="gradient-text">Dashboard</span></h2>
+      <p class="section-sub">Real-time evaluation insights, risk flags, and bid comparison analytics at your fingertips.</p>
+      <div class="dashboard-mock">
+        <div class="mock-topbar">
+          <div class="mock-dot red"></div>
+          <div class="mock-dot yellow"></div>
+          <div class="mock-dot green"></div>
+          <span class="mock-title">AITEDS — Evaluation Dashboard</span>
+        </div>
+        <div class="mock-body">
+          <div class="mock-sidebar">
+            <div class="mock-nav-item active"><i class="fas fa-gauge-high"></i></div>
+            <div class="mock-nav-item"><i class="fas fa-folder-open"></i></div>
+            <div class="mock-nav-item"><i class="fas fa-chart-pie"></i></div>
+            <div class="mock-nav-item"><i class="fas fa-users"></i></div>
+            <div class="mock-nav-item"><i class="fas fa-shield-halved"></i></div>
+          </div>
+          <div class="mock-content">
+            <div class="mock-stats-row">
+              <div class="mock-stat-card">
+                <span class="mock-stat-val">94.2%</span>
+                <span class="mock-stat-lbl">Compliance Score</span>
+                <div class="mock-bar"><div class="mock-bar-fill" style="width:94%"></div></div>
+              </div>
+              <div class="mock-stat-card">
+                <span class="mock-stat-val">3</span>
+                <span class="mock-stat-lbl">Risk Flags</span>
+                <span class="mock-badge risk">High</span>
+              </div>
+              <div class="mock-stat-card">
+                <span class="mock-stat-val">12</span>
+                <span class="mock-stat-lbl">Bids Received</span>
+                <span class="mock-badge ok">Active</span>
+              </div>
+              <div class="mock-stat-card">
+                <span class="mock-stat-val">₹4.2Cr</span>
+                <span class="mock-stat-lbl">L1 Bid Value</span>
+                <span class="mock-badge saved">Saved 18%</span>
+              </div>
+            </div>
+            <div class="mock-chart-row">
+              <div class="mock-chart">
+                <div class="mock-chart-title">Bid Comparison Analysis</div>
+                <div class="mock-bars">
+                  <div class="mock-bar-v" style="height:45%"><span>V1</span></div>
+                  <div class="mock-bar-v l1" style="height:62%"><span>V2 ★</span></div>
+                  <div class="mock-bar-v" style="height:55%"><span>V3</span></div>
+                  <div class="mock-bar-v" style="height:38%"><span>V4</span></div>
+                  <div class="mock-bar-v" style="height:70%"><span>V5</span></div>
+                </div>
+              </div>
+              <div class="mock-eval-summary">
+                <div class="mock-chart-title">Evaluation Summary</div>
+                <div class="mock-eval-row"><span>Technical Score</span><span class="eval-val">87/100</span></div>
+                <div class="mock-eval-row"><span>Financial Score</span><span class="eval-val">92/100</span></div>
+                <div class="mock-eval-row"><span>Compliance</span><span class="eval-val">✓ Pass</span></div>
+                <div class="mock-eval-row"><span>AI Confidence</span><span class="eval-val">96.4%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-blur-overlay">
+          <button class="btn-demo"><i class="fas fa-play"></i> View System Demo</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECURITY -->
+  <section class="security-section" id="security">
+    <div class="section-inner">
+      <div class="section-label light">Security & Compliance</div>
+      <h2 class="section-heading light">Built for <span class="gradient-text-light">Government-Grade</span> Security</h2>
+      <div class="security-grid">
+        <div class="security-card">
+          <i class="fas fa-shield-halved"></i>
+          <h4>End-to-End Encryption</h4>
+          <p>AES-256 encryption for all data in transit and at rest. Zero trust architecture.</p>
+        </div>
+        <div class="security-card">
+          <i class="fas fa-key"></i>
+          <h4>Role-Based Access Control</h4>
+          <p>Granular permission management ensures data is accessible only on need-to-know basis.</p>
+        </div>
+        <div class="security-card">
+          <i class="fas fa-book-open"></i>
+          <h4>Complete Audit Logs</h4>
+          <p>Immutable audit trails capturing every action, decision, and access event for compliance.</p>
+        </div>
+        <div class="security-card">
+          <i class="fas fa-gavel"></i>
+          <h4>Legal Defensibility</h4>
+          <p>AI reasoning fully documented to meet RTI, CAG audit, and judicial review standards.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="gov-emblem-lg"><i class="fas fa-landmark"></i></div>
+        <div>
+          <p class="footer-title">Government of Odisha</p>
+          <p class="footer-ministry">Directorate of Public Procurement</p>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h5>System</h5>
+          <a href="#">About AITEDS</a>
+          <a href="#">How It Works</a>
+          <a href="#">Departments</a>
+          <a href="#">System Demo</a>
+        </div>
+        <div class="footer-col">
+          <h5>Legal</h5>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms & Conditions</a>
+          <a href="#">Data Policy</a>
+          <a href="#">RTI Information</a>
+        </div>
+        <div class="footer-col">
+          <h5>Support</h5>
+          <a href="mailto:support@aiteds.odisha.gov.in">support@aiteds.odisha.gov.in</a>
+          <a href="#">Help Center</a>
+          <a href="#">Training Portal</a>
+          <a href="#">Contact Us</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 AI Tender Evaluation & Decision Support System. Government of Odisha. All rights reserved.</p>
+      <div class="footer-badges">
+        <span><i class="fas fa-lock"></i> SSL Secured</span>
+        <span><i class="fas fa-certificate"></i> ISO 27001</span>
+        <span><i class="fas fa-shield-halved"></i> CERT-In Compliant</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
