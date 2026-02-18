@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bidder Dashboard | TenderFlow AI</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Premium Neutral Palette */
+            --bg-primary: #fafaf9;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f5f5f4;
+            --text-primary: #1c1917;
+            --text-secondary: #57534e;
+            --text-tertiary: #a8a29e;
+            --border-light: #e7e5e4;
+            --border-medium: #d6d3d1;
+            
+            /* Sophisticated Accent - Deep Teal */
+            --accent-primary: #0f766e;
+            --accent-secondary: #14b8a6;
+            --accent-soft: #ccfbf1;
+            --accent-glow: rgba(20, 184, 166, 0.15);
+            
+            /* Status Colors - Muted */
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --info: #3b82f6;
+            
+            /* Glass Effects */
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 20px 40px rgba(15, 118, 110, 0.08);
+            
+            /* Typography */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-md: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 2rem;
+            
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 3rem;
+            
+            /* Border Radius */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            
+            /* Transitions */
+            --transition-fast: 200ms ease;
+            --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Dark Mode - Optional Toggle */
+        .dark-mode {
+            --bg-primary: #1c1917;
+            --bg-secondary: #292524;
+            --bg-tertiary: #44403c;
+            --text-primary: #fafaf9;
+            --text-secondary: #d6d3d1;
+            --text-tertiary: #a8a29e;
+            --border-light: #44403c;
+            --border-medium: #57534e;
+            --glass-bg: rgba(41, 37, 36, 0.7);
+            --glass-border: rgba(68, 64, 60, 0.5);
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        h1 { font-size: var(--font-size-3xl); }
+        h2 { font-size: var(--font-size-2xl); }
+        h3 { font-size: var(--font-size-xl); }
+        h4 { font-size: var(--font-size-lg); }
+
+        /* ===== LAYOUT ===== */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-tertiary) 100%);
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 280px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            padding: var(--space-lg) 0;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .logo-area {
+            padding: 0 var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: var(--font-size-md);
+            font-weight: 400;
+            transition: var(--transition-base);
+            border-left: 3px solid transparent;
+            margin: 4px 0;
+        }
+
+        .nav-item:hover {
+            background: var(--accent-glow);
+            color: var(--accent-primary);
+            transform: translateX(4px);
+        }
+
+        .nav-item.active {
+            background: var(--accent-glow);
+            color: var(--accent-primary);
+            border-left-color: var(--accent-primary);
+            font-weight: 500;
+        }
+
+        .nav-item i {
+            width: 24px;
+            font-size: 1.25rem;
+            stroke-width: 1.5;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            padding: var(--space-lg) var(--space-xl);
+            overflow-y: auto;
+        }
+
+        /* ===== TOP NAVBAR ===== */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-xl);
+            padding: var(--space-sm) 0;
+        }
+
+        .page-title h2 {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .page-title p {
+            color: var(--text-tertiary);
+            font-size: var(--font-size-sm);
+            margin-top: 4px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            padding: var(--space-xs);
+            border-radius: var(--radius-sm);
+            transition: var(--transition-base);
+        }
+
+        .notification-bell:hover {
+            background: var(--accent-glow);
+            transform: scale(1.05);
+        }
+
+        .notification-bell i {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 8px;
+            height: 8px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            border: 2px solid var(--bg-primary);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: 6px var(--space-sm);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+
+        .user-profile:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+            font-size: var(--font-size-sm);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .user-role {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        /* ===== CARDS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-smooth);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-sm);
+        }
+
+        .stat-title {
+            color: var(--text-tertiary);
+            font-size: var(--font-size-sm);
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-glow);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .stat-change {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .positive {
+            color: var(--success);
+        }
+
+        /* ===== TENDER GRID ===== */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .section-header h3 {
+            font-size: var(--font-size-lg);
+            font-weight: 500;
+        }
+
+        .view-all {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            transition: var(--transition-base);
+        }
+
+        .view-all:hover {
+            transform: translateX(4px);
+        }
+
+        .tender-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .tender-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            border: 1px solid var(--border-light);
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .tender-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-soft);
+        }
+
+        .tender-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-sm);
+        }
+
+        .tender-category {
+            font-size: var(--font-size-xs);
+            color: var(--accent-primary);
+            background: var(--accent-glow);
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+        }
+
+        .tender-deadline {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        .tender-title {
+            font-size: var(--font-size-lg);
+            font-weight: 500;
+            margin-bottom: var(--space-xs);
+            color: var(--text-primary);
+        }
+
+        .tender-department {
+            font-size: var(--font-size-sm);
+            color: var(--text-tertiary);
+            margin-bottom: var(--space-md);
+        }
+
+        .tender-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--space-md);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--border-light);
+        }
+
+        .tender-value {
+            font-size: var(--font-size-md);
+            font-weight: 500;
+            color: var(--accent-primary);
+        }
+
+        .tender-status {
+            font-size: var(--font-size-xs);
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+        }
+
+        .status-open {
+            background: var(--accent-glow);
+            color: var(--accent-primary);
+        }
+
+        .status-submitted {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .status-watched {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        /* ===== SUBMIT BID FORM ===== */
+        .bid-form-container {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            border: 1px solid var(--border-light);
+            margin-bottom: var(--space-xl);
+        }
+
+        .form-section {
+            margin-bottom: var(--space-xl);
+        }
+
+        .form-section-title {
+            font-size: var(--font-size-lg);
+            font-weight: 500;
+            margin-bottom: var(--space-md);
+            color: var(--text-primary);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-md);
+        }
+
+        .form-group {
+            margin-bottom: var(--space-md);
+        }
+
+        .form-label {
+            display: block;
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-md);
+            color: var(--text-primary);
+            transition: var(--transition-base);
+            font-family: var(--font-primary);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .form-input:hover {
+            border-color: var(--accent-secondary);
+        }
+
+        /* ===== UPLOAD AREA ===== */
+        .upload-area {
+            border: 2px dashed var(--border-medium);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            text-align: center;
+            background: var(--bg-tertiary);
+            transition: var(--transition-base);
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent-primary);
+            background: var(--accent-glow);
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+            color: var(--accent-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .upload-text {
+            font-size: var(--font-size-md);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .upload-hint {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        /* ===== FILE LIST ===== */
+        .file-list {
+            margin-top: var(--space-md);
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm);
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-xs);
+            transition: var(--transition-base);
+        }
+
+        .file-item:hover {
+            background: var(--accent-glow);
+        }
+
+        .file-icon {
+            color: var(--accent-primary);
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .file-size {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        .file-remove {
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+
+        .file-remove:hover {
+            color: var(--error);
+            transform: scale(1.1);
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-md);
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-family: var(--font-primary);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(15, 118, 110, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border-medium);
+            color: var(--text-secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-medium);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent-glow);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        /* ===== SUBMISSION STATUS ===== */
+        .status-timeline {
+            margin-top: var(--space-xl);
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: var(--space-md);
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-glow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .timeline-date {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        .timeline-status {
+            font-size: var(--font-size-xs);
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        /* ===== WATCHED TENDERS ===== */
+        .watched-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-md);
+        }
+
+        .watched-card {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            transition: var(--transition-base);
+        }
+
+        .watched-card:hover {
+            transform: translateX(4px);
+            background: var(--accent-glow);
+        }
+
+        .watched-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+        }
+
+        .watched-info {
+            flex: 1;
+        }
+
+        .watched-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .watched-meta {
+            display: flex;
+            gap: var(--space-sm);
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        .watched-actions {
+            display: flex;
+            gap: var(--space-xs);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .tender-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .logo-area {
+                padding: 0 var(--space-sm);
+            }
+            
+            .nav-item span {
+                display: none;
+            }
+            
+            .stats-grid,
+            .tender-grid,
+            .watched-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-content {
+                padding: var(--space-md);
+            }
+        }
+
+        /* ===== MICRO-INTERACTIONS ===== */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: slideIn var(--transition-smooth) forwards;
+        }
+
+        /* Icons (using Font Awesome for demo - in production use your preferred icon set) */
+        .fa, .fas, .far, .fal, .fab {
+            font-family: 'Font Awesome 6 Pro';
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <span class="logo">TenderFlow AI</span>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="browse-tenders.html" class="nav-item">
+                    <i class="fas fa-search"></i>
+                    <span>Browse Tenders</span>
+                </a>
+                <a href="submit-bid.html" class="nav-item">
+                    <i class="fas fa-file-upload"></i>
+                    <span>Submit Bid</span>
+                </a>
+                <a href="submission-status.html" class="nav-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Submission Status</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-bookmark"></i>
+                    <span>Watched Tenders</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            
+            <div class="nav-item" style="margin-top: auto;">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="top-nav">
+                <div class="page-title">
+                    <h2>Welcome back, John</h2>
+                    <p>Here's what's happening with your bids today</p>
+                </div>
+                
+                <div class="user-actions">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </div>
+                    
+                    <div class="user-profile">
+                        <div class="avatar">JD</div>
+                        <div class="user-info">
+                            <span class="user-name">John Doe</span>
+                            <span class="user-role">Bidder</span>
+                        </div>
+                        <i class="fas fa-chevron-down" style="font-size: 12px; color: var(--text-tertiary);"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section class="dashboard-section">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card animate-in">
+                        <div class="stat-header">
+                            <span class="stat-title">Active Bids</span>
+                            <div class="stat-icon">
+                                <i class="fas fa-file-signature"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">8</div>
+                        <div class="stat-change">
+                            <span class="positive">↑ 2</span> from last month
+                        </div>
+                    </div>
+
+                    <div class="stat-card animate-in">
+                        <div class="stat-header">
+                            <span class="stat-title">Watched Tenders</span>
+                            <div class="stat-icon">
+                                <i class="fas fa-bookmark"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-change">
+                            <span>3 closing this week</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card animate-in">
+                        <div class="stat-header">
+                            <span class="stat-title">Success Rate</span>
+                            <div class="stat-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">68%</div>
+                        <div class="stat-change">
+                            <span class="positive">↑ 12%</span> vs average
+                        </div>
+                    </div>
+
+                    <div class="stat-card animate-in">
+                        <div class="stat-header">
+                            <span class="stat-title">Total Value</span>
+                            <div class="stat-icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">$2.4M</div>
+                        <div class="stat-change">
+                            <span>Pending approval</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Browse Tenders Section -->
+                <div class="section-header">
+                    <h3>Recommended Tenders</h3>
+                    <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="tender-grid">
+                    <div class="tender-card animate-in">
+                        <div class="tender-header">
+                            <span class="tender-category">Infrastructure</span>
+                            <span class="tender-deadline">5 days left</span>
+                        </div>
+                        <h4 class="tender-title">Smart City Phase 3</h4>
+                        <div class="tender-department">Urban Development Dept</div>
+                        <p style="color: var(--text-secondary); font-size: var(--font-size-sm); margin-bottom: var(--space-md);">Implementation of IoT sensors and traffic management systems...</p>
+                        <div class="tender-footer">
+                            <span class="tender-value">$2.5M - $3.2M</span>
+                            <span class="tender-status status-open">Open</span>
+                        </div>
+                    </div>
+
+                    <div class="tender-card animate-in">
+                        <div class="tender-header">
+                            <span class="tender-category">IT Services</span>
+                            <span class="tender-deadline">2 days left</span>
+                        </div>
+                        <h4 class="tender-title">Cloud Migration 2024</h4>
+                        <div class="tender-department">Digital Transformation</div>
+                        <p style="color: var(--text-secondary); font-size: var(--font-size-sm); margin-bottom: var(--space-md);">Enterprise cloud infrastructure migration and security implementation...</p>
+                        <div class="tender-footer">
+                            <span class="tender-value">$800K - $1.2M</span>
+                            <span class="tender-status status-open">Open</span>
+                        </div>
+                    </div>
+
+                    <div class="tender-card animate-in">
+                        <div class="tender-header">
+                            <span class="tender-category">Healthcare</span>
+                            <span class="tender-deadline">Submitted</span>
+                        </div>
+                        <h4 class="tender-title">Regional Hospital Equipment</h4>
+                        <div class="tender-department">Health Services</div>
+                        <p style="color: var(--text-secondary); font-size: var(--font-size-sm); margin-bottom: var(--space-md);">Medical equipment supply and installation for 5 regional hospitals...</p>
+                        <div class="tender-footer">
+                            <span class="tender-value">$4.1M</span>
+                            <span class="tender-status status-submitted">Submitted</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Bid Form -->
+                <div class="bid-form-container">
+                    <h3 class="form-section-title">Submit New Bid</h3>
+                    
+                    <div class="form-section">
+                        <h4 style="margin-bottom: var(--space-md); font-size: var(--font-size-md);">Tender Information</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Select Tender</label>
+                                <select class="form-input">
+                                    <option>Smart City Phase 3 - INF-2024-001</option>
+                                    <option>Cloud Migration 2024 - IT-2024-045</option>
+                                    <option>Highway Construction - HWY-2024-089</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Financial Quote ($)</label>
+                                <input type="number" class="form-input" placeholder="Enter bid amount">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h4 style="margin-bottom: var(--space-md); font-size: var(--font-size-md);">Upload Documents</h4>
+                        <div class="upload-area">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="upload-text">Drag & drop files or click to browse</div>
+                            <div class="upload-hint">Support: PDF, DOCX, XLSX (Max 25MB each)</div>
+                        </div>
+                        
+                        <div class="file-list">
+                            <div class="file-item">
+                                <i class="fas fa-file-pdf file-icon" style="color: #ef4444;"></i>
+                                <div class="file-info">
+                                    <div class="file-name">technical_proposal.pdf</div>
+                                    <div class="file-size">2.4 MB</div>
+                                </div>
+                                <i class="fas fa-times file-remove"></i>
+                            </div>
+                            <div class="file-item">
+                                <i class="fas fa-file-excel file-icon" style="color: #10b981;"></i>
+                                <div class="file-info">
+                                    <div class="file-name">financial_breakdown.xlsx</div>
+                                    <div class="file-size">1.1 MB</div>
+                                </div>
+                                <i class="fas fa-times file-remove"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h4 style="margin-bottom: var(--space-md); font-size: var(--font-size-md);">Certifications</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">ISO Certification</label>
+                                <input type="text" class="form-input" placeholder="e.g., ISO 9001:2015">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Security Clearance</label>
+                                <input type="text" class="form-input" placeholder="Clearance level">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: var(--space-md); justify-content: flex-end;">
+                        <button class="btn btn-secondary">Save as Draft</button>
+                        <button class="btn btn-primary">Submit Bid <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Submission Status & Watched Tenders Grid -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl);">
+                    <!-- Submission Status -->
+                    <div>
+                        <div class="section-header">
+                            <h3>Recent Submissions</h3>
+                            <a href="#" class="view-all">View All</a>
+                        </div>
+                        
+                        <div class="status-timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Smart City Phase 3</div>
+                                    <div class="timeline-date">Submitted on Mar 15, 2024</div>
+                                    <div class="timeline-status">Under Review</div>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Highway Construction</div>
+                                    <div class="timeline-date">Submitted on Mar 12, 2024</div>
+                                    <div class="timeline-status">Technical Evaluation</div>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-icon">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">School Renovation</div>
+                                    <div class="timeline-date">Submitted on Mar 5, 2024</div>
+                                    <div class="timeline-status">Shortlisted</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Watched Tenders -->
+                    <div>
+                        <div class="section-header">
+                            <h3>Watched Tenders</h3>
+                            <a href="#" class="view-all">Manage</a>
+                        </div>
+                        
+                        <div class="watched-grid">
+                            <div class="watched-card">
+                                <div class="watched-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="watched-info">
+                                    <div class="watched-title">Metro Rail Phase 2</div>
+                                    <div class="watched-meta">
+                                        <span>Closing in 3 days</span>
+                                        <span>•</span>
+                                        <span>$12M</span>
+                                    </div>
+                                </div>
+                                <div class="watched-actions">
+                                    <button class="btn btn-outline" style="padding: 6px 12px;">Apply</button>
+                                </div>
+                            </div>
+                            
+                            <div class="watched-card">
+                                <div class="watched-icon">
+                                    <i class="fas fa-microchip"></i>
+                                </div>
+                                <div class="watched-info">
+                                    <div class="watched-title">AI Research Grant</div>
+                                    <div class="watched-meta">
+                                        <span>Closing in 7 days</span>
+                                        <span>•</span>
+                                        <span>$500K</span>
+                                    </div>
+                                </div>
+                                <div class="watched-actions">
+                                    <button class="btn btn-outline" style="padding: 6px 12px;">Apply</button>
+                                </div>
+                            </div>
+                            
+                            <div class="watched-card">
+                                <div class="watched-icon">
+                                    <i class="fas fa-hospital"></i>
+                                </div>
+                                <div class="watched-info">
+                                    <div class="watched-title">Medical Supply Chain</div>
+                                    <div class="watched-meta">
+                                        <span>Closing in 12 days</span>
+                                        <span>•</span>
+                                        <span>$3.5M</span>
+                                    </div>
+                                </div>
+                                <div class="watched-actions">
+                                    <button class="btn btn-outline" style="padding: 6px 12px;">Apply</button>
+                                </div>
+                            </div>
+                            
+                            <div class="watched-card">
+                                <div class="watched-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <div class="watched-info">
+                                    <div class="watched-title">Digital Education</div>
+                                    <div class="watched-meta">
+                                        <span>Closing in 15 days</span>
+                                        <span>•</span>
+                                        <span>$1.8M</span>
+                                    </div>
+                                </div>
+                                <div class="watched-actions">
+                                    <button class="btn btn-outline" style="padding: 6px 12px;">Apply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Micro-interactions script -->
+    <script>
+        // Smooth animations on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.stat-card, .tender-card, .bid-form-container, .timeline-item, .watched-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+
+            // File upload simulation
+            const uploadArea = document.querySelector('.upload-area');
+            if (uploadArea) {
+                uploadArea.addEventListener('click', () => {
+                    alert('File upload dialog would open here');
+                });
+            }
+
+            // Notification bell animation
+            const bell = document.querySelector('.notification-bell');
+            if (bell) {
+                bell.addEventListener('click', () => {
+                    bell.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        bell.style.transform = 'scale(1)';
+                    }, 200);
+                });
+            }
+
+            // Button ripple effect
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    ripple.style.position = 'absolute';
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+                    ripple.style.transform = 'scale(0)';
+                    ripple.style.animation = 'ripple 0.6s linear';
+                    ripple.style.pointerEvents = 'none';
+                    
+                    const rect = button.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+                    ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+                    
+                    button.style.position = 'relative';
+                    button.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+        });
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

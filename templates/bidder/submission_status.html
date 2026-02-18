@@ -1,0 +1,2131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Status | TenderFlow AI - Bidder Portal</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Premium Neutral Palette */
+            --bg-primary: #fafaf9;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f5f5f4;
+            --text-primary: #1c1917;
+            --text-secondary: #57534e;
+            --text-tertiary: #a8a29e;
+            --border-light: #e7e5e4;
+            --border-medium: #d6d3d1;
+            
+            /* Sophisticated Accent - Deep Teal */
+            --accent-primary: #0f766e;
+            --accent-secondary: #14b8a6;
+            --accent-soft: #ccfbf1;
+            --accent-glow: rgba(20, 184, 166, 0.15);
+            
+            /* Status Colors */
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.1);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.1);
+            --info: #3b82f6;
+            --info-light: rgba(59, 130, 246, 0.1);
+            
+            /* Stage Colors */
+            --stage-pending: #6b7280;
+            --stage-review: #3b82f6;
+            --stage-evaluation: #8b5cf6;
+            --stage-shortlist: #f59e0b;
+            --stage-awarded: #10b981;
+            --stage-rejected: #ef4444;
+            
+            /* Glass Effects */
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 20px 40px rgba(15, 118, 110, 0.08);
+            
+            /* Typography */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-md: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 2rem;
+            
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 3rem;
+            
+            /* Border Radius */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            
+            /* Transitions */
+            --transition-fast: 200ms ease;
+            --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-tertiary) 100%);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ===== LAYOUT ===== */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 280px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            padding: var(--space-lg) 0;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .logo-area {
+            padding: 0 var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: var(--font-size-md);
+            font-weight: 400;
+            transition: var(--transition-base);
+            border-left: 3px solid transparent;
+            margin: 4px 0;
+        }
+
+        .nav-item:hover {
+            background: var(--accent-glow);
+            color: var(--accent-primary);
+            transform: translateX(4px);
+        }
+
+        .nav-item.active {
+            background: var(--accent-glow);
+            color: var(--accent-primary);
+            border-left-color: var(--accent-primary);
+            font-weight: 500;
+        }
+
+        .nav-item i {
+            width: 24px;
+            font-size: 1.25rem;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            padding: var(--space-lg) var(--space-xl);
+            overflow-y: auto;
+        }
+
+        /* ===== TOP NAVBAR ===== */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-xl);
+            padding: var(--space-sm) 0;
+        }
+
+        .page-title h2 {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .page-title p {
+            color: var(--text-tertiary);
+            font-size: var(--font-size-sm);
+            margin-top: 4px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            padding: var(--space-xs);
+            border-radius: var(--radius-sm);
+            transition: var(--transition-base);
+        }
+
+        .notification-bell:hover {
+            background: var(--accent-glow);
+            transform: scale(1.05);
+        }
+
+        .notification-bell i {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 8px;
+            height: 8px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            border: 2px solid var(--bg-primary);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: 6px var(--space-sm);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+
+        .user-profile:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+            font-size: var(--font-size-sm);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .user-role {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        /* ===== STATUS OVERVIEW CARDS ===== */
+        .status-overview {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .overview-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            border: 1px solid var(--border-light);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .overview-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            opacity: 0;
+            transition: var(--transition-base);
+        }
+
+        .overview-card:hover::before {
+            opacity: 1;
+        }
+
+        .overview-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .overview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-sm);
+        }
+
+        .overview-title {
+            color: var(--text-tertiary);
+            font-size: var(--font-size-sm);
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .overview-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-glow);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+        }
+
+        .overview-value {
+            font-size: 2rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .overview-trend {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        .trend-up {
+            color: var(--success);
+        }
+
+        .trend-down {
+            color: var(--error);
+        }
+
+        /* ===== FILTER SECTION ===== */
+        .filter-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .filter-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-weight: 500;
+        }
+
+        .filter-clear {
+            color: var(--accent-primary);
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+
+        .filter-clear:hover {
+            transform: translateX(2px);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-md);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .filter-label {
+            font-size: var(--font-size-xs);
+            font-weight: 500;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .filter-select, .filter-input {
+            padding: 10px 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            color: var(--text-primary);
+            transition: var(--transition-base);
+            font-family: var(--font-primary);
+        }
+
+        .filter-select:focus, .filter-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        /* ===== SEARCH BAR ===== */
+        .search-container {
+            position: relative;
+            margin-bottom: var(--space-xl);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            z-index: 1;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            font-size: var(--font-size-md);
+            color: var(--text-primary);
+            transition: var(--transition-base);
+            font-family: var(--font-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        /* ===== STATUS TABS ===== */
+        .status-tabs {
+            display: flex;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-xl);
+            background: var(--bg-tertiary);
+            padding: 4px;
+            border-radius: var(--radius-lg);
+            width: fit-content;
+        }
+
+        .status-tab {
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-base);
+            color: var(--text-secondary);
+        }
+
+        .status-tab:hover {
+            color: var(--accent-primary);
+        }
+
+        .status-tab.active {
+            background: var(--bg-secondary);
+            color: var(--accent-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .status-tab i {
+            margin-right: 8px;
+        }
+
+        /* ===== SUBMISSION CARDS ===== */
+        .submissions-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .submission-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            animation: slideIn var(--transition-smooth) forwards;
+        }
+
+        .submission-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-soft);
+        }
+
+        .submission-header {
+            padding: var(--space-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--border-light);
+            cursor: pointer;
+        }
+
+        .submission-title-section {
+            display: flex;
+            gap: var(--space-md);
+            flex: 1;
+        }
+
+        .submission-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-glow);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+            font-size: 1.5rem;
+        }
+
+        .submission-info {
+            flex: 1;
+        }
+
+        .submission-ref {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: 4px;
+        }
+
+        .submission-ref-number {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+            font-family: monospace;
+        }
+
+        .submission-badge {
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+            font-weight: 500;
+        }
+
+        .badge-urgent {
+            background: var(--error-light);
+            color: var(--error);
+        }
+
+        .badge-featured {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .submission-title {
+            font-size: var(--font-size-lg);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .submission-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        .submission-department {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .submission-status-section {
+            text-align: right;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: var(--radius-xl);
+            font-size: var(--font-size-xs);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .status-pending {
+            background: var(--info-light);
+            color: var(--info);
+        }
+
+        .status-review {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .status-evaluation {
+            background: #8b5cf6;
+            color: white;
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+        }
+
+        .status-shortlist {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .status-awarded {
+            background: var(--success);
+            color: white;
+        }
+
+        .status-rejected {
+            background: var(--error-light);
+            color: var(--error);
+        }
+
+        .submission-time {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        /* ===== EXPANDED DETAILS ===== */
+        .submission-details {
+            padding: 0 var(--space-lg) var(--space-lg) var(--space-lg);
+            display: none;
+            animation: expand var(--transition-smooth) forwards;
+        }
+
+        @keyframes expand {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .submission-card.expanded .submission-details {
+            display: block;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: var(--space-xl);
+            margin-top: var(--space-lg);
+        }
+
+        /* Timeline */
+        .timeline-container {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .timeline-title {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary));
+            opacity: 0.3;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: var(--space-lg);
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -30px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid;
+            z-index: 1;
+        }
+
+        .timeline-item.completed .timeline-dot {
+            background: var(--success);
+            border-color: var(--success-light);
+        }
+
+        .timeline-item.active .timeline-dot {
+            background: var(--accent-primary);
+            border-color: var(--accent-glow);
+            animation: pulse 2s infinite;
+        }
+
+        .timeline-item.pending .timeline-dot {
+            background: var(--text-tertiary);
+            border-color: var(--border-light);
+        }
+
+        .timeline-content {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            border: 1px solid var(--border-light);
+        }
+
+        .timeline-date {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+            margin-bottom: 4px;
+        }
+
+        .timeline-event {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .timeline-description {
+            font-size: var(--font-size-xs);
+            color: var(--text-secondary);
+        }
+
+        /* AI Score Card */
+        .ai-score-card {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            color: white;
+            margin-bottom: var(--space-lg);
+        }
+
+        .ai-score-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .ai-score-label {
+            font-size: var(--font-size-sm);
+            opacity: 0.9;
+        }
+
+        .ai-score-value {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .ai-score-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .score-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .score-item-label {
+            width: 100px;
+            font-size: var(--font-size-xs);
+            opacity: 0.9;
+        }
+
+        .score-bar-container {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+        }
+
+        .score-bar {
+            height: 100%;
+            background: white;
+            border-radius: var(--radius-xl);
+            transition: width var(--transition-smooth);
+        }
+
+        .score-percentage {
+            width: 50px;
+            text-align: right;
+            font-size: var(--font-size-xs);
+            font-weight: 500;
+        }
+
+        /* Documents Grid */
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-sm);
+            margin-bottom: var(--space-lg);
+        }
+
+        .document-item {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            padding: var(--space-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            transition: var(--transition-base);
+            cursor: pointer;
+        }
+
+        .document-item:hover {
+            background: var(--accent-glow);
+            transform: translateX(2px);
+        }
+
+        .document-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+        }
+
+        .document-info {
+            flex: 1;
+        }
+
+        .document-name {
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .document-meta {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        .document-status {
+            font-size: var(--font-size-xs);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+        }
+
+        .doc-status-verified {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .doc-status-pending {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        /* Financial Card */
+        .financial-card {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+        }
+
+        .financial-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .financial-item:last-child {
+            border-bottom: none;
+        }
+
+        .financial-label {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+
+        .financial-value {
+            font-weight: 500;
+        }
+
+        .financial-total {
+            font-size: var(--font-size-lg);
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: var(--space-sm);
+            margin-top: var(--space-lg);
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--border-light);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-primary);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(15, 118, 110, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border-medium);
+            color: var(--text-secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-medium);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent-glow);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--space-xs);
+            margin-top: var(--space-xl);
+        }
+
+        .page-item {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+
+        .page-item:hover {
+            background: var(--accent-glow);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .page-item.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.7;
+            }
+        }
+
+        .animate-in {
+            animation: slideIn var(--transition-smooth) forwards;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .status-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .filter-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .logo-area {
+                padding: 0 var(--space-sm);
+            }
+            
+            .nav-item span {
+                display: none;
+            }
+            
+            .main-content {
+                padding: var(--space-md);
+            }
+            
+            .status-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .status-tabs {
+                flex-wrap: wrap;
+                width: 100%;
+            }
+            
+            .status-tab {
+                flex: 1;
+                text-align: center;
+            }
+            
+            .submission-header {
+                flex-direction: column;
+                gap: var(--space-md);
+            }
+            
+            .submission-status-section {
+                text-align: left;
+                width: 100%;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <span class="logo">TenderFlow AI</span>
+            </div>
+          <nav class="nav-menu">
+                <a href="{% url 'Companydashboard' %}" class="nav-item active">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{% url 'browse_tenders' %}" class="nav-item">
+                    <i class="fas fa-search"></i>
+                    <span>Browse Tenders</span>
+                </a>
+                <a href="{% url 'submit_bid' %}" class="nav-item">
+                    <i class="fas fa-file-upload"></i>
+                    <span>Submit Bid</span>
+                </a>
+                <a href="{% url 'submission_status' %}" class="nav-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Submission Status</span>
+                </a>
+                <a href="{% url 'watch_tenders' %}" class="nav-item">
+                    <i class="fas fa-bookmark"></i>
+                    <span>Watched Tenders</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            
+            <div class="nav-item" style="margin-top: auto;">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="top-nav">
+                <div class="page-title">
+                    <h2>Submission Status</h2>
+                    <p>Track and monitor your bid submissions in real-time</p>
+                </div>
+                
+                <div class="user-actions">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </div>
+                    
+                    <div class="user-profile">
+                        <div class="avatar">JD</div>
+                        <div class="user-info">
+                            <span class="user-name">John Doe</span>
+                            <span class="user-role">Bidder</span>
+                        </div>
+                        <i class="fas fa-chevron-down" style="font-size: 12px; color: var(--text-tertiary);"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Status Overview Cards -->
+            <div class="status-overview">
+                <div class="overview-card animate-in">
+                    <div class="overview-header">
+                        <span class="overview-title">Total Submissions</span>
+                        <div class="overview-icon">
+                            <i class="fas fa-file-signature"></i>
+                        </div>
+                    </div>
+                    <div class="overview-value">24</div>
+                    <div class="overview-trend">
+                        <span class="trend-up"><i class="fas fa-arrow-up"></i> +3</span> from last month
+                    </div>
+                </div>
+
+                <div class="overview-card animate-in">
+                    <div class="overview-header">
+                        <span class="overview-title">Under Review</span>
+                        <div class="overview-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <div class="overview-value">8</div>
+                    <div class="overview-trend">
+                        <span class="trend-up"><i class="fas fa-arrow-up"></i> +2</span> this week
+                    </div>
+                </div>
+
+                <div class="overview-card animate-in">
+                    <div class="overview-header">
+                        <span class="overview-title">Shortlisted</span>
+                        <div class="overview-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="overview-value">5</div>
+                    <div class="overview-trend">
+                        <span>21% success rate</span>
+                    </div>
+                </div>
+
+                <div class="overview-card animate-in">
+                    <div class="overview-header">
+                        <span class="overview-title">Awarded</span>
+                        <div class="overview-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                    </div>
+                    <div class="overview-value">3</div>
+                    <div class="overview-trend">
+                        <span class="trend-up"><i class="fas fa-arrow-up"></i> $2.4M</span> total value
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container animate-in">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search by bid reference, tender name, or department...">
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section animate-in">
+                <div class="filter-header">
+                    <span class="filter-title">
+                        <i class="fas fa-filter"></i>
+                        Filter Submissions
+                    </span>
+                    <span class="filter-clear">Clear all filters <i class="fas fa-times"></i></span>
+                </div>
+                
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label class="filter-label">Status</label>
+                        <select class="filter-select">
+                            <option>All Statuses</option>
+                            <option>Pending</option>
+                            <option>Under Review</option>
+                            <option>Technical Evaluation</option>
+                            <option>Financial Evaluation</option>
+                            <option>Shortlisted</option>
+                            <option>Awarded</option>
+                            <option>Rejected</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Date Range</label>
+                        <select class="filter-select">
+                            <option>Last 30 days</option>
+                            <option>Last 60 days</option>
+                            <option>Last 90 days</option>
+                            <option>This year</option>
+                            <option>Custom range</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Department</label>
+                        <select class="filter-select">
+                            <option>All Departments</option>
+                            <option>Urban Development</option>
+                            <option>Digital Transformation</option>
+                            <option>Health Services</option>
+                            <option>Education Board</option>
+                            <option>Transport Authority</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Sort By</label>
+                        <select class="filter-select">
+                            <option>Most Recent</option>
+                            <option>Oldest</option>
+                            <option>Bid Value (High-Low)</option>
+                            <option>Bid Value (Low-High)</option>
+                            <option>Status</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Tabs -->
+            <div class="status-tabs">
+                <div class="status-tab active" onclick="filterByStatus('all')">
+                    <i class="fas fa-list"></i> All
+                </div>
+                <div class="status-tab" onclick="filterByStatus('pending')">
+                    <i class="fas fa-clock"></i> Pending
+                </div>
+                <div class="status-tab" onclick="filterByStatus('review')">
+                    <i class="fas fa-search"></i> Under Review
+                </div>
+                <div class="status-tab" onclick="filterByStatus('evaluation')">
+                    <i class="fas fa-chart-line"></i> Evaluation
+                </div>
+                <div class="status-tab" onclick="filterByStatus('shortlist')">
+                    <i class="fas fa-star"></i> Shortlisted
+                </div>
+                <div class="status-tab" onclick="filterByStatus('awarded')">
+                    <i class="fas fa-trophy"></i> Awarded
+                </div>
+                <div class="status-tab" onclick="filterByStatus('rejected')">
+                    <i class="fas fa-times-circle"></i> Rejected
+                </div>
+            </div>
+
+            <!-- Submissions List -->
+            <div class="submissions-list" id="submissionsList">
+                <!-- Submission Card 1 - Smart City Phase 3 -->
+                <div class="submission-card expanded" id="submission1">
+                    <div class="submission-header" onclick="toggleExpand('submission1')">
+                        <div class="submission-title-section">
+                            <div class="submission-icon">
+                                <i class="fas fa-city"></i>
+                            </div>
+                            <div class="submission-info">
+                                <div class="submission-ref">
+                                    <span class="submission-ref-number">REF: BID-2024-INF-001</span>
+                                    <span class="submission-badge badge-featured">Featured</span>
+                                </div>
+                                <h4 class="submission-title">Smart City Phase 3</h4>
+                                <div class="submission-meta">
+                                    <span class="submission-department">
+                                        <i class="fas fa-building"></i>
+                                        Urban Development Dept
+                                    </span>
+                                    <span>•</span>
+                                    <span>Submitted: Mar 15, 2024</span>
+                                    <span>•</span>
+                                    <span>Bid Value: $2.9M</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submission-status-section">
+                            <span class="status-badge status-evaluation">Technical Evaluation</span>
+                            <div class="submission-time">Last updated: 2 hours ago</div>
+                        </div>
+                    </div>
+                    
+                    <div class="submission-details">
+                        <div class="details-grid">
+                            <!-- Timeline -->
+                            <div class="timeline-container">
+                                <div class="timeline-header">
+                                    <span class="timeline-title">
+                                        <i class="fas fa-history"></i>
+                                        Submission Timeline
+                                    </span>
+                                    <span class="status-badge status-evaluation">Stage 3/6</span>
+                                </div>
+                                
+                                <div class="timeline">
+                                    <div class="timeline-item completed">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-date">Mar 15, 2024 - 10:30 AM</div>
+                                            <div class="timeline-event">Bid Submitted</div>
+                                            <div class="timeline-description">Successfully submitted with all required documents</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="timeline-item completed">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-date">Mar 16, 2024 - 2:15 PM</div>
+                                            <div class="timeline-event">Document Verification</div>
+                                            <div class="timeline-description">All documents verified and accepted</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="timeline-item active">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-date">Mar 18, 2024 - 9:00 AM</div>
+                                            <div class="timeline-event">Technical Evaluation</div>
+                                            <div class="timeline-description">AI scoring in progress - Expected completion: Mar 22</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="timeline-item pending">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-date">Estimated: Mar 23-25</div>
+                                            <div class="timeline-event">Financial Evaluation</div>
+                                            <div class="timeline-description">BOQ comparison and price analysis</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="timeline-item pending">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-date">Estimated: Mar 26-28</div>
+                                            <div class="timeline-event">Final Review</div>
+                                            <div class="timeline-description">Committee review and decision</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- AI Score & Documents -->
+                            <div>
+                                <!-- AI Score Card -->
+                                <div class="ai-score-card">
+                                    <div class="ai-score-header">
+                                        <span class="ai-score-label">AI Technical Score</span>
+                                        <span class="ai-score-value">86%</span>
+                                    </div>
+                                    <div class="ai-score-breakdown">
+                                        <div class="score-item">
+                                            <span class="score-item-label">Compliance</span>
+                                            <div class="score-bar-container">
+                                                <div class="score-bar" style="width: 95%"></div>
+                                            </div>
+                                            <span class="score-percentage">95%</span>
+                                        </div>
+                                        <div class="score-item">
+                                            <span class="score-item-label">Experience</span>
+                                            <div class="score-bar-container">
+                                                <div class="score-bar" style="width: 88%"></div>
+                                            </div>
+                                            <span class="score-percentage">88%</span>
+                                        </div>
+                                        <div class="score-item">
+                                            <span class="score-item-label">Capability</span>
+                                            <div class="score-bar-container">
+                                                <div class="score-bar" style="width: 82%"></div>
+                                            </div>
+                                            <span class="score-percentage">82%</span>
+                                        </div>
+                                        <div class="score-item">
+                                            <span class="score-item-label">Innovation</span>
+                                            <div class="score-bar-container">
+                                                <div class="score-bar" style="width: 79%"></div>
+                                            </div>
+                                            <span class="score-percentage">79%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Documents Status -->
+                                <div style="background: var(--bg-tertiary); border-radius: var(--radius-lg); padding: var(--space-lg); margin-bottom: var(--space-lg);">
+                                    <h4 style="margin-bottom: var(--space-md); font-size: var(--font-size-md);">Document Status</h4>
+                                    <div class="documents-grid">
+                                        <div class="document-item">
+                                            <div class="document-icon">
+                                                <i class="fas fa-file-pdf" style="color: #ef4444;"></i>
+                                            </div>
+                                            <div class="document-info">
+                                                <div class="document-name">Technical Proposal</div>
+                                                <div class="document-meta">2.4 MB</div>
+                                            </div>
+                                            <span class="document-status doc-status-verified">Verified</span>
+                                        </div>
+                                        
+                                        <div class="document-item">
+                                            <div class="document-icon">
+                                                <i class="fas fa-file-excel" style="color: #10b981;"></i>
+                                            </div>
+                                            <div class="document-info">
+                                                <div class="document-name">Financial Quote</div>
+                                                <div class="document-meta">1.1 MB</div>
+                                            </div>
+                                            <span class="document-status doc-status-verified">Verified</span>
+                                        </div>
+                                        
+                                        <div class="document-item">
+                                            <div class="document-icon">
+                                                <i class="fas fa-file-pdf" style="color: #ef4444;"></i>
+                                            </div>
+                                            <div class="document-info">
+                                                <div class="document-name">Certifications</div>
+                                                <div class="document-meta">3.2 MB</div>
+                                            </div>
+                                            <span class="document-status doc-status-verified">Verified</span>
+                                        </div>
+                                        
+                                        <div class="document-item">
+                                            <div class="document-icon">
+                                                <i class="fas fa-file-word" style="color: #3b82f6;"></i>
+                                            </div>
+                                            <div class="document-info">
+                                                <div class="document-name">Company Profile</div>
+                                                <div class="document-meta">1.8 MB</div>
+                                            </div>
+                                            <span class="document-status doc-status-pending">Pending</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Financial Summary -->
+                                <div class="financial-card">
+                                    <h4 style="margin-bottom: var(--space-md);">Financial Summary</h4>
+                                    <div class="financial-item">
+                                        <span class="financial-label">Base Bid Amount</span>
+                                        <span class="financial-value">$2,750,000</span>
+                                    </div>
+                                    <div class="financial-item">
+                                        <span class="financial-label">Alternative Bid</span>
+                                        <span class="financial-value">$2,950,000</span>
+                                    </div>
+                                    <div class="financial-item">
+                                        <span class="financial-label">Additional Services</span>
+                                        <span class="financial-value">$150,000</span>
+                                    </div>
+                                    <div class="financial-item">
+                                        <span class="financial-label">Total Bid Value</span>
+                                        <span class="financial-value financial-total">$2,900,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" onclick="viewBidDetails('BID-2024-INF-001')">
+                                <i class="fas fa-eye"></i>
+                                View Full Details
+                            </button>
+                            <button class="btn btn-secondary" onclick="downloadDocuments('BID-2024-INF-001')">
+                                <i class="fas fa-download"></i>
+                                Download All
+                            </button>
+                            <button class="btn btn-primary" onclick="withdrawBid('BID-2024-INF-001')">
+                                <i class="fas fa-times"></i>
+                                Withdraw Bid
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submission Card 2 - Cloud Migration -->
+                <div class="submission-card" id="submission2">
+                    <div class="submission-header" onclick="toggleExpand('submission2')">
+                        <div class="submission-title-section">
+                            <div class="submission-icon">
+                                <i class="fas fa-cloud"></i>
+                            </div>
+                            <div class="submission-info">
+                                <div class="submission-ref">
+                                    <span class="submission-ref-number">REF: BID-2024-IT-045</span>
+                                    <span class="submission-badge badge-urgent">Urgent</span>
+                                </div>
+                                <h4 class="submission-title">Cloud Migration 2024</h4>
+                                <div class="submission-meta">
+                                    <span class="submission-department">
+                                        <i class="fas fa-digital-tiling"></i>
+                                        Digital Transformation
+                                    </span>
+                                    <span>•</span>
+                                    <span>Submitted: Mar 14, 2024</span>
+                                    <span>•</span>
+                                    <span>Bid Value: $1.2M</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submission-status-section">
+                            <span class="status-badge status-shortlist">Shortlisted</span>
+                            <div class="submission-time">Last updated: 1 day ago</div>
+                        </div>
+                    </div>
+                    
+                    <div class="submission-details">
+                        <div class="details-grid">
+                            <!-- Timeline -->
+                            <div class="timeline-container">
+                                <div class="timeline-header">
+                                    <span class="timeline-title">
+                                        <i class="fas fa-history"></i>
+                                        Submission Timeline
+                                    </span>
+                                    <span class="status-badge status-shortlist">Stage 4/6</span>
+                                </div>
+                                
+                                <div class="timeline">
+                                    <div class="timeline-item completed">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-date">Mar 14, 2024</div>
+                                            <div class="timeline-event">Bid Submitted</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="timeline-item completed">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-date">Mar 15, 2024</div>
+                                            <div class="timeline-event">Document Verification</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="timeline-item completed">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-date">Mar 16-18, 2024</div>
+                                            <div class="timeline-event">Technical Evaluation</div>
+                                            <div class="timeline-description">AI Score: 92%</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="timeline-item completed">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-date">Mar 19, 2024</div>
+                                            <div class="timeline-event">Financial Evaluation</div>
+                                            <div class="timeline-description">Price competitive</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="timeline-item active">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-date">Mar 20, 2024</div>
+                                            <div class="timeline-event">Shortlisted</div>
+                                            <div class="timeline-description">Awaiting final committee approval</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- AI Score & Documents -->
+                            <div>
+                                <div class="ai-score-card">
+                                    <div class="ai-score-header">
+                                        <span class="ai-score-label">AI Technical Score</span>
+                                        <span class="ai-score-value">92%</span>
+                                    </div>
+                                    <div class="ai-score-breakdown">
+                                        <div class="score-item">
+                                            <span class="score-item-label">Compliance</span>
+                                            <div class="score-bar-container">
+                                                <div class="score-bar" style="width: 98%"></div>
+                                            </div>
+                                            <span class="score-percentage">98%</span>
+                                        </div>
+                                        <div class="score-item">
+                                            <span class="score-item-label">Experience</span>
+                                            <div class="score-bar-container">
+                                                <div class="score-bar" style="width: 94%"></div>
+                                            </div>
+                                            <span class="score-percentage">94%</span>
+                                        </div>
+                                        <div class="score-item">
+                                            <span class="score-item-label">Capability</span>
+                                            <div class="score-bar-container">
+                                                <div class="score-bar" style="width: 91%"></div>
+                                            </div>
+                                            <span class="score-percentage">91%</span>
+                                        </div>
+                                        <div class="score-item">
+                                            <span class="score-item-label">Innovation</span>
+                                            <div class="score-bar-container">
+                                                <div class="score-bar" style="width: 85%"></div>
+                                            </div>
+                                            <span class="score-percentage">85%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div style="background: var(--bg-tertiary); border-radius: var(--radius-lg); padding: var(--space-lg); margin-bottom: var(--space-lg);">
+                                    <h4 style="margin-bottom: var(--space-md);">Document Status</h4>
+                                    <div class="documents-grid">
+                                        <div class="document-item">
+                                            <div class="document-icon">
+                                                <i class="fas fa-file-pdf" style="color: #ef4444;"></i>
+                                            </div>
+                                            <div class="document-info">
+                                                <div class="document-name">Technical Proposal</div>
+                                            </div>
+                                            <span class="document-status doc-status-verified">Verified</span>
+                                        </div>
+                                        <div class="document-item">
+                                            <div class="document-icon">
+                                                <i class="fas fa-file-excel" style="color: #10b981;"></i>
+                                            </div>
+                                            <div class="document-info">
+                                                <div class="document-name">Financial Quote</div>
+                                            </div>
+                                            <span class="document-status doc-status-verified">Verified</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="financial-card">
+                                    <h4 style="margin-bottom: var(--space-md);">Financial Summary</h4>
+                                    <div class="financial-item">
+                                        <span class="financial-label">Total Bid Value</span>
+                                        <span class="financial-value financial-total">$1,200,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" onclick="viewBidDetails('BID-2024-IT-045')">
+                                <i class="fas fa-eye"></i>
+                                View Details
+                            </button>
+                            <button class="btn btn-primary" onclick="schedulePresentation('BID-2024-IT-045')">
+                                <i class="fas fa-calendar"></i>
+                                Schedule Presentation
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submission Card 3 - Hospital Equipment -->
+                <div class="submission-card" id="submission3">
+                    <div class="submission-header" onclick="toggleExpand('submission3')">
+                        <div class="submission-title-section">
+                            <div class="submission-icon">
+                                <i class="fas fa-hospital"></i>
+                            </div>
+                            <div class="submission-info">
+                                <div class="submission-ref">
+                                    <span class="submission-ref-number">REF: BID-2024-HEA-089</span>
+                                </div>
+                                <h4 class="submission-title">Regional Hospital Equipment</h4>
+                                <div class="submission-meta">
+                                    <span class="submission-department">
+                                        <i class="fas fa-building"></i>
+                                        Health Services
+                                    </span>
+                                    <span>•</span>
+                                    <span>Submitted: Mar 10, 2024</span>
+                                    <span>•</span>
+                                    <span>Bid Value: $4.1M</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submission-status-section">
+                            <span class="status-badge status-awarded">Awarded</span>
+                            <div class="submission-time">Awarded on Mar 19, 2024</div>
+                        </div>
+                    </div>
+                    
+                    <div class="submission-details">
+                        <div class="details-grid">
+                            <div class="timeline-container">
+                                <div class="timeline-header">
+                                    <span class="timeline-title">
+                                        <i class="fas fa-history"></i>
+                                        Submission Timeline
+                                    </span>
+                                    <span class="status-badge status-awarded">Completed</span>
+                                </div>
+                                
+                                <div class="timeline">
+                                    <div class="timeline-item completed">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-date">Mar 10, 2024</div>
+                                            <div class="timeline-event">Bid Submitted</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="timeline-item completed">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-date">Mar 11-15, 2024</div>
+                                            <div class="timeline-event">Evaluation Period</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="timeline-item completed">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-date">Mar 16, 2024</div>
+                                            <div class="timeline-event">Shortlisted</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="timeline-item completed">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-date">Mar 19, 2024</div>
+                                            <div class="timeline-event">Contract Awarded</div>
+                                            <div class="timeline-description">Congratulations! Your bid has been selected</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="ai-score-card" style="background: linear-gradient(135deg, var(--success), #059669);">
+                                    <div class="ai-score-header">
+                                        <span class="ai-score-label">Final Score</span>
+                                        <span class="ai-score-value">94%</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="financial-card">
+                                    <h4 style="margin-bottom: var(--space-md);">Contract Details</h4>
+                                    <div class="financial-item">
+                                        <span class="financial-label">Award Amount</span>
+                                        <span class="financial-value financial-total">$4,100,000</span>
+                                    </div>
+                                    <div class="financial-item">
+                                        <span class="financial-label">Contract ID</span>
+                                        <span class="financial-value">CTR-2024-HEA-001</span>
+                                    </div>
+                                    <div class="financial-item">
+                                        <span class="financial-label">Start Date</span>
+                                        <span class="financial-value">Apr 1, 2024</span>
+                                    </div>
+                                    <div class="financial-item">
+                                        <span class="financial-label">Duration</span>
+                                        <span class="financial-value">24 months</span>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-top: var(--space-lg);">
+                                    <button class="btn btn-primary" style="width: 100%;" onclick="viewContract()">
+                                        <i class="fas fa-file-contract"></i>
+                                        View Contract
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submission Card 4 - Metro Rail Phase 2 -->
+                <div class="submission-card" id="submission4">
+                    <div class="submission-header" onclick="toggleExpand('submission4')">
+                        <div class="submission-title-section">
+                            <div class="submission-icon">
+                                <i class="fas fa-train"></i>
+                            </div>
+                            <div class="submission-info">
+                                <div class="submission-ref">
+                                    <span class="submission-ref-number">REF: BID-2024-TRA-112</span>
+                                </div>
+                                <h4 class="submission-title">Metro Rail Phase 2</h4>
+                                <div class="submission-meta">
+                                    <span class="submission-department">
+                                        <i class="fas fa-building"></i>
+                                        Transport Authority
+                                    </span>
+                                    <span>•</span>
+                                    <span>Submitted: Mar 5, 2024</span>
+                                    <span>•</span>
+                                    <span>Bid Value: $12M</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submission-status-section">
+                            <span class="status-badge status-rejected">Not Selected</span>
+                            <div class="submission-time">Rejected on Mar 18, 2024</div>
+                        </div>
+                    </div>
+                    
+                    <div class="submission-details">
+                        <div class="details-grid">
+                            <div class="timeline-container">
+                                <div class="timeline-header">
+                                    <span class="timeline-title">Evaluation Feedback</span>
+                                </div>
+                                
+                                <div style="background: var(--error-light); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-md);">
+                                    <p style="color: var(--error); font-size: var(--font-size-sm);">
+                                        <i class="fas fa-info-circle"></i>
+                                        Your bid was not selected for this tender. Please see feedback below.
+                                    </p>
+                                </div>
+                                
+                                <div style="margin-top: var(--space-md);">
+                                    <h5 style="margin-bottom: var(--space-sm);">Reason for Rejection:</h5>
+                                    <ul style="list-style: none; color: var(--text-secondary); font-size: var(--font-size-sm);">
+                                        <li style="margin-bottom: 8px;">• Price higher than competitive range</li>
+                                        <li style="margin-bottom: 8px;">• Previous experience requirements not fully met</li>
+                                        <li style="margin-bottom: 8px;">• Missing compliance certificates</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="financial-card">
+                                    <h4 style="margin-bottom: var(--space-md);">Bid Comparison</h4>
+                                    <div class="financial-item">
+                                        <span class="financial-label">Your Bid</span>
+                                        <span class="financial-value">$12,000,000</span>
+                                    </div>
+                                    <div class="financial-item">
+                                        <span class="financial-label">Avg. Competitor</span>
+                                        <span class="financial-value">$10,500,000</span>
+                                    </div>
+                                    <div class="financial-item">
+                                        <span class="financial-label">Winning Bid</span>
+                                        <span class="financial-value">$9,800,000</span>
+                                    </div>
+                                    <div class="financial-item">
+                                        <span class="financial-label">Difference</span>
+                                        <span class="financial-value" style="color: var(--error);">+$2,200,000</span>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-top: var(--space-lg);">
+                                    <button class="btn btn-secondary" style="width: 100%; margin-bottom: 8px;" onclick="appealDecision()">
+                                        <i class="fas fa-gavel"></i>
+                                        Appeal Decision
+                                    </button>
+                                    <button class="btn btn-outline" style="width: 100%;" onclick="requestFeedback()">
+                                        <i class="fas fa-comment"></i>
+                                        Request Detailed Feedback
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <div class="page-item disabled">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="page-item active">1</div>
+                <div class="page-item">2</div>
+                <div class="page-item">3</div>
+                <div class="page-item">4</div>
+                <div class="page-item">5</div>
+                <div class="page-item">...</div>
+                <div class="page-item">8</div>
+                <div class="page-item">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Toggle submission card expansion
+        function toggleExpand(cardId) {
+            const card = document.getElementById(cardId);
+            card.classList.toggle('expanded');
+            
+            // Close other cards
+            document.querySelectorAll('.submission-card').forEach(otherCard => {
+                if (otherCard.id !== cardId) {
+                    otherCard.classList.remove('expanded');
+                }
+            });
+        }
+
+        // Filter by status
+        function filterByStatus(status) {
+            // Update active tab
+            document.querySelectorAll('.status-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Filter submissions (simulated)
+            console.log('Filtering by status:', status);
+            
+            // In real app, this would filter the submissions
+            // For demo, we'll just show/hide based on status
+            const submissions = document.querySelectorAll('.submission-card');
+            
+            submissions.forEach(sub => {
+                const statusBadge = sub.querySelector('.status-badge');
+                if (status === 'all' || statusBadge.textContent.toLowerCase().includes(status)) {
+                    sub.style.display = 'block';
+                } else {
+                    sub.style.display = 'none';
+                }
+            });
+        }
+
+        // View bid details
+        function viewBidDetails(ref) {
+            alert(`Viewing details for bid: ${ref}`);
+            // In production: window.location.href = `bid-details.html?ref=${ref}`;
+        }
+
+        // Download documents
+        function downloadDocuments(ref) {
+            alert(`Downloading all documents for bid: ${ref}`);
+        }
+
+        // Withdraw bid
+        function withdrawBid(ref) {
+            if (confirm('Are you sure you want to withdraw this bid? This action cannot be undone.')) {
+                alert(`Bid ${ref} has been withdrawn`);
+                // In production: API call to withdraw bid
+            }
+        }
+
+        // Schedule presentation
+        function schedulePresentation(ref) {
+            alert(`Scheduling presentation for bid: ${ref}`);
+            // In production: Open calendar modal
+        }
+
+        // View contract
+        function viewContract() {
+            alert('Opening contract document...');
+        }
+
+        // Appeal decision
+        function appealDecision() {
+            alert('Appeal process initiated. You will be contacted within 48 hours.');
+        }
+
+        // Request feedback
+        function requestFeedback() {
+            alert('Feedback request sent to evaluation committee.');
+        }
+
+        // Clear filters
+        document.querySelector('.filter-clear').addEventListener('click', function() {
+            document.querySelectorAll('.filter-select').forEach(select => {
+                select.value = select.options[0].value;
+            });
+        });
+
+        // Search functionality
+        let searchTimeout;
+        document.querySelector('.search-input').addEventListener('input', function(e) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                console.log('Searching for:', e.target.value);
+                // Implement actual search logic
+            }, 500);
+        });
+
+        // Notification bell animation
+        document.querySelector('.notification-bell').addEventListener('click', function() {
+            this.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+        });
+
+        // Pagination
+        document.querySelectorAll('.page-item:not(.disabled)').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.page-item').forEach(pi => pi.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Scroll to top smoothly
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.overview-card, .submission-card, .filter-section').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+
+        // Auto-refresh simulation (every 30 seconds)
+        setInterval(() => {
+            console.log('Refreshing status data...');
+            // In production: API call to get latest status
+        }, 30000);
+    </script>
+</body>
+</html>

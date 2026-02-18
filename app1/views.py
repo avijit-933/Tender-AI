@@ -91,3 +91,23 @@ def forget(request):
 def dashboard(request):
     return render(request, 'Government_dashboard.html')
 
+
+def Companydashboard(request):
+    # Add some context data if needed
+    
+    return render(request, 'bidder/Companydashboard.html')
+
+def browse_tenders(request):
+    return render(request, 'bidder/browse_tenders.html') 
+def submit_bid(request):
+    return render(request, 'bidder/submit_bid.html') 
+def submission_status(request):
+    return render(request, 'bidder/submission_status.html') 
+def watch_tenders(request):
+    return render(request, 'bidder/watch_tenders.html') 
+def logout(request):
+     return redirect('home') 
+# def evaluationdashboard(request):
+#     return render(request,'evaluator/evaluationdashboard.html')
+
+

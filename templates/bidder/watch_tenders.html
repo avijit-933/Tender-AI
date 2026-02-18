@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watched Tenders | TenderFlow AI - Bidder Portal</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Premium Neutral Palette */
+            --bg-primary: #fafaf9;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f5f5f4;
+            --text-primary: #1c1917;
+            --text-secondary: #57534e;
+            --text-tertiary: #a8a29e;
+            --border-light: #e7e5e4;
+            --border-medium: #d6d3d1;
+            
+            /* Sophisticated Accent - Deep Teal */
+            --accent-primary: #0f766e;
+            --accent-secondary: #14b8a6;
+            --accent-soft: #ccfbf1;
+            --accent-glow: rgba(20, 184, 166, 0.15);
+            
+            /* Status Colors */
+            --success: #10b981;
+            --success-light: rgba(16, 185, 129, 0.1);
+            --warning: #f59e0b;
+            --warning-light: rgba(245, 158, 11, 0.1);
+            --error: #ef4444;
+            --error-light: rgba(239, 68, 68, 0.1);
+            --info: #3b82f6;
+            --info-light: rgba(59, 130, 246, 0.1);
+            
+            /* Priority Colors */
+            --priority-high: #ef4444;
+            --priority-medium: #f59e0b;
+            --priority-low: #10b981;
+            
+            /* Glass Effects */
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 20px 40px rgba(15, 118, 110, 0.08);
+            
+            /* Typography */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-md: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 2rem;
+            
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 3rem;
+            
+            /* Border Radius */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            
+            /* Transitions */
+            --transition-fast: 200ms ease;
+            --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-tertiary) 100%);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ===== LAYOUT ===== */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 280px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            padding: var(--space-lg) 0;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .logo-area {
+            padding: 0 var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: var(--font-size-md);
+            font-weight: 400;
+            transition: var(--transition-base);
+            border-left: 3px solid transparent;
+            margin: 4px 0;
+        }
+
+        .nav-item:hover {
+            background: var(--accent-glow);
+            color: var(--accent-primary);
+            transform: translateX(4px);
+        }
+
+        .nav-item.active {
+            background: var(--accent-glow);
+            color: var(--accent-primary);
+            border-left-color: var(--accent-primary);
+            font-weight: 500;
+        }
+
+        .nav-item i {
+            width: 24px;
+            font-size: 1.25rem;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            padding: var(--space-lg) var(--space-xl);
+            overflow-y: auto;
+        }
+
+        /* ===== TOP NAVBAR ===== */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-xl);
+            padding: var(--space-sm) 0;
+        }
+
+        .page-title h2 {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .page-title p {
+            color: var(--text-tertiary);
+            font-size: var(--font-size-sm);
+            margin-top: 4px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            padding: var(--space-xs);
+            border-radius: var(--radius-sm);
+            transition: var(--transition-base);
+        }
+
+        .notification-bell:hover {
+            background: var(--accent-glow);
+            transform: scale(1.05);
+        }
+
+        .notification-bell i {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 8px;
+            height: 8px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            border: 2px solid var(--bg-primary);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: 6px var(--space-sm);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+
+        .user-profile:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+            font-size: var(--font-size-sm);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .user-role {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        /* ===== WATCHED SUMMARY CARDS ===== */
+        .watched-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .summary-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            border: 1px solid var(--border-light);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            opacity: 0;
+            transition: var(--transition-base);
+        }
+
+        .summary-card:hover::before {
+            opacity: 1;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-sm);
+        }
+
+        .summary-title {
+            color: var(--text-tertiary);
+            font-size: var(--font-size-sm);
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .summary-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-glow);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+        }
+
+        .summary-value {
+            font-size: 2rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .summary-trend {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        /* ===== ACTION BANNER ===== */
+        .action-banner {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .banner-title {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .banner-text {
+            opacity: 0.9;
+            font-size: var(--font-size-sm);
+        }
+
+        .banner-button {
+            background: white;
+            color: var(--accent-primary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            position: relative;
+            z-index: 1;
+        }
+
+        .banner-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        /* ===== FILTER SECTION ===== */
+        .filter-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .filter-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-weight: 500;
+        }
+
+        .filter-clear {
+            color: var(--accent-primary);
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+
+        .filter-clear:hover {
+            transform: translateX(2px);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-md);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .filter-label {
+            font-size: var(--font-size-xs);
+            font-weight: 500;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .filter-select, .filter-input {
+            padding: 10px 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            color: var(--text-primary);
+            transition: var(--transition-base);
+            font-family: var(--font-primary);
+        }
+
+        .filter-select:focus, .filter-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        /* ===== SEARCH BAR ===== */
+        .search-container {
+            position: relative;
+            margin-bottom: var(--space-xl);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            z-index: 1;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            font-size: var(--font-size-md);
+            color: var(--text-primary);
+            transition: var(--transition-base);
+            font-family: var(--font-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        /* ===== VIEW TOGGLE ===== */
+        .view-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .view-options {
+            display: flex;
+            gap: var(--space-xs);
+            background: var(--bg-tertiary);
+            padding: 4px;
+            border-radius: var(--radius-lg);
+        }
+
+        .view-option {
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-base);
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .view-option:hover {
+            color: var(--accent-primary);
+        }
+
+        .view-option.active {
+            background: var(--bg-secondary);
+            color: var(--accent-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .results-count {
+            font-size: var(--font-size-sm);
+            color: var(--text-tertiary);
+        }
+
+        /* ===== GRID VIEW ===== */
+        .watched-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+
+        .watched-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            position: relative;
+            animation: slideIn var(--transition-smooth) forwards;
+        }
+
+        .watched-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-soft);
+        }
+
+        .card-priority {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        .priority-high {
+            background: var(--priority-high);
+            box-shadow: 0 0 0 2px var(--error-light);
+        }
+
+        .priority-medium {
+            background: var(--priority-medium);
+            box-shadow: 0 0 0 2px var(--warning-light);
+        }
+
+        .priority-low {
+            background: var(--priority-low);
+            box-shadow: 0 0 0 2px var(--success-light);
+        }
+
+        .card-header {
+            padding: var(--space-lg);
+            background: linear-gradient(135deg, var(--accent-glow), transparent);
+            border-bottom: 1px solid var(--border-light);
+            position: relative;
+        }
+
+        .card-category {
+            display: inline-block;
+            font-size: var(--font-size-xs);
+            color: var(--accent-primary);
+            background: var(--accent-glow);
+            padding: 4px 12px;
+            border-radius: var(--radius-xl);
+            font-weight: 500;
+            margin-bottom: var(--space-sm);
+        }
+
+        .card-title {
+            font-size: var(--font-size-lg);
+            font-weight: 500;
+            margin-bottom: 4px;
+            padding-right: 20px;
+        }
+
+        .card-department {
+            font-size: var(--font-size-sm);
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .card-body {
+            padding: var(--space-lg);
+        }
+
+        .card-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .detail-item {
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .detail-label {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+            margin-bottom: 2px;
+        }
+
+        .detail-value {
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+        }
+
+        .value-highlight {
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        .deadline-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: var(--space-sm);
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .deadline-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+        }
+
+        .deadline-text {
+            flex: 1;
+        }
+
+        .deadline-label {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        .deadline-date {
+            font-weight: 500;
+            font-size: var(--font-size-sm);
+        }
+
+        .deadline-urgent {
+            color: var(--error);
+        }
+
+        .deadline-warning {
+            color: var(--warning);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-primary);
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(15, 118, 110, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border-medium);
+            color: var(--text-secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-medium);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent-glow);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .btn-icon {
+            padding: 10px;
+            flex: 0;
+        }
+
+        .btn-remove {
+            color: var(--text-tertiary);
+        }
+
+        .btn-remove:hover {
+            background: var(--error-light);
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        /* ===== LIST VIEW ===== */
+        .watched-list {
+            display: none;
+            flex-direction: column;
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+
+        .list-item {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+            padding: var(--space-md);
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+            animation: slideIn var(--transition-smooth) forwards;
+        }
+
+        .list-item:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-soft);
+        }
+
+        .list-priority {
+            width: 4px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+        }
+
+        .list-priority-high {
+            background: var(--priority-high);
+        }
+
+        .list-priority-medium {
+            background: var(--priority-medium);
+        }
+
+        .list-priority-low {
+            background: var(--priority-low);
+        }
+
+        .list-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-glow);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-primary);
+            font-size: 1.25rem;
+        }
+
+        .list-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: var(--space-xl);
+        }
+
+        .list-info {
+            flex: 2;
+        }
+
+        .list-title {
+            font-size: var(--font-size-lg);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .list-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        .list-details {
+            flex: 1;
+            display: flex;
+            gap: var(--space-xl);
+        }
+
+        .list-detail {
+            text-align: right;
+        }
+
+        .list-detail .label {
+            font-size: var(--font-size-xs);
+            color: var(--text-tertiary);
+        }
+
+        .list-detail .value {
+            font-weight: 500;
+        }
+
+        .list-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* ===== PAGINATION ===== */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--space-xs);
+            margin-top: var(--space-xl);
+        }
+
+        .page-item {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+
+        .page-item:hover {
+            background: var(--accent-glow);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .page-item.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: white;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-xl);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+        }
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-glow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-lg);
+            color: var(--accent-primary);
+            font-size: 2rem;
+        }
+
+        .empty-title {
+            font-size: var(--font-size-xl);
+            font-weight: 500;
+            margin-bottom: var(--space-sm);
+        }
+
+        .empty-text {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .animate-in {
+            animation: slideIn var(--transition-smooth) forwards;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1200px) {
+            .watched-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .filter-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .watched-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .list-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--space-sm);
+            }
+            
+            .list-details {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .logo-area {
+                padding: 0 var(--space-sm);
+            }
+            
+            .logo {
+                font-size: 1rem;
+            }
+            
+            .nav-item span {
+                display: none;
+            }
+            
+            .main-content {
+                padding: var(--space-md);
+            }
+            
+            .watched-summary {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .watched-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-banner {
+                flex-direction: column;
+                text-align: center;
+                gap: var(--space-md);
+            }
+            
+            .list-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .list-content {
+                width: 100%;
+            }
+            
+            .list-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+            
+            .view-toggle {
+                flex-direction: column;
+                gap: var(--space-md);
+                align-items: flex-start;
+            }
+        }
+    </style>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <span class="logo">TenderFlow AI</span>
+            </div>
+            
+     <nav class="nav-menu">
+                <a href="{% url 'Companydashboard' %}" class="nav-item active">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{% url 'browse_tenders' %}" class="nav-item">
+                    <i class="fas fa-search"></i>
+                    <span>Browse Tenders</span>
+                </a>
+                <a href="{% url 'submit_bid' %}" class="nav-item">
+                    <i class="fas fa-file-upload"></i>
+                    <span>Submit Bid</span>
+                </a>
+                <a href="{% url 'submission_status' %}" class="nav-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Submission Status</span>
+                </a>
+                <a href="{% url 'watch_tenders' %}" class="nav-item">
+                    <i class="fas fa-bookmark"></i>
+                    <span>Watched Tenders</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            
+            <div class="nav-item" style="margin-top: auto;">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="top-nav">
+                <div class="page-title">
+                    <h2>Watched Tenders</h2>
+                    <p>Track and manage your favorite tenders</p>
+                </div>
+                
+                <div class="user-actions">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </div>
+                    
+                    <div class="user-profile">
+                        <div class="avatar">JD</div>
+                        <div class="user-info">
+                            <span class="user-name">John Doe</span>
+                            <span class="user-role">Bidder</span>
+                        </div>
+                        <i class="fas fa-chevron-down" style="font-size: 12px; color: var(--text-tertiary);"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Watched Summary Cards -->
+            <div class="watched-summary">
+                <div class="summary-card animate-in">
+                    <div class="summary-header">
+                        <span class="summary-title">Total Watched</span>
+                        <div class="summary-icon">
+                            <i class="fas fa-bookmark"></i>
+                        </div>
+                    </div>
+                    <div class="summary-value">12</div>
+                    <div class="summary-trend">4 closing this week</div>
+                </div>
+
+                <div class="summary-card animate-in">
+                    <div class="summary-header">
+                        <span class="summary-title">Closing Soon</span>
+                        <div class="summary-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="summary-value">4</div>
+                    <div class="summary-trend">Within 7 days</div>
+                </div>
+
+                <div class="summary-card animate-in">
+                    <div class="summary-header">
+                        <span class="summary-title">New This Week</span>
+                        <div class="summary-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="summary-value">3</div>
+                    <div class="summary-trend">Added recently</div>
+                </div>
+
+                <div class="summary-card animate-in">
+                    <div class="summary-header">
+                        <span class="summary-title">Total Value</span>
+                        <div class="summary-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                    </div>
+                    <div class="summary-value">$28.5M</div>
+                    <div class="summary-trend">Across all watched</div>
+                </div>
+            </div>
+
+            <!-- Action Banner -->
+            <div class="action-banner animate-in">
+                <div class="banner-content">
+                    <h3 class="banner-title">4 tenders closing this week</h3>
+                    <p class="banner-text">Don't miss out on these opportunities. Prepare your bids now.</p>
+                </div>
+                <button class="banner-button" onclick="viewClosingSoon()">
+                    View Closing Soon <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container animate-in">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search watched tenders by name, department or category...">
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section animate-in">
+                <div class="filter-header">
+                    <span class="filter-title">
+                        <i class="fas fa-filter"></i>
+                        Filter Watched Tenders
+                    </span>
+                    <span class="filter-clear">Clear all filters <i class="fas fa-times"></i></span>
+                </div>
+                
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label class="filter-label">Category</label>
+                        <select class="filter-select">
+                            <option>All Categories</option>
+                            <option>Infrastructure</option>
+                            <option>IT Services</option>
+                            <option>Healthcare</option>
+                            <option>Education</option>
+                            <option>Defense</option>
+                            <option>Energy</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Deadline</label>
+                        <select class="filter-select">
+                            <option>Any Deadline</option>
+                            <option>Next 7 days</option>
+                            <option>Next 15 days</option>
+                            <option>Next 30 days</option>
+                            <option>Next 60 days</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Priority</label>
+                        <select class="filter-select">
+                            <option>All Priorities</option>
+                            <option>High</option>
+                            <option>Medium</option>
+                            <option>Low</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Department</label>
+                        <select class="filter-select">
+                            <option>All Departments</option>
+                            <option>Urban Development</option>
+                            <option>Digital Transformation</option>
+                            <option>Health Services</option>
+                            <option>Education Board</option>
+                            <option>Transport Authority</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View Toggle -->
+            <div class="view-toggle">
+                <div class="results-count">
+                    Showing <span id="visibleCount">12</span> of <span id="totalCount">12</span> watched tenders
+                </div>
+                <div class="view-options">
+                    <div class="view-option active" onclick="setView('grid')">
+                        <i class="fas fa-th"></i>
+                        Grid
+                    </div>
+                    <div class="view-option" onclick="setView('list')">
+                        <i class="fas fa-list"></i>
+                        List
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid View -->
+            <div id="gridView" class="watched-grid">
+                <!-- Card 1 - Smart City Phase 3 (High Priority) -->
+                <div class="watched-card" data-priority="high" data-deadline="2024-03-25" data-category="Infrastructure">
+                    <div class="card-priority priority-high"></div>
+                    <div class="card-header">
+                        <span class="card-category">Infrastructure</span>
+                        <h4 class="card-title">Smart City Phase 3</h4>
+                        <div class="card-department">
+                            <i class="fas fa-building"></i>
+                            Urban Development Dept
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Est. Value</div>
+                                <div class="detail-value value-highlight">$2.5M - $3.2M</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Documents</div>
+                                <div class="detail-value">12 required</div>
+                            </div>
+                        </div>
+                        
+                        <div class="deadline-info">
+                            <div class="deadline-icon">
+                                <i class="far fa-clock"></i>
+                            </div>
+                            <div class="deadline-text">
+                                <div class="deadline-label">Deadline</div>
+                                <div class="deadline-date deadline-urgent">March 25, 2024 (5 days left)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="applyNow('Smart City Phase 3')">
+                                <i class="fas fa-file-signature"></i>
+                                Apply Now
+                            </button>
+                            <button class="btn btn-secondary btn-icon btn-remove" onclick="removeFromWatched(this)" title="Remove from watched">
+                                <i class="fas fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 - Cloud Migration 2024 (High Priority) -->
+                <div class="watched-card" data-priority="high" data-deadline="2024-03-22" data-category="IT Services">
+                    <div class="card-priority priority-high"></div>
+                    <div class="card-header">
+                        <span class="card-category">IT Services</span>
+                        <h4 class="card-title">Cloud Migration 2024</h4>
+                        <div class="card-department">
+                            <i class="fas fa-digital-tiling"></i>
+                            Digital Transformation
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Est. Value</div>
+                                <div class="detail-value value-highlight">$800K - $1.2M</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Documents</div>
+                                <div class="detail-value">8 required</div>
+                            </div>
+                        </div>
+                        
+                        <div class="deadline-info">
+                            <div class="deadline-icon">
+                                <i class="far fa-clock"></i>
+                            </div>
+                            <div class="deadline-text">
+                                <div class="deadline-label">Deadline</div>
+                                <div class="deadline-date deadline-urgent">March 22, 2024 (2 days left)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="applyNow('Cloud Migration 2024')">
+                                <i class="fas fa-file-signature"></i>
+                                Apply Now
+                            </button>
+                            <button class="btn btn-secondary btn-icon btn-remove" onclick="removeFromWatched(this)" title="Remove from watched">
+                                <i class="fas fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 - Regional Hospital Equipment (Medium Priority) -->
+                <div class="watched-card" data-priority="medium" data-deadline="2024-04-10" data-category="Healthcare">
+                    <div class="card-priority priority-medium"></div>
+                    <div class="card-header">
+                        <span class="card-category">Healthcare</span>
+                        <h4 class="card-title">Regional Hospital Equipment</h4>
+                        <div class="card-department">
+                            <i class="fas fa-hospital"></i>
+                            Health Services
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Est. Value</div>
+                                <div class="detail-value value-highlight">$4.1M</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Documents</div>
+                                <div class="detail-value">15 required</div>
+                            </div>
+                        </div>
+                        
+                        <div class="deadline-info">
+                            <div class="deadline-icon">
+                                <i class="far fa-clock"></i>
+                            </div>
+                            <div class="deadline-text">
+                                <div class="deadline-label">Deadline</div>
+                                <div class="deadline-date deadline-warning">April 10, 2024 (18 days left)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="applyNow('Regional Hospital Equipment')">
+                                <i class="fas fa-file-signature"></i>
+                                Apply Now
+                            </button>
+                            <button class="btn btn-secondary btn-icon btn-remove" onclick="removeFromWatched(this)" title="Remove from watched">
+                                <i class="fas fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 - Digital Learning Platform (Medium Priority) -->
+                <div class="watched-card" data-priority="medium" data-deadline="2024-04-15" data-category="Education">
+                    <div class="card-priority priority-medium"></div>
+                    <div class="card-header">
+                        <span class="card-category">Education</span>
+                        <h4 class="card-title">Digital Learning Platform</h4>
+                        <div class="card-department">
+                            <i class="fas fa-graduation-cap"></i>
+                            Education Board
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Est. Value</div>
+                                <div class="detail-value value-highlight">$1.8M</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Documents</div>
+                                <div class="detail-value">10 required</div>
+                            </div>
+                        </div>
+                        
+                        <div class="deadline-info">
+                            <div class="deadline-icon">
+                                <i class="far fa-clock"></i>
+                            </div>
+                            <div class="deadline-text">
+                                <div class="deadline-label">Deadline</div>
+                                <div class="deadline-date">April 15, 2024 (23 days left)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="applyNow('Digital Learning Platform')">
+                                <i class="fas fa-file-signature"></i>
+                                Apply Now
+                            </button>
+                            <button class="btn btn-secondary btn-icon btn-remove" onclick="removeFromWatched(this)" title="Remove from watched">
+                                <i class="fas fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5 - Metro Rail Phase 2 (High Priority) -->
+                <div class="watched-card" data-priority="high" data-deadline="2024-03-28" data-category="Transportation">
+                    <div class="card-priority priority-high"></div>
+                    <div class="card-header">
+                        <span class="card-category">Transportation</span>
+                        <h4 class="card-title">Metro Rail Phase 2</h4>
+                        <div class="card-department">
+                            <i class="fas fa-train"></i>
+                            Transport Authority
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Est. Value</div>
+                                <div class="detail-value value-highlight">$12M</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Documents</div>
+                                <div class="detail-value">25 required</div>
+                            </div>
+                        </div>
+                        
+                        <div class="deadline-info">
+                            <div class="deadline-icon">
+                                <i class="far fa-clock"></i>
+                            </div>
+                            <div class="deadline-text">
+                                <div class="deadline-label">Deadline</div>
+                                <div class="deadline-date deadline-urgent">March 28, 2024 (8 days left)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="applyNow('Metro Rail Phase 2')">
+                                <i class="fas fa-file-signature"></i>
+                                Apply Now
+                            </button>
+                            <button class="btn btn-secondary btn-icon btn-remove" onclick="removeFromWatched(this)" title="Remove from watched">
+                                <i class="fas fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6 - Solar Power Initiative (Low Priority) -->
+                <div class="watched-card" data-priority="low" data-deadline="2024-05-01" data-category="Energy">
+                    <div class="card-priority priority-low"></div>
+                    <div class="card-header">
+                        <span class="card-category">Energy</span>
+                        <h4 class="card-title">Solar Power Initiative</h4>
+                        <div class="card-department">
+                            <i class="fas fa-solar-panel"></i>
+                            Energy Commission
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Est. Value</div>
+                                <div class="detail-value value-highlight">$5.5M</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Documents</div>
+                                <div class="detail-value">14 required</div>
+                            </div>
+                        </div>
+                        
+                        <div class="deadline-info">
+                            <div class="deadline-icon">
+                                <i class="far fa-clock"></i>
+                            </div>
+                            <div class="deadline-text">
+                                <div class="deadline-label">Deadline</div>
+                                <div class="deadline-date">May 1, 2024 (39 days left)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="applyNow('Solar Power Initiative')">
+                                <i class="fas fa-file-signature"></i>
+                                Apply Now
+                            </button>
+                            <button class="btn btn-secondary btn-icon btn-remove" onclick="removeFromWatched(this)" title="Remove from watched">
+                                <i class="fas fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 7 - Defense Communication System (Medium Priority) -->
+                <div class="watched-card" data-priority="medium" data-deadline="2024-04-20" data-category="Defense">
+                    <div class="card-priority priority-medium"></div>
+                    <div class="card-header">
+                        <span class="card-category">Defense</span>
+                        <h4 class="card-title">Defense Communication System</h4>
+                        <div class="card-department">
+                            <i class="fas fa-shield-alt"></i>
+                            Defense Department
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Est. Value</div>
+                                <div class="detail-value value-highlight">$8.2M</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Documents</div>
+                                <div class="detail-value">20 required</div>
+                            </div>
+                        </div>
+                        
+                        <div class="deadline-info">
+                            <div class="deadline-icon">
+                                <i class="far fa-clock"></i>
+                            </div>
+                            <div class="deadline-text">
+                                <div class="deadline-label">Deadline</div>
+                                <div class="deadline-date">April 20, 2024 (28 days left)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="applyNow('Defense Communication System')">
+                                <i class="fas fa-file-signature"></i>
+                                Apply Now
+                            </button>
+                            <button class="btn btn-secondary btn-icon btn-remove" onclick="removeFromWatched(this)" title="Remove from watched">
+                                <i class="fas fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 8 - Water Treatment Plant (Low Priority) -->
+                <div class="watched-card" data-priority="low" data-deadline="2024-05-15" data-category="Infrastructure">
+                    <div class="card-priority priority-low"></div>
+                    <div class="card-header">
+                        <span class="card-category">Infrastructure</span>
+                        <h4 class="card-title">Water Treatment Plant</h4>
+                        <div class="card-department">
+                            <i class="fas fa-water"></i>
+                            Water Authority
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Est. Value</div>
+                                <div class="detail-value value-highlight">$15M</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Documents</div>
+                                <div class="detail-value">18 required</div>
+                            </div>
+                        </div>
+                        
+                        <div class="deadline-info">
+                            <div class="deadline-icon">
+                                <i class="far fa-clock"></i>
+                            </div>
+                            <div class="deadline-text">
+                                <div class="deadline-label">Deadline</div>
+                                <div class="deadline-date">May 15, 2024 (53 days left)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="applyNow('Water Treatment Plant')">
+                                <i class="fas fa-file-signature"></i>
+                                Apply Now
+                            </button>
+                            <button class="btn btn-secondary btn-icon btn-remove" onclick="removeFromWatched(this)" title="Remove from watched">
+                                <i class="fas fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List View (Hidden by default) -->
+            <div id="listView" class="watched-list">
+                <!-- List items will be populated by JavaScript -->
+            </div>
+
+            <!-- Empty State (Hidden by default) -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-icon">
+                    <i class="far fa-bookmark"></i>
+                </div>
+                <h3 class="empty-title">No watched tenders</h3>
+                <p class="empty-text">You haven't added any tenders to your watchlist yet. Browse available tenders and start watching.</p>
+                <button class="btn btn-primary" onclick="browseTenders()">
+                    <i class="fas fa-search"></i>
+                    Browse Tenders
+                </button>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <div class="page-item disabled">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="page-item active">1</div>
+                <div class="page-item">2</div>
+                <div class="page-item">3</div>
+                <div class="page-item">4</div>
+                <div class="page-item">5</div>
+                <div class="page-item">...</div>
+                <div class="page-item">8</div>
+                <div class="page-item">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // View toggle functionality
+        function setView(viewType) {
+            const gridView = document.getElementById('gridView');
+            const listView = document.getElementById('listView');
+            const viewOptions = document.querySelectorAll('.view-option');
+            
+            if (viewType === 'grid') {
+                gridView.style.display = 'grid';
+                listView.style.display = 'none';
+                viewOptions[0].classList.add('active');
+                viewOptions[1].classList.remove('active');
+            } else {
+                gridView.style.display = 'none';
+                listView.style.display = 'flex';
+                viewOptions[0].classList.remove('active');
+                viewOptions[1].classList.add('active');
+                
+                // Populate list view if empty
+                if (listView.children.length === 0) {
+                    populateListView();
+                }
+            }
+        }
+
+        // Populate list view
+        function populateListView() {
+            const listView = document.getElementById('listView');
+            const tenders = [
+                {
+                    priority: 'high',
+                    icon: 'fa-city',
+                    title: 'Smart City Phase 3',
+                    department: 'Urban Development Dept',
+                    value: '$2.5M - $3.2M',
+                    deadline: '5 days left',
+                    category: 'Infrastructure'
+                },
+                {
+                    priority: 'high',
+                    icon: 'fa-cloud',
+                    title: 'Cloud Migration 2024',
+                    department: 'Digital Transformation',
+                    value: '$800K - $1.2M',
+                    deadline: '2 days left',
+                    category: 'IT Services'
+                },
+                {
+                    priority: 'medium',
+                    icon: 'fa-hospital',
+                    title: 'Regional Hospital Equipment',
+                    department: 'Health Services',
+                    value: '$4.1M',
+                    deadline: '18 days left',
+                    category: 'Healthcare'
+                },
+                {
+                    priority: 'medium',
+                    icon: 'fa-graduation-cap',
+                    title: 'Digital Learning Platform',
+                    department: 'Education Board',
+                    value: '$1.8M',
+                    deadline: '23 days left',
+                    category: 'Education'
+                },
+                {
+                    priority: 'high',
+                    icon: 'fa-train',
+                    title: 'Metro Rail Phase 2',
+                    department: 'Transport Authority',
+                    value: '$12M',
+                    deadline: '8 days left',
+                    category: 'Transportation'
+                },
+                {
+                    priority: 'low',
+                    icon: 'fa-solar-panel',
+                    title: 'Solar Power Initiative',
+                    department: 'Energy Commission',
+                    value: '$5.5M',
+                    deadline: '39 days left',
+                    category: 'Energy'
+                },
+                {
+                    priority: 'medium',
+                    icon: 'fa-shield-alt',
+                    title: 'Defense Communication System',
+                    department: 'Defense Department',
+                    value: '$8.2M',
+                    deadline: '28 days left',
+                    category: 'Defense'
+                },
+                {
+                    priority: 'low',
+                    icon: 'fa-water',
+                    title: 'Water Treatment Plant',
+                    department: 'Water Authority',
+                    value: '$15M',
+                    deadline: '53 days left',
+                    category: 'Infrastructure'
+                }
+            ];
+
+            tenders.forEach((tender, index) => {
+                const listItem = document.createElement('div');
+                listItem.className = 'list-item';
+                listItem.setAttribute('data-priority', tender.priority);
+                
+                const priorityClass = tender.priority === 'high' ? 'list-priority-high' : 
+                                     tender.priority === 'medium' ? 'list-priority-medium' : 
+                                     'list-priority-low';
+                
+                const deadlineClass = tender.deadline.includes('2') || tender.deadline.includes('5') || tender.deadline.includes('8') ? 
+                                     'deadline-urgent' : tender.deadline.includes('18') ? 'deadline-warning' : '';
+                
+                listItem.innerHTML = `
+                    <div class="list-priority ${priorityClass}"></div>
+                    <div class="list-icon">
+                        <i class="fas ${tender.icon}"></i>
+                    </div>
+                    <div class="list-content">
+                        <div class="list-info">
+                            <div class="list-title">${tender.title}</div>
+                            <div class="list-meta">
+                                <span>${tender.department}</span>
+                                <span>•</span>
+                                <span>${tender.category}</span>
+                            </div>
+                        </div>
+                        <div class="list-details">
+                            <div class="list-detail">
+                                <div class="label">Value</div>
+                                <div class="value">${tender.value}</div>
+                            </div>
+                            <div class="list-detail">
+                                <div class="label">Deadline</div>
+                                <div class="value ${deadlineClass}">${tender.deadline}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-actions">
+                        <button class="btn btn-primary" onclick="applyNow('${tender.title}')">
+                            <i class="fas fa-file-signature"></i>
+                        </button>
+                        <button class="btn btn-secondary btn-remove" onclick="removeFromWatched(this)">
+                            <i class="fas fa-bookmark"></i>
+                        </button>
+                    </div>
+                `;
+                listView.appendChild(listItem);
+            });
+        }
+
+        // Apply now function
+        function applyNow(tenderName) {
+            alert(`Redirecting to bid submission for: ${tenderName}`);
+            // In production: window.location.href = `submit-bid.html?tender=${encodeURIComponent(tenderName)}`;
+        }
+
+        // Remove from watched
+        function removeFromWatched(button) {
+            const card = button.closest('.watched-card, .list-item');
+            const title = card.querySelector('.card-title, .list-title')?.textContent || 'Tender';
+            
+            // Animation
+            card.style.transform = 'scale(0.9)';
+            card.style.opacity = '0';
+            
+            setTimeout(() => {
+                card.remove();
+                updateResultsCount();
+                checkEmptyState();
+                
+                // Show feedback
+                alert(`${title} removed from watched tenders`);
+            }, 300);
+        }
+
+        // Update results count
+        function updateResultsCount() {
+            const gridCount = document.querySelectorAll('#gridView .watched-card').length;
+            const listCount = document.querySelectorAll('#listView .list-item').length;
+            const total = Math.max(gridCount, listCount);
+            
+            document.getElementById('visibleCount').textContent = total;
+            document.getElementById('totalCount').textContent = total;
+        }
+
+        // Check empty state
+        function checkEmptyState() {
+            const gridCount = document.querySelectorAll('#gridView .watched-card').length;
+            const listCount = document.querySelectorAll('#listView .list-item').length;
+            const emptyState = document.getElementById('emptyState');
+            
+            if (gridCount === 0 && listCount === 0) {
+                emptyState.style.display = 'block';
+                document.querySelector('.watched-grid').style.display = 'none';
+                document.querySelector('.watched-list').style.display = 'none';
+                document.querySelector('.pagination').style.display = 'none';
+            } else {
+                emptyState.style.display = 'none';
+            }
+        }
+
+        // Browse tenders
+        function browseTenders() {
+            window.location.href = 'browse-tenders.html';
+        }
+
+        // View closing soon
+        function viewClosingSoon() {
+            // Filter to show only tenders closing within 7 days
+            filterByDeadline('7');
+            
+            // Update active filter
+            document.querySelectorAll('.filter-select')[1].value = 'Next 7 days';
+        }
+
+        // Filter by deadline
+        function filterByDeadline(days) {
+            const cards = document.querySelectorAll('.watched-card');
+            let visibleCount = 0;
+            
+            cards.forEach(card => {
+                const deadlineText = card.querySelector('.deadline-date')?.textContent || '';
+                if (deadlineText.includes('days left')) {
+                    const daysLeft = parseInt(deadlineText.match(/\d+/)[0]);
+                    if (daysLeft <= parseInt(days)) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+            
+            document.getElementById('visibleCount').textContent = visibleCount;
+        }
+
+        // Clear filters
+        document.querySelector('.filter-clear').addEventListener('click', function() {
+            document.querySelectorAll('.filter-select').forEach(select => {
+                select.value = select.options[0].value;
+            });
+            
+            // Show all cards
+            document.querySelectorAll('.watched-card').forEach(card => {
+                card.style.display = 'block';
+            });
+            
+            updateResultsCount();
+        });
+
+        // Search functionality
+        let searchTimeout;
+        document.querySelector('.search-input').addEventListener('input', function(e) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const searchTerm = e.target.value.toLowerCase();
+                const cards = document.querySelectorAll('.watched-card');
+                let visibleCount = 0;
+                
+                cards.forEach(card => {
+                    const title = card.querySelector('.card-title')?.textContent.toLowerCase() || '';
+                    const dept = card.querySelector('.card-department')?.textContent.toLowerCase() || '';
+                    const category = card.querySelector('.card-category')?.textContent.toLowerCase() || '';
+                    
+                    if (title.includes(searchTerm) || dept.includes(searchTerm) || category.includes(searchTerm)) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                document.getElementById('visibleCount').textContent = visibleCount;
+            }, 300);
+        });
+
+        // Filter change handler
+        document.querySelectorAll('.filter-select').forEach(select => {
+            select.addEventListener('change', function() {
+                const category = document.querySelectorAll('.filter-select')[0].value;
+                const deadline = document.querySelectorAll('.filter-select')[1].value;
+                const priority = document.querySelectorAll('.filter-select')[2].value;
+                const department = document.querySelectorAll('.filter-select')[3].value;
+                
+                const cards = document.querySelectorAll('.watched-card');
+                let visibleCount = 0;
+                
+                cards.forEach(card => {
+                    let show = true;
+                    
+                    // Category filter
+                    if (category !== 'All Categories') {
+                        const cardCategory = card.querySelector('.card-category')?.textContent || '';
+                        if (!cardCategory.includes(category)) show = false;
+                    }
+                    
+                    // Priority filter
+                    if (priority !== 'All Priorities') {
+                        const cardPriority = card.getAttribute('data-priority');
+                        if (priority.toLowerCase() !== cardPriority) show = false;
+                    }
+                    
+                    // Department filter (simplified)
+                    if (department !== 'All Departments') {
+                        const cardDept = card.querySelector('.card-department')?.textContent || '';
+                        if (!cardDept.includes(department)) show = false;
+                    }
+                    
+                    // Deadline filter
+                    if (deadline !== 'Any Deadline') {
+                        const deadlineText = card.querySelector('.deadline-date')?.textContent || '';
+                        const daysMatch = deadlineText.match(/\d+/);
+                        if (daysMatch) {
+                            const daysLeft = parseInt(daysMatch[0]);
+                            if (deadline === 'Next 7 days' && daysLeft > 7) show = false;
+                            if (deadline === 'Next 15 days' && daysLeft > 15) show = false;
+                            if (deadline === 'Next 30 days' && daysLeft > 30) show = false;
+                            if (deadline === 'Next 60 days' && daysLeft > 60) show = false;
+                        }
+                    }
+                    
+                    card.style.display = show ? 'block' : 'none';
+                    if (show) visibleCount++;
+                });
+                
+                document.getElementById('visibleCount').textContent = visibleCount;
+            });
+        });
+
+        // Pagination
+        document.querySelectorAll('.page-item:not(.disabled)').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.page-item').forEach(pi => pi.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Scroll to top smoothly
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Notification bell animation
+        document.querySelector('.notification-bell').addEventListener('click', function() {
+            this.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+        });
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.summary-card, .watched-card, .filter-section, .action-banner').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+
+        // Initialize
+        updateResultsCount();
+    </script>
+</body>
+</html>
