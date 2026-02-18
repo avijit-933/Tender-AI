@@ -4,6 +4,7 @@ from django.contrib import messages
 from .models import Officer
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 def home(request):
     return render(request, 'index.html')
@@ -14,6 +15,7 @@ def home(request):
 def register(request):
     if request.method == "POST":
         name = request.POST.get("name")
+        request.session['username'] = name
         email = request.POST.get("email")
         emp_id = request.POST.get("emp_id")
         phone = request.POST.get("phone")
@@ -57,7 +59,6 @@ def officer_login(request):
         email = request.POST.get("email")
         emp_id = request.POST.get("emp_id")
         password = request.POST.get("password")
-        remember = request.POST.get("remember_me")
 
         try:
             officer = Officer.objects.get(email=email, emp_id=emp_id)
@@ -65,17 +66,16 @@ def officer_login(request):
             messages.error(request, "Invalid Email or Employee ID")
             return render(request, "login.html")
 
-        # Authenticate using email as username
-        user = authenticate(request, username=email, password=password)
+        # Get linked Django user
+        user = officer.user
+
+        # Authenticate using linked username
+        user = authenticate(request, username=user.username, password=password)
 
         if user is not None:
             login(request, user)
-
-            # Remember Me
-            if not remember:
-                request.session.set_expiry(0)
-
             return redirect("Government_dashboard")
+            
         else:
             messages.error(request, "Invalid Password")
 
@@ -89,7 +89,18 @@ def forget(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'Government_dashboard.html')
+    username = request.user.officer.name 
+     
+    return render(request, 'Government_dashboard.html', {'username': username})
+    
+    
+
+def createtender(request):
+    return render(request, 'createtender.html')
+def evaluation(request):
+    return render(request, 'evaluation.html')
+def managetender(request):
+    return render(request, 'managetender.html')
 
 
 def Companydashboard(request):

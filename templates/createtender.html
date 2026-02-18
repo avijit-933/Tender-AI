@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Tender · Dept Admin · AI Tender System</title>
+  <!-- Font & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f7fc;
+      color: #1b2a3f;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* main grid: sidebar + content */
+    .app {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+
+    /* ---------- SIDEBAR (navy / glass) ---------- */
+    .sidebar {
+      background: rgba(12, 28, 45, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(65, 105, 140, 0.3);
+      color: #eaf0f9;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1.5rem;
+      box-shadow: 4px 0 20px rgba(0,20,40,0.2);
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 2.8rem;
+      padding-left: 0.5rem;
+    }
+
+    .logo-icon {
+      background: #2b7a62;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      color: white;
+      box-shadow: 0 8px 16px -6px #1b4f40;
+    }
+
+    .logo-text {
+      font-weight: 600;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      color: white;
+    }
+
+    .logo-text span {
+      font-weight: 300;
+      color: #9bb7d4;
+      font-size: 0.9rem;
+      display: block;
+      line-height: 1.2;
+    }
+
+    .nav {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.8rem 1rem;
+      border-radius: 14px;
+      color: #cbdbe9;
+      font-weight: 450;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      width: 100%;
+      font-size: 0.95rem;
+      text-align: left;
+      text-decoration: none;
+    }
+
+    .nav-item i {
+      width: 24px;
+      font-size: 1.2rem;
+      color: #5f8db0;
+    }
+
+    .nav-item:hover {
+      background: rgba(55, 95, 130, 0.5);
+      color: white;
+    }
+
+    .nav-item.active {
+      background: #1e3f5a;
+      color: white;
+      box-shadow: 0 6px 12px -6px #0e2b3b;
+    }
+
+    .nav-item.active i {
+      color: #6dc5a4;
+    }
+
+    /* bottom profile */
+    .profile-mini {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #254a62;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .profile-avatar {
+      width: 44px;
+      height: 44px;
+      background: #316e5c;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.3rem;
+    }
+
+    .profile-info h4 {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: white;
+    }
+
+    .profile-info p {
+      font-size: 0.75rem;
+      color: #96b5cf;
+    }
+
+    /* ---------- MAIN CONTENT (Create Tender) ---------- */
+    .main {
+      background: #f4f7fc;
+      padding: 1.8rem 2.2rem;
+      overflow-y: auto;
+    }
+
+    /* top navbar */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2.2rem;
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 0.8rem 1.8rem;
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: 0 6px 18px -8px rgba(30,60,80,0.15);
+      position: relative;
+    }
+
+    .page-title h1 {
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: #173e4c;
+    }
+    .page-title p {
+      font-size: 0.85rem;
+      color: #5f7d95;
+    }
+
+    .right-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      position: relative;
+    }
+    .notification-bell {
+      position: relative;
+      font-size: 1.3rem;
+      color: #2a5f7a;
+      cursor: pointer;
+    }
+    .badge {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background: #cc4b3c;
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: white;
+      padding: 0.4rem 1rem 0.4rem 0.8rem;
+      border-radius: 40px;
+      box-shadow: 0 2px 8px rgba(0,40,60,0.05);
+      cursor: pointer;
+    }
+    .user-profile i {
+      color: #2b7a62;
+      font-size: 1.2rem;
+    }
+    .user-profile span {
+      font-weight: 500;
+      color: #1b3a4e;
+    }
+
+    /* notification dropdown */
+    .notification-dropdown {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 80px;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px -20px #1d433a;
+      width: 300px;
+      padding: 1rem 0;
+      border: 1px solid #bce6d9;
+      z-index: 1000;
+    }
+    .notification-dropdown.show {
+      display: block;
+    }
+    .notification-item {
+      padding: 0.8rem 1.5rem;
+      border-bottom: 1px solid #deeee6;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .notification-item:last-child {
+      border: none;
+    }
+    .notification-item i {
+      color: #1b7260;
+    }
+
+    /* form card */
+    .form-card {
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(8px);
+      border-radius: 36px;
+      padding: 2.2rem 2.5rem;
+      border: 1px solid rgba(255,255,255,0.9);
+      box-shadow: 0 20px 40px -22px #1e4b60;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem 2.5rem;
+    }
+
+    .full-width {
+      grid-column: span 2;
+    }
+
+    .field-label {
+      display: block;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #2b5e70;
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.2px;
+    }
+
+    .field-input, .field-textarea {
+      width: 100%;
+      padding: 0.9rem 1.3rem;
+      background: white;
+      border: 1.5px solid #d3e6f0;
+      border-radius: 24px;
+      font-size: 0.95rem;
+      transition: 0.2s;
+      color: #173e4c;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .field-input:focus, .field-textarea:focus {
+      border-color: #2b9d81;
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(40,150,120,0.15);
+    }
+
+    /* upload zone */
+    .upload-zone {
+      border: 2px dashed #9fc5d4;
+      border-radius: 30px;
+      padding: 1.6rem;
+      text-align: center;
+      background: #f9feff;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .upload-zone:hover {
+      border-color: #2b7a62;
+      background: #f0fcf9;
+    }
+
+    /* eligibility box */
+    .eligibility-box {
+      background: #e5f4f5;
+      border-radius: 28px;
+      padding: 1.8rem;
+      border: 1px solid #b7dee0;
+    }
+
+    .weight-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: 1rem 0 0.5rem;
+    }
+    .weight-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .weight-item input {
+      width: 70px;
+      padding: 0.5rem;
+      border-radius: 30px;
+      border: 1.5px solid #cbe3e5;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      background: #1b7260;
+      border: none;
+      color: white;
+      padding: 0.9rem 2.5rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 1rem;
+      box-shadow: 0 8px 18px -6px #114d40;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .btn-primary:hover {
+      background: #1f8a74;
+      transform: scale(1.02);
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 1.5px solid #b5d5dd;
+      color: #1d6c5c;
+      padding: 0.9rem 2.2rem;
+      border-radius: 40px;
+      font-weight: 500;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+    .btn-secondary:hover {
+      background: #f0fcf7;
+      border-color: #2a9b80;
+    }
+
+    .footer-note {
+      margin-top: 2rem;
+      text-align: center;
+      color: #7d99b0;
+      font-size: 0.8rem;
+    }
+
+    /* responsive */
+    @media (max-width: 1000px) {
+      .app { grid-template-columns: 240px 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .full-width { grid-column: span 1; }
+    }
+    @media (max-width: 700px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <!-- SIDEBAR with working links to all pages -->
+  <aside class="sidebar">
+    <div class="logo-area">
+      <div class="logo-icon"><i class="fas fa-scale-balanced"></i></div>
+      <div class="logo-text">TenderAI <span>Dept. Admin</span></div>
+    </div>
+    <nav class="nav">
+      <a href="{% url 'Government_dashboard' %}"><button class="nav-item active"><i class="fas fa-chart-pie"></i> Dashboard</button></a>
+      <a href="{% url 'createtender' %}"><button class="nav-item"><i class="fas fa-file-alt"></i> Create Tender</button></a>
+      <a href="{% url 'managetender'%}"><button class="nav-item"><i class="fas fa-list-check"></i> Manage Tenders</button></a>
+      <a href="{% url 'evaluation'%}"><button class="nav-item"><i class="fas fa-star"></i> Evaluation Results</button></a>
+    </nav>
+    <div class="profile-mini">
+      <div class="profile-avatar"><i class="fas fa-user-tie"></i></div>
+      <div class="profile-info">
+        <h4>Anita Sharma, IAS</h4>
+        <p>Urban Development</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT (Create Tender) -->
+  <main class="main">
+    <!-- top navbar with working notification -->
+    <div class="top-bar">
+      <div class="page-title">
+        <h1>Create new tender</h1>
+        <p><i class="fas fa-pen" style="margin-right:4px;"></i> fill all required fields</p>
+      </div>
+      <div class="right-actions">
+        <div class="notification-bell" id="notificationBell">
+          <i class="far fa-bell"></i>
+          <span class="badge" id="notificationCount">3</span>
+        </div>
+        <div class="user-profile" onclick="alert('Profile settings (demo)')">
+          <i class="far fa-user-circle"></i>
+          <span>Anita S.</span>
+          <i class="fas fa-chevron-down" style="font-size:0.7rem; color:#6d8da8;"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- notification dropdown -->
+    <div class="notification-dropdown" id="notificationDropdown">
+      <div class="notification-item"><i class="fas fa-file-signature"></i> New bid on GEM/2026/112</div>
+      <div class="notification-item"><i class="fas fa-file-signature"></i> Bidder uploaded docs: Road widening</div>
+      <div class="notification-item"><i class="fas fa-check-circle"></i> Evaluation ready for GEM/2026/045</div>
+      <div class="notification-item"><i class="fas fa-exclamation-triangle"></i> Tender GEM/2026/098 closing tomorrow</div>
+    </div>
+
+    <!-- create tender form panel -->
+    <div class="form-card">
+      <h2 style="font-weight: 400; margin-bottom: 2rem; color: #1a4f43;">
+        <i class="far fa-pen-to-square" style="margin-right:12px;"></i>New tender draft
+      </h2>
+
+      <div class="form-grid">
+        <!-- Tender ID -->
+        <div class="full-width">
+          <label class="field-label"><i class="fas fa-hashtag" style="color:#1b7260;"></i> Tender ID <span style="color:#b14a3c;">*</span></label>
+          <input class="field-input" type="text" placeholder="e.g., GEM/2026/301" value="GEM/2026/301" id="tenderId">
+        </div>
+
+        <!-- Title + Department -->
+        <div>
+          <label class="field-label">Tender title</label>
+          <input class="field-input" value="Smart city - phase 4" id="tenderTitle">
+        </div>
+        <div>
+          <label class="field-label">Department</label>
+          <input class="field-input" value="Urban development" id="deptName">
+        </div>
+
+        <!-- MODIFIED: BOQ Upload with full working functionality -->
+        <div class="full-width">
+          <label class="field-label"><i class="fas fa-file-excel"></i> BOQ Upload (CSV, Excel, PDF)</label>
+          <div class="upload-zone" id="dropZone">
+            <i class="fas fa-cloud-upload-alt" style="font-size:2rem; color:#1e6e5c; margin-bottom:0.3rem;"></i>
+            <p id="fileStatus">drag & drop or <span style="color:#0f5c4b; font-weight:600; cursor:pointer;">browse</span></p>
+            <p style="font-size:0.7rem; color:#5f8db0; margin-top:0.2rem;">Supported: .csv, .xlsx, .xls, .pdf (max 10MB)</p>
+            <input type="file" id="boqFile" accept=".csv,.xlsx,.xls,.pdf" style="display:none;">
+          </div>
+          <div id="fileError" style="color:#cc4b3c; font-size:0.8rem; margin-top:0.3rem; display:none;"></div>
+          <div id="fileSuccess" style="color:#1b7260; font-size:0.9rem; margin-top:0.5rem; display:none;"></div>
+        </div>
+
+        <!-- Eligibility & AI weight config -->
+        <div class="full-width eligibility-box">
+          <h4 style="font-weight:500; margin-bottom:1.2rem; color:#195a4b;">
+            <i class="fas fa-clipboard-check"></i> Eligibility & AI scoring weights
+          </h4>
+          <div class="form-grid" style="gap:1.5rem;">
+            <div>
+              <label class="field-label">Min. turnover (₹)</label>
+              <input class="field-input" value="5 Cr" id="minTurnover">
+            </div>
+            <div>
+              <label class="field-label">Min. experience</label>
+              <input class="field-input" value="7 years" id="minExp">
+            </div>
+            <div>
+              <label class="field-label">Required certificates</label>
+              <input class="field-input" value="ISO 9001, CIDC" id="certificates">
+            </div>
+            <div>
+              <label class="field-label">Required manpower</label>
+              <input class="field-input" value="2 Project Managers" id="manpower">
+            </div>
+            <div class="full-width">
+              <label class="field-label"><i class="fas fa-scale-balanced"></i> AI weight configuration</label>
+              <div class="weight-row">
+                <div class="weight-item"><span>Price:</span> <input type="number" value="35" id="weightPrice"> %</div>
+                <div class="weight-item"><span>Experience:</span> <input type="number" value="25" id="weightExp"> %</div>
+                <div class="weight-item"><span>Technical:</span> <input type="number" value="20" id="weightTech"> %</div>
+                <div class="weight-item"><span>Past perf.:</span> <input type="number" value="20" id="weightPerf"> %</div>
+              </div>
+              <span class="field-label" style="margin-top:0.3rem;">total should be 100%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Last date + required docs -->
+        <div>
+          <label class="field-label">Last submission date</label>
+          <input class="field-input" type="date" value="2026-04-30" id="lastDate">
+        </div>
+        <div>
+          <label class="field-label">Required documents</label>
+          <input class="field-input" placeholder="GST, PAN, etc." value="GST, PAN, EMD" id="reqDocs">
+        </div>
+
+        <!-- Additional options -->
+        <div class="full-width">
+          <label class="field-label"><i class="fas fa-tags"></i> Tender category</label>
+          <select class="field-input" id="category">
+            <option>Works (infrastructure)</option>
+            <option>Goods & supplies</option>
+            <option>Consultancy services</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- action buttons -->
+      <div style="display:flex; gap:1rem; justify-content:flex-end; margin-top:2.8rem;">
+        <button class="btn-secondary" id="saveDraftBtn"><i class="far fa-save"></i> Save draft</button>
+        <button class="btn-primary" id="publishBtn"><i class="far fa-paper-plane"></i> Publish tender</button>
+      </div>
+
+      <!-- draft confirmation message -->
+      <div id="draftMessage" style="margin-top:1rem; text-align:center; font-size:0.9rem; color:#1b7260;"></div>
+    </div>
+
+    <!-- footer note -->
+    <div class="footer-note">
+      <i class="fas fa-lock"></i> secure government-grade platform · AI-based evaluation
+    </div>
+  </main>
+</div>
+
+<!-- JavaScript for BOQ upload, draft save, and notifications -->
+<script>
+  (function() {
+    // ---------- Working BOQ Upload (CSV, Excel, PDF) ----------
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('boqFile');
+    const fileStatus = document.getElementById('fileStatus');
+    const fileError = document.getElementById('fileError');
+    const fileSuccess = document.getElementById('fileSuccess');
+    
+    const allowedExtensions = ['.csv', '.xlsx', '.xls', '.pdf'];
+    const maxSize = 10 * 1024 * 1024; // 10MB
+
+    function validateFile(file) {
+      const fileName = file.name.toLowerCase();
+      const fileSize = file.size;
+      
+      const hasValidExtension = allowedExtensions.some(ext => fileName.endsWith(ext));
+      if (!hasValidExtension) {
+        return { valid: false, message: 'Invalid file type. Please upload CSV, Excel, or PDF files only.' };
+      }
+      
+      if (fileSize > maxSize) {
+        return { valid: false, message: 'File size exceeds 10MB limit.' };
+      }
+      
+      return { valid: true };
+    }
+
+    function handleFile(file) {
+      if (!file) {
+        fileStatus.innerHTML = 'drag & drop or <span style="color:#0f5c4b; font-weight:600; cursor:pointer;">browse</span>';
+        dropZone.style.borderColor = '#9fc5d4';
+        dropZone.style.background = '#f9feff';
+        fileError.style.display = 'none';
+        fileSuccess.style.display = 'none';
+        return;
+      }
+
+      const validation = validateFile(file);
+      
+      if (validation.valid) {
+        fileStatus.innerHTML = `<i class="fas fa-check-circle" style="color:#1b806b;"></i> <span style="color:#1b7260; font-weight:500;">${file.name}</span>`;
+        dropZone.style.borderColor = '#2b9d81';
+        dropZone.style.background = '#f0fcf9';
+        fileError.style.display = 'none';
+        fileSuccess.style.display = 'block';
+        fileSuccess.innerHTML = `<i class="fas fa-check-circle"></i> File ready: ${(file.size / 1024).toFixed(1)} KB`;
+      } else {
+        fileInput.value = '';
+        fileStatus.innerHTML = 'drag & drop or <span style="color:#0f5c4b; font-weight:600; cursor:pointer;">browse</span>';
+        dropZone.style.borderColor = '#cc4b3c';
+        dropZone.style.background = '#fff2f0';
+        fileError.style.display = 'block';
+        fileError.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${validation.message}`;
+        fileSuccess.style.display = 'none';
+        
+        setTimeout(() => {
+          dropZone.style.borderColor = '#9fc5d4';
+          dropZone.style.background = '#f9feff';
+        }, 3000);
+      }
+    }
+
+    dropZone.addEventListener('click', function(e) {
+      if (e.target.tagName !== 'SPAN') {
+        fileInput.click();
+      }
+    });
+
+    const browseSpan = fileStatus.querySelector('span');
+    if (browseSpan) {
+      browseSpan.addEventListener('click', function(e) {
+        e.stopPropagation();
+        fileInput.click();
+      });
+    }
+
+    fileInput.addEventListener('change', function(e) {
+      e.stopPropagation();
+      handleFile(fileInput.files[0]);
+    });
+
+    dropZone.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.style.borderColor = '#2b9d81';
+      dropZone.style.background = '#e5fff5';
+    });
+
+    dropZone.addEventListener('dragleave', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!fileInput.files.length) {
+        dropZone.style.borderColor = '#9fc5d4';
+        dropZone.style.background = '#f9feff';
+      } else {
+        dropZone.style.borderColor = '#2b9d81';
+        dropZone.style.background = '#f0fcf9';
+      }
+    });
+
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        fileInput.files = files;
+        handleFile(files[0]);
+        const event = new Event('change', { bubbles: true });
+        fileInput.dispatchEvent(event);
+      }
+    });
+
+    document.addEventListener('dragover', (e) => e.preventDefault());
+    document.addEventListener('drop', (e) => e.preventDefault());
+
+    // ---------- Notification dropdown ----------
+    const bell = document.getElementById('notificationBell');
+    const notifDropdown = document.getElementById('notificationDropdown');
+    bell.addEventListener('click', (e) => {
+      e.stopPropagation();
+      notifDropdown.classList.toggle('show');
+    });
+    document.addEventListener('click', (e) => {
+      if (!bell.contains(e.target) && !notifDropdown.contains(e.target)) {
+        notifDropdown.classList.remove('show');
+      }
+    });
+
+    // ---------- Save draft demo ----------
+    document.getElementById('saveDraftBtn').addEventListener('click', () => {
+      const tenderId = document.getElementById('tenderId').value;
+      document.getElementById('draftMessage').innerHTML = `<i class="fas fa-check-circle"></i> Draft for ${tenderId} saved at ${new Date().toLocaleTimeString()}`;
+    });
+
+    // ---------- Publish demo ----------
+    document.getElementById('publishBtn').addEventListener('click', () => {
+      alert('✨ Tender published (demo). In real app, it would be live.');
+    });
+
+    // ---------- Sidebar navigation is handled by href links ----------
+  })();
+</script>
+</body>
+</html>
