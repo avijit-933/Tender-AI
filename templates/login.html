@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tender Evaluation · Government Login</title>
+    <!-- Font & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #f0f4f8 0%, #e6ecf3 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        /* main container */
+        .app-container {
+            width: 100%;
+            max-width: 1320px;
+            margin: 0 auto;
+        }
+
+        /* ----- HEADER (official government style) ----- */
+        .gov-header {
+            background: #0a2e5c;  /* deep navy – official tone */
+            color: white;
+            padding: 1.2rem 2rem;
+            border-radius: 28px 28px 12px 12px;
+            box-shadow: 0 8px 20px rgba(0, 20, 40, 0.2);
+            margin-bottom: 2.2rem;
+            border-bottom: 4px solid #c7a03c; /* gold accent */
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.2rem 2rem;
+        }
+
+        .emblem-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.12);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 2px solid #c7a03c;
+            color: #ffd966;
+            font-size: 2.2rem;
+        }
+
+        .title-section {
+            flex: 1;
+        }
+
+        .title-section h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .title-section .subhead {
+            font-size: 1rem;
+            color: #cfddee;
+            font-weight: 400;
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .title-section .subhead i {
+            color: #c7a03c;
+        }
+
+        .gov-badge {
+            background: rgba(199, 160, 60, 0.18);
+            border: 1px solid #b58f34;
+            border-radius: 40px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        /* ----- LOGIN CARD (centered) ----- */
+        .login-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0.5rem 0 2rem;
+        }
+
+        .login-card {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            width: 100%;
+            max-width: 480px;
+            padding: 2.5rem 2.2rem;
+            border-radius: 40px;
+            box-shadow: 0 25px 45px -12px rgba(0,30,60,0.35),
+                        inset 0 1px 2px rgba(255,255,255,0.7);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.2rem;
+        }
+
+        .login-header h2 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #0a2e5c, #1b4a7a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-header p {
+            color: #2c3e50;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.3rem;
+        }
+
+        /* form */
+        .input-group {
+            margin-bottom: 1.4rem;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 550;
+            color: #1e3a5f;
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.3px;
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #5f7d9c;
+            font-size: 1rem;
+        }
+
+        .input-icon input, 
+        .input-icon select {
+            width: 100%;
+            padding: 0.9rem 1rem 0.9rem 2.7rem;
+            font-size: 1rem;
+            background: white;
+            border: 1.5px solid #d6dee7;
+            border-radius: 24px;
+            outline: none;
+            transition: all 0.2s ease;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .input-icon select {
+            padding-left: 2.7rem;
+            color: #1e2f44;
+            font-weight: 450;
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%233d5a78" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 1.2rem center;
+            background-size: 1rem;
+        }
+
+        .input-icon input:focus, 
+        .input-icon select:focus {
+            border-color: #0a2e5c;
+            box-shadow: 0 0 0 4px rgba(10,46,92,0.15);
+        }
+
+        /* password toggle */
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #5f7d9c;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.2rem;
+        }
+
+        .password-toggle:hover {
+            color: #0a2e5c;
+        }
+
+        /* row: remember + forgot */
+        .row-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin: 1.5rem 0 1.8rem;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #1e3a5f;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .remember input {
+            width: 1.1rem;
+            height: 1.1rem;
+            accent-color: #0a2e5c;
+            margin: 0;
+        }
+
+        .forgot-link {
+            color: #1f4a81;
+            text-decoration: none;
+            font-weight: 550;
+            font-size: 0.95rem;
+            border-bottom: 1px dashed #9bb0c9;
+        }
+
+        .forgot-link:hover {
+            color: #c7a03c;
+            border-bottom-color: #c7a03c;
+        }
+
+        /* login button */
+        .login-btn {
+            width: 100%;
+            background: #0a2e5c;
+            border: none;
+            padding: 1rem;
+            border-radius: 40px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 18px -6px #0a2e5c80;
+            border: 1px solid #15477a;
+        }
+
+        .login-btn i {
+            font-size: 1.2rem;
+            transition: 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #12427a;
+            transform: scale(1.02);
+            box-shadow: 0 12px 22px -8px #0a2e5c;
+        }
+
+        .login-btn:active {
+            transform: scale(0.99);
+        }
+
+        /* footer */
+        .gov-footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            color: #1e3a5f;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(10,46,92,0.15);
+            padding-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 1.2rem 2.2rem;
+        }
+
+        .gov-footer .footer-lock {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(10,46,92,0.05);
+            padding: 0.4rem 1.4rem;
+            border-radius: 60px;
+            font-weight: 500;
+        }
+
+        .gov-footer i {
+            color: #c7a03c;
+        }
+
+        .footer-copy {
+            font-weight: 500;
+            letter-spacing: 0.4px;
+        }
+
+        /* responsiveness */
+        @media (max-width: 600px) {
+            .gov-header {
+                padding: 1rem 1.2rem;
+            }
+            .title-section h1 {
+                font-size: 1.4rem;
+            }
+            .emblem-placeholder {
+                width: 55px;
+                height: 55px;
+                font-size: 1.8rem;
+            }
+            .login-card {
+                padding: 1.8rem 1.2rem;
+            }
+            .login-header h2 {
+                font-size: 1.6rem;
+            }
+            .row-actions {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .gov-badge {
+                margin: 0 auto;
+            }
+        }
+
+        /* dummy placeholder for demo */
+        .demo-note {
+            background: #e9eff7;
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            color: #2b4b75;
+            margin-top: 0.8rem;
+            border: 1px dashed #c7a03c;
+        }
+        .demo-note i {
+            color: #b8860b;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- OFFICIAL GOVERNMENT HEADER SECTION -->
+        <header class="gov-header">
+            <div class="header-content">
+                <div class="emblem-placeholder">
+                    <i class="fas fa-ashoka-chakra"></i> <!-- emblem icon -->
+                </div>
+                <div class="title-section">
+                    <h1>AI-Based Intelligent Tender Evaluation & Decision Support System</h1>
+                    <div class="subhead">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Government Procurement Intelligence Platform</span>
+                    </div>
+                </div>
+                <div class="gov-badge">
+                    <i class="fas fa-lock"></i> <span>SECURED BY NIC</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- CENTERED LOGIN CARD -->
+        <div class="login-wrapper">
+            <div class="login-card">
+                <div class="login-header">
+                    <h2>🔐 Officer Login</h2>
+                    <p><i class="fas fa-user-shield"></i> Super Admin / Financial Evaluation</p>
+                </div>
+
+                <form id="loginForm" onsubmit="return false;">
+                    <!-- OFFICE EMAIL -->
+                    <div class="input-group">
+                        <label>Office Email <span style="color:#b22234;">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" placeholder="officer@gov.in" value="admin@procurement.gov.in" required>
+                        </div>
+                    </div>
+
+                    <!-- EMPLOYEE ID -->
+                    <div class="input-group">
+                        <label>Employee ID <span style="color:#b22234;">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-id-card"></i>
+                            <input type="text" id="empId" placeholder="e.g., GOV/2024/312" value="GOV/SUPER/001" required>
+                        </div>
+                    </div>
+
+                    <!-- PASSWORD with SHOW/HIDE -->
+                    <div class="input-group">
+                        <label>Password <span style="color:#b22234;">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-key"></i>
+                            <input type="password" id="password" placeholder="············" value="Gov@123456" required>
+                            <button type="button" class="password-toggle" id="togglePassword" aria-label="show/hide password">
+                                <i class="far fa-eye" id="toggleIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ROLE SELECTOR DROPDOWN -->
+                    <div class="input-group">
+                        <label>Select role <span style="color:#b22234;">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-user-tag"></i>
+                            <select id="roleSelect" required>
+                                <option value="" disabled selected>–– Choose officer role ––</option>
+                                <option value="superAdmin" selected>Super Admin (Govt. Officer)</option>
+                                <option value="financialOfficer">Financial Evaluation Officer</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- REMEMBER ME & FORGOT PASSWORD -->
+                    <div class="row-actions">
+                        <label class="remember">
+                            <input type="checkbox" id="rememberMe" checked> Remember me
+                        </label>
+                       <a href="{% url 'forget' %}" class="forgot-link"><i class="fas fa-lock-open"></i> Forgot password?</a>
+
+                    </div>
+
+                    <!-- LOGIN BUTTON -->
+                    <button type="submit" class="login-btn" id="loginBtn">
+                        <span>Access dashboard</span> <i class="fas fa-arrow-right-to-bracket"></i>
+                    </button>
+
+                    <!-- Demo info (no backend) -->
+                    <div class="demo-note">
+                        <i class="fas fa-info-circle"></i> Demo UI — no backend. Any credentials (mock)
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- FOOTER SECTION -->
+        <footer class="gov-footer">
+            <div class="footer-copy">
+                <i class="far fa-copyright"></i> 2026 Government Procurement Authority
+            </div>
+            <div class="footer-lock">
+                <i class="fas fa-shield-halved"></i> Secure | Confidential | Official Use Only
+            </div>
+            <div>
+                <i class="fas fa-fingerprint"></i> NIC compliant
+            </div>
+        </footer>
+    </div>
+
+    <!-- simple JavaScript: password toggle + dummy alert -->
+    <script>
+        (function() {
+            // --- Password toggle (show/hide) ---
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.getElementById('togglePassword');
+            const toggleIcon = document.getElementById('toggleIcon');
+
+            if (toggleBtn && passwordInput) {
+                toggleBtn.addEventListener('click', function() {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    // toggle eye / eye-slash
+                    if (type === 'password') {
+                        toggleIcon.classList.remove('fa-eye-slash');
+                        toggleIcon.classList.add('fa-eye');
+                    } else {
+                        toggleIcon.classList.remove('fa-eye');
+                        toggleIcon.classList.add('fa-eye-slash');
+                    }
+                });
+            }
+
+            // --- Forgot password simulation (accessible) ---
+            const forgotLink = document.getElementById('forgotPwdLink');
+            forgotLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('🔐 Password reset link would be sent to your registered official email (demo).');
+            });
+
+            // --- Login button click (mock validation, no backend) ---
+            const loginBtn = document.getElementById('loginBtn');
+            const loginForm = document.getElementById('loginForm');
+
+            function showMockLogin() {
+                const email = document.getElementById('email').value.trim();
+                const empId = document.getElementById('empId').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const role = document.getElementById('roleSelect').value;
+                const remember = document.getElementById('rememberMe').checked;
+
+                if (!email || !empId || !password || !role) {
+                    alert('⚠️ Please fill in all required fields (Email, Employee ID, Password, and Role).');
+                    return;
+                }
+
+                if (!email.includes('@') || !email.includes('.')) {
+                    alert('📧 Enter a valid office email (e.g., name@gov.in).');
+                    return;
+                }
+
+                // everything looks fine → mock success message (gov style)
+                let roleDisplay = (role === 'superAdmin') ? 'Super Admin (Govt. Officer)' : 'Financial Evaluation Officer';
+                alert(`✅ MOCK LOGIN (UI demo)\n\nWelcome, ${roleDisplay}\nEmail: ${email}\nEmployee ID: ${empId}\nRemember me: ${remember ? 'Yes' : 'No'}\n\n(No backend – this is the frontend prototype.)`);
+            }
+
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showMockLogin();
+            });
+
+            // optional: pressing Enter triggers same
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                showMockLogin();
+            });
+
+            // small extra: dynamic role hint (purely cosmetic)
+            const roleSelect = document.getElementById('roleSelect');
+            roleSelect.addEventListener('change', function() {
+                const loginHeaderSub = document.querySelector('.login-header p');
+                if (this.value === 'superAdmin') {
+                    loginHeaderSub.innerHTML = '<i class="fas fa-user-shield"></i> Super Admin (Govt. Officer)';
+                } else if (this.value === 'financialOfficer') {
+                    loginHeaderSub.innerHTML = '<i class="fas fa-chart-line"></i> Financial Evaluation Officer';
+                } else {
+                    loginHeaderSub.innerHTML = '<i class="fas fa-user-shield"></i> Super Admin / Financial Evaluation';
+                }
+            });
+        })();
+    </script>
+
+    <!-- subtle extra: style on active role (no backend) -->
+    <noscript>JavaScript not enabled – but forms are functional with static UI.</noscript>
+</body>
+</html>

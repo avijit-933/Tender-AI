@@ -35,7 +35,11 @@
         <li><a href="#security" class="nav-link">Contact</a></li>
       </ul>
       <div class="nav-actions">
-        <button class="btn-login" onclick="window.location.href='#tenders'">View Tenders</button>
+      <button class="btn-login" onclick="window.location.href='{% url "login" %}'">
+  Login
+</button>
+
+
         <button class="btn-register" onclick="window.location.href='#tenders'">Register</button>
         <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
       </div>

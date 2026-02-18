@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password · Reset</title>
+    <!-- Font & Icons (same as dark theme) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ---------- BLUE DARK THEME (consistent with login page) ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 10% 20%, rgb(11, 31, 51), #030b14);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 1320px;
+            margin: 0 auto;
+        }
+
+        /* ----- HEADER (dark blue & glossy) ----- */
+        .gov-header {
+            background: #0a1929;
+            color: #e9f1fc;
+            padding: 1.2rem 2rem;
+            border-radius: 32px 32px 16px 16px;
+            box-shadow: 0 20px 30px -10px rgba(0, 10, 25, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.06);
+            margin-bottom: 2.2rem;
+            border-bottom: 4px solid #2f6c9f;
+            backdrop-filter: blur(2px);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.2rem 2rem;
+        }
+
+        .emblem-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #10233b;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 2px solid #3b82b9;
+            color: #7ab7e0;
+            font-size: 2.2rem;
+            box-shadow: 0 0 0 2px rgba(0,60,130,0.5);
+        }
+
+        .title-section {
+            flex: 1;
+        }
+
+        .title-section h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            background: linear-gradient(to right, #ffffff, #bfd9ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .title-section .subhead {
+            font-size: 1rem;
+            color: #99c1e6;
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .title-section .subhead i {
+            color: #3f8fd2;
+        }
+
+        .gov-badge {
+            background: #0d2842;
+            border: 1px solid #2f6c9f;
+            border-radius: 40px;
+            padding: 0.4rem 1.4rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            white-space: nowrap;
+            color: #c8e2ff;
+            letter-spacing: 0.3px;
+        }
+
+        /* ----- FORGOT PASSWORD CARD (centered) ----- */
+        .forgot-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0.5rem 0 2rem;
+        }
+
+        .forgot-card {
+            background: rgba(8, 22, 40, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            width: 100%;
+            max-width: 520px;
+            padding: 2.5rem 2.5rem;
+            border-radius: 48px;
+            box-shadow: 0 30px 50px -20px #000000, 0 0 0 1px rgba(47, 108, 159, 0.3) inset, 0 0 20px rgba(0, 160, 255, 0.2);
+            border: 1px solid rgba(90, 165, 230, 0.25);
+        }
+
+        .forgot-header {
+            text-align: center;
+            margin-bottom: 2.2rem;
+        }
+
+        .forgot-header h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #a3ceff, #5ea6e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .forgot-header p {
+            color: #b0d0f0;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.3rem;
+        }
+
+        /* form elements */
+        .input-group {
+            margin-bottom: 1.8rem;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 550;
+            color: #bbd6f5;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c98c9;
+            font-size: 1rem;
+            z-index: 2;
+        }
+
+        .input-icon input {
+            width: 100%;
+            padding: 0.9rem 1rem 0.9rem 2.8rem;
+            font-size: 1rem;
+            background: #0b1f34;
+            border: 1.5px solid #244662;
+            border-radius: 30px;
+            outline: none;
+            transition: all 0.2s ease;
+            color: #e2ecfc;
+            caret-color: #6db0f0;
+        }
+
+        .input-icon input:focus {
+            border-color: #3f8fd2;
+            box-shadow: 0 0 0 4px rgba(55, 130, 210, 0.4);
+            background: #0e243d;
+        }
+
+        .input-icon input::placeholder {
+            color: #506f8f;
+            opacity: 0.7;
+        }
+
+        /* ----- CAPTCHA ROW (custom) ----- */
+        .captcha-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .captcha-box {
+            flex: 1 1 140px;
+            background: #0d243b;
+            border: 2px solid #2f6c9f;
+            border-radius: 30px;
+            padding: 0.7rem 1.2rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 6px;
+            text-align: center;
+            color: #c5e2ff;
+            text-shadow: 0 0 6px #3f8fd2;
+            background: linear-gradient(145deg, #102842, #082036);
+            box-shadow: inset 0 2px 5px #00000055;
+            white-space: nowrap;
+        }
+
+        .captcha-input {
+            flex: 3 1 200px;
+            position: relative;
+        }
+
+        .captcha-input i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c98c9;
+            font-size: 1rem;
+            z-index: 2;
+        }
+
+        .captcha-input input {
+            width: 100%;
+            padding: 0.9rem 1rem 0.9rem 2.8rem;
+            font-size: 1rem;
+            background: #0b1f34;
+            border: 1.5px solid #244662;
+            border-radius: 30px;
+            outline: none;
+            color: #e2ecfc;
+        }
+
+        .captcha-input input:focus {
+            border-color: #3f8fd2;
+            box-shadow: 0 0 0 4px rgba(55, 130, 210, 0.4);
+        }
+
+        .refresh-captcha {
+            background: #1a3455;
+            border: 1px solid #3b82b9;
+            color: #c9e2ff;
+            border-radius: 40px;
+            padding: 0.7rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px #0000004d;
+            white-space: nowrap;
+        }
+
+        .refresh-captcha:hover {
+            background: #1f3f66;
+            border-color: #5a9bd5;
+            color: white;
+            transform: scale(1.02);
+        }
+
+        .refresh-captcha i {
+            font-size: 1rem;
+        }
+
+        /* new password with toggle */
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #7c9fc7;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.2rem;
+            z-index: 3;
+        }
+
+        .password-toggle:hover {
+            color: #b6d6ff;
+        }
+
+        /* reset button */
+        .reset-btn {
+            width: 100%;
+            background: linear-gradient(145deg, #0f3465, #0b2b50);
+            border: none;
+            padding: 1rem;
+            border-radius: 40px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 18px -4px #001c3d, 0 0 0 1px #2b6fa8 inset, 0 0 12px #0066cc;
+            border: 1px solid #3577b3;
+            margin-top: 0.5rem;
+        }
+
+        .reset-btn i {
+            font-size: 1.2rem;
+            filter: drop-shadow(0 2px 2px black);
+        }
+
+        .reset-btn:hover {
+            background: linear-gradient(145deg, #13427a, #0d2f5c);
+            box-shadow: 0 12px 24px -8px #001a3a, 0 0 0 1px #4b92d0 inset, 0 0 18px #2d80d5;
+            transform: scale(1.02);
+        }
+
+        .reset-btn:active {
+            transform: scale(0.99);
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .back-link a {
+            color: #8fb4df;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dashed #38658f;
+            padding-bottom: 2px;
+        }
+        .back-link a:hover {
+            color: #c5e1ff;
+            border-bottom-color: #7cb2f0;
+        }
+
+        .demo-note {
+            background: #0a1d32;
+            text-align: center;
+            padding: 0.6rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            color: #aac6ec;
+            margin-top: 1.5rem;
+            border: 1px dashed #2a6291;
+        }
+        .demo-note i {
+            color: #4794dd;
+        }
+
+        /* footer (same as login) */
+        .gov-footer {
+            margin-top: 2.5rem;
+            text-align: center;
+            color: #95b9df;
+            font-size: 0.9rem;
+            border-top: 1px solid #173458;
+            padding-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 1.2rem 2.2rem;
+        }
+
+        .gov-footer .footer-lock {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #0f253f;
+            padding: 0.4rem 1.4rem;
+            border-radius: 60px;
+            font-weight: 500;
+            border: 1px solid #234d74;
+        }
+
+        .gov-footer i {
+            color: #5b9bd5;
+        }
+
+        .footer-copy {
+            font-weight: 500;
+            letter-spacing: 0.4px;
+            color: #bed9ff;
+        }
+
+        @media (max-width: 550px) {
+            .forgot-card { padding: 1.8rem 1.2rem; }
+            .captcha-row { flex-direction: column; align-items: stretch; }
+            .refresh-captcha { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- HEADER (same as login for consistency) -->
+        <header class="gov-header">
+            <div class="header-content">
+                <div class="emblem-placeholder">
+                    <i class="fas fa-ashoka-chakra"></i>
+                </div>
+                <div class="title-section">
+                    <h1>AI-Based Intelligent Tender Evaluation & Decision Support System</h1>
+                    <div class="subhead">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Government Procurement Intelligence Platform</span>
+                    </div>
+                </div>
+                <div class="gov-badge">
+                    <i class="fas fa-lock"></i> <span>SECURED · NIC</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- FORGOT PASSWORD CARD -->
+        <div class="forgot-wrapper">
+            <div class="forgot-card">
+                <div class="forgot-header">
+                    <h2><i class="fas fa-key"></i> Reset password</h2>
+                    <p><i class="fas fa-shield-halved"></i> Verify your identity</p>
+                </div>
+
+                <form id="forgotForm" onsubmit="return false;">
+                    <!-- EMAIL (registered official email) -->
+                    <div class="input-group">
+                        <label>Official email <span style="color:#7ab3e0;">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="resetEmail" placeholder="officer@gov.in" value="finance.officer@gov.in" required>
+                        </div>
+                    </div>
+
+                    <!-- CAPTCHA row (self-generating) -->
+                    <div class="captcha-row">
+                        <div class="captcha-box" id="captchaDisplay">A1B2C</div>
+                        <div class="captcha-input">
+                            <i class="fas fa-lock"></i>
+                            <input type="text" id="captchaInput" placeholder="Enter captcha" autocomplete="off">
+                        </div>
+                        <button type="button" class="refresh-captcha" id="refreshCaptchaBtn">
+                            <i class="fas fa-rotate-right"></i> Refresh
+                        </button>
+                    </div>
+
+                    <!-- NEW PASSWORD with show/hide -->
+                    <div class="input-group">
+                        <label>New password <span style="color:#7ab3e0;">*</span></label>
+                        <div class="input-icon">
+                            <i class="fas fa-key"></i>
+                            <input type="password" id="newPassword" placeholder="Enter new password" required>
+                            <button type="button" class="password-toggle" id="toggleNewPassword" aria-label="show/hide new password">
+                                <i class="far fa-eye" id="toggleNewIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- RESET BUTTON -->
+                    <button type="submit" class="reset-btn" id="resetBtn">
+                        <span>Update password</span> <i class="fas fa-check-circle"></i>
+                    </button>
+
+                    <!-- back to login link (simulated) -->
+                    <div class="back-link">
+                        <a href="#" id="backToLogin"><i class="fas fa-arrow-left"></i> Back to login page</a>
+                    </div>
+
+                    <div class="demo-note">
+                        <i class="fas fa-info-circle"></i> Captcha refreshes automatically. Demo validation.
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- FOOTER (same as login) -->
+        <footer class="gov-footer">
+            <div class="footer-copy">
+                <i class="far fa-copyright"></i> 2026 Government Procurement Authority
+            </div>
+            <div class="footer-lock">
+                <i class="fas fa-shield-halved"></i> Secure | Confidential | Official Use Only
+            </div>
+            <div>
+                <i class="fas fa-fingerprint"></i> NIC compliant
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript: self-generating captcha, toggle, mock validation -->
+    <script>
+        (function() {
+            // ---------- CAPTCHA GENERATOR (custom alphanumeric) ----------
+            const captchaDisplay = document.getElementById('captchaDisplay');
+            const refreshBtn = document.getElementById('refreshCaptchaBtn');
+            const captchaInput = document.getElementById('captchaInput');
+
+            function generateCaptcha() {
+                const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
+                let captcha = '';
+                for (let i = 0; i < 6; i++) {
+                    captcha += chars[Math.floor(Math.random() * chars.length)];
+                }
+                // optional: add a space or style
+                return captcha;
+            }
+
+            function updateCaptcha() {
+                const newCaptcha = generateCaptcha();
+                captchaDisplay.textContent = newCaptcha;
+                // store the current captcha in a data attribute for validation
+                captchaDisplay.dataset.value = newCaptcha;
+            }
+
+            // initial captcha
+            updateCaptcha();
+
+            // refresh button
+            refreshBtn.addEventListener('click', function() {
+                updateCaptcha();
+                captchaInput.value = ''; // clear previous entry
+                captchaInput.focus();
+            });
+
+            // ---------- PASSWORD TOGGLE (for new password) ----------
+            const newPasswordInput = document.getElementById('newPassword');
+            const toggleNewBtn = document.getElementById('toggleNewPassword');
+            const toggleNewIcon = document.getElementById('toggleNewIcon');
+
+            toggleNewBtn.addEventListener('click', function() {
+                const type = newPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                newPasswordInput.setAttribute('type', type);
+                if (type === 'password') {
+                    toggleNewIcon.classList.remove('fa-eye-slash');
+                    toggleNewIcon.classList.add('fa-eye');
+                } else {
+                    toggleNewIcon.classList.remove('fa-eye');
+                    toggleNewIcon.classList.add('fa-eye-slash');
+                }
+            });
+
+            // ---------- MOCK RESET VALIDATION (with captcha check) ----------
+            const resetBtn = document.getElementById('resetBtn');
+            const resetForm = document.getElementById('forgotForm');
+            const resetEmail = document.getElementById('resetEmail');
+
+            function validateAndMock() {
+                const email = resetEmail.value.trim();
+                const enteredCaptcha = captchaInput.value.trim();
+                const currentCaptcha = captchaDisplay.dataset.value; // stored value
+                const newPwd = newPasswordInput.value.trim();
+
+                // basic checks
+                if (!email) {
+                    alert('⚠️ Please enter your official email.');
+                    return false;
+                }
+                if (!email.includes('@') || !email.includes('.')) {
+                    alert('📧 Enter a valid government email (e.g., name@gov.in).');
+                    return false;
+                }
+                if (!enteredCaptcha) {
+                    alert('🔐 Please enter the captcha code.');
+                    return false;
+                }
+                if (enteredCaptcha.toUpperCase() !== currentCaptcha.toUpperCase()) {
+                    alert('❌ Captcha does not match. Please try again.');
+                    captchaInput.value = '';
+                    captchaInput.focus();
+                    return false;
+                }
+                if (!newPwd) {
+                    alert('🔑 New password cannot be empty.');
+                    return false;
+                }
+                if (newPwd.length < 6) {
+                    alert('🔒 Password must be at least 6 characters (demo).');
+                    return false;
+                }
+
+                // if all pass, show success (mock)
+                alert(`✅ PASSWORD RESET (DEMO)\n\nEmail: ${email}\nNew password set successfully.\n\n(No backend – frontend simulation.)`);
+
+                // (optional) clear sensitive fields
+                // newPasswordInput.value = ''; captchaInput.value = ''; 
+                return true;
+            }
+
+            resetBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                validateAndMock();
+            });
+
+            resetForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                validateAndMock();
+            });
+
+            // optional: auto-refresh captcha on page load (already did)
+            // also provide a back link simulation (just an alert, no actual navigation)
+            const backLink = document.getElementById('backToLogin');
+            backLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('↩️ Return to login page (would redirect in real app).');
+            });
+
+            // you can also refresh captcha when clicking on it (convenience)
+            captchaDisplay.addEventListener('click', function() {
+                updateCaptcha();
+                captchaInput.value = '';
+            });
+        })();
+    </script>
+</body>
+</html>
