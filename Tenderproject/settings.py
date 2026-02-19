@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app1',
+    'widget_tweaks',
     
 ]
 
@@ -57,13 +58,7 @@ ROOT_URLCONF = 'Tenderproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-<<<<<<< HEAD
-        'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),  # This tells Django to look in the templates folder
-        ],
-=======
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
->>>>>>> 6ce756ec68e4d34644e87f345cd038b0aa849ae4
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,3 +132,7 @@ STATICFILES_DIRS = [
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'Government_dashboard'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -472,18 +473,18 @@
       <div class="logo-text">TenderAI <span>Dept. Admin</span></div>
     </div>
     <nav class="nav">
-      <a href="{% url 'Government_dashboard' %}"><button class="nav-item active"><i class="fas fa-chart-pie"></i> Dashboard</button></a>
-      <a href="{% url 'createtender' %}"><button class="nav-item"><i class="fas fa-file-alt"></i> Create Tender</button></a>
-      <a href="{% url 'managetender'%}"><button class="nav-item"><i class="fas fa-list-check"></i> Manage Tenders</button></a>
-      <a href="{% url 'evaluation'%}"><button class="nav-item"><i class="fas fa-star"></i> Evaluation Results</button></a>
+      <a href="{% url 'Government_dashboard' %}" class="nav-item active"><i class="fas fa-chart-pie"></i> Dashboard</button></a>
+      <a href="{% url 'createtender' %}" class="nav-item"><i class="fas fa-file-alt"></i> Create Tender</button></a>
+      <a href="{% url 'managetender'%}" class="nav-item"><i class="fas fa-list-check"></i> Manage Tenders</button></a>
+      <a href="{% url 'evaluation'%}" class="nav-item"><i class="fas fa-star"></i> Evaluation Results</button></a>
     </nav>
-    <div class="profile-mini">
-      <div class="profile-avatar"><i class="fas fa-user-tie"></i></div>
-      <div class="profile-info">
-        <h4>Anita Sharma, IAS</h4>
-        <p>Urban Development</p>
-      </div>
-    </div>
+    <div class="user-profile">
+        <i class="far fa-user-circle"></i>
+          {% if username %}
+            <span>{{ username }}</span>
+          {% endif %}
+        <i class="fas fa-chevron-down" style="font-size:0.7rem; color:#6d8da8;"></i>
+        </div>
   </aside>
 
   <!-- MAIN CONTENT (Manage Tenders) -->
@@ -562,7 +563,10 @@
         <div class="filter-actions">
           <button class="btn-outline" id="toggleFilterBtn"><i class="fas fa-sliders-h"></i> Filter</button>
           <button class="btn-outline" id="exportBtn"><i class="fas fa-download"></i> Export CSV</button>
-          <button class="btn-primary" id="newTenderBtn"><i class="fas fa-plus"></i> New tender</button>
+          <a href="{% url 'createtender' %}" class="btn-primary">
+  <i class="fas fa-plus"></i> New tender
+</a>
+
         </div>
       </div>
 
@@ -579,9 +583,29 @@
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody id="tableBody">
-          <!-- injected via JS -->
-        </tbody>
+      <tbody id="tableBody">
+  {% for tender in tenders %}
+    <tr>
+      <td><strong>{{ tender.tender_id }}</strong></td>
+      <td>{{ tender.title }}</td>
+      <td>{{ tender.department }}</td>
+      <td>{{ tender.last_date|date:"d M Y" }}</td>
+      <td>0</td> <!-- bids count placeholder -->
+      <td><span class="status-badge open">Open</span></td>
+      <td>
+        <button class="action-btn" onclick="alert('Edit {{ tender.tender_id }}')">
+          <i class="far fa-edit"></i> Edit
+        </button>
+        <button class="action-btn" onclick="alert('View bids for {{ tender.tender_id }}')">
+          <i class="far fa-eye"></i> View
+        </button>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="7">No tenders found</td></tr>
+  {% endfor %}
+</tbody>
+
       </table>
 
       <!-- pagination -->
@@ -602,20 +626,7 @@
 <script>
   (function() {
     // ---------- Tender data (extended) ----------
-    const tenders = [
-      { id: 'GEM/2026/001', title: 'Highway widening (Phase 3)', dept: 'Urban dev', deadline: '2026-03-15', bids: 4, status: 'Open' },
-      { id: 'GEM/2026/045', title: 'Hospital IT infrastructure', dept: 'Health', deadline: '2026-02-28', bids: 7, status: 'Evaluation' },
-      { id: 'GEM/2026/098', title: 'Solar plant installation', dept: 'Energy', deadline: '2026-04-10', bids: 2, status: 'Open' },
-      { id: 'GEM/2026/112', title: 'Road widening (Nagar road)', dept: 'PWD', deadline: '2026-03-05', bids: 6, status: 'Evaluation' },
-      { id: 'GEM/2026/157', title: 'Smart city sensors', dept: 'Urban dev', deadline: '2026-03-20', bids: 3, status: 'Open' },
-      { id: 'GEM/2026/189', title: 'Water supply upgrade', dept: 'Municipal', deadline: '2026-04-02', bids: 1, status: 'Open' },
-      { id: 'GEM/2026/201', title: 'Solar plant (phase 2)', dept: 'Energy', deadline: '2026-03-18', bids: 5, status: 'Evaluation' },
-      { id: 'GEM/2026/233', title: 'Smart city - phase 4', dept: 'Urban dev', deadline: '2026-04-30', bids: 0, status: 'Open' },
-      { id: 'GEM/2026/256', title: 'Bridge repair', dept: 'PWD', deadline: '2026-05-10', bids: 2, status: 'Open' },
-      { id: 'GEM/2026/278', title: 'Hospital equipment', dept: 'Health', deadline: '2026-04-18', bids: 4, status: 'Evaluation' },
-      { id: 'GEM/2026/301', title: 'Street lighting', dept: 'Municipal', deadline: '2026-05-22', bids: 3, status: 'Open' },
-      { id: 'GEM/2026/329', title: 'Solar farm', dept: 'Energy', deadline: '2026-06-01', bids: 1, status: 'Closed' }
-    ];
+    
 
     let currentData = [...tenders];
     let currentPage = 1;
@@ -752,6 +763,6 @@
     // ---------- Sidebar navigation prevention for demo (already linked) ----------
     // No need to prevent, links are actual hrefs
   })();
-</script>
+</script>*/
 </body>
 </html>

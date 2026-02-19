@@ -1,11 +1,22 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .models import Officer
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 
+from .models import Tender
+
+from .forms import TenderForm
+
+
+from .models import Tender
+
+
+
+
+
+from .forms import TenderForm
 def home(request):
     return render(request, 'index.html')
 
@@ -95,30 +106,74 @@ def dashboard(request):
     
     
 
+@login_required
 def createtender(request):
-    return render(request, 'createtender.html')
+    username = request.user.officer.name 
+    return render(request, 'createtender.html',{'username': username})
+
+@login_required
 def evaluation(request):
-    return render(request, 'evaluation.html')
+     username = request.user.officer.name
+     return render(request, 'evaluation.html',{'username': username})
+
+@login_required
 def managetender(request):
-    return render(request, 'managetender.html')
+    username = request.user.officer.name
+    return render(request, 'managetender.html',{'username': username})
 
 
-def Companydashboard(request):
-    # Add some context data if needed
+
+
+
+
+
+def managetender(request):
+    # Fetch only the required fields from Tender
+    tenders = Tender.objects.values('tender_id', 'title', 'department', 'last_date')
     
-    return render(request, 'bidder/Companydashboard.html')
+    # Pass as context to template
+    context = {
+        'tenders': tenders,
+        'username': request.user.username if request.user.is_authenticated else None
+    }
+    return render(request, 'managetender.html', context)
 
+@login_required
+def createtender(request):
+    draft_message = None
+
+    if request.method == "POST":
+        form = TenderForm(request.POST, request.FILES)
+        if form.is_valid():
+            tender = form.save(commit=False)
+            tender.created_by = request.user
+
+            # Determine if draft or publish
+            if 'draft' in request.POST:
+                tender.status = 'draft'
+                draft_message = "Tender saved as draft successfully!"
+            elif 'publish' in request.POST:
+                tender.status = 'published'
+            tender.save()
+            if draft_message:
+                # reload page to show draft message
+                form = TenderForm()  # empty form
+        else:
+            messages.error(request, "Please fix errors below.")
+    else:
+        form = TenderForm()
+
+    context = {
+        'form': form,
+        'draft_message': draft_message,
+        'username': request.user.username,
+    }
+    return render(request, 'createtender.html', context)
 def browse_tenders(request):
-    return render(request, 'bidder/browse_tenders.html') 
+    return render(request, "browse_tenders.html")
 def submit_bid(request):
-    return render(request, 'bidder/submit_bid.html') 
-def submission_status(request):
-    return render(request, 'bidder/submission_status.html') 
-def watch_tenders(request):
-    return render(request, 'bidder/watch_tenders.html') 
-def logout(request):
-     return redirect('home') 
-# def evaluationdashboard(request):
-#     return render(request,'evaluator/evaluationdashboard.html')
-
-
+    return render(request, "submit_bid.html")
+def track_submissions(request):
+    return render(request, "track_submissions.html")
+def watchedtenders(request):
+    return render(request, "watchtenders.html")
