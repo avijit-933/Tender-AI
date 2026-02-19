@@ -5,6 +5,11 @@ from .models import Officer
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.contrib.auth import logout as auth_logout 
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib import messages
+from .models import Bidder
 
 def home(request):
     return render(request, 'index.html')
@@ -52,6 +57,46 @@ def register(request):
 
     return render(request, "register.html")
 
+def bidder_register(request):
+    if request.method == "POST":
+        company_name = request.POST.get('companyName')
+        registration_number = request.POST.get('registrationNumber')
+        gst = request.POST.get('gst')
+        pan = request.POST.get('pan')
+        address = request.POST.get('address')
+
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        password = request.POST.get('password')
+
+        # Check if email already exists
+        if User.objects.filter(username=email).exists():
+            messages.error(request, "Email already registered")
+            return redirect('bidder_register')
+
+        # Create user
+        user = User.objects.create_user(
+            username=email,
+            email=email,
+            password=password
+        )
+
+        # Create bidder profile
+        Bidder.objects.create(
+            user=user,
+            company_name=company_name,
+            registration_number=registration_number,
+            gst_number=gst,
+            pan_number=pan,
+            address=address,
+            phone=phone,
+        )
+
+        messages.success(request, "Registration successful. Please login.")
+        return redirect('login_view')
+
+    return render(request, 'company_register.html')
+
 
 # ================= LOGIN VIEW =================
 def officer_login(request):
@@ -82,6 +127,24 @@ def officer_login(request):
     return render(request, "login.html")
 
 
+def login_view(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        # Authenticate using username=email
+        user = authenticate(request, username=email, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('company_dashboard')
+        else:
+            messages.error(request, "Invalid Gmail or password")
+
+    return render(request, 'company_login.html')
+
+
+
 
 def forget(request):
     return render(request, 'forget.html')
@@ -101,24 +164,5 @@ def evaluation(request):
     return render(request, 'evaluation.html')
 def managetender(request):
     return render(request, 'managetender.html')
-
-
-def Companydashboard(request):
-    # Add some context data if needed
-    
-    return render(request, 'bidder/Companydashboard.html')
-
-def browse_tenders(request):
-    return render(request, 'bidder/browse_tenders.html') 
-def submit_bid(request):
-    return render(request, 'bidder/submit_bid.html') 
-def submission_status(request):
-    return render(request, 'bidder/submission_status.html') 
-def watch_tenders(request):
-    return render(request, 'bidder/watch_tenders.html') 
-def logout(request):
-     return redirect('home') 
-# def evaluationdashboard(request):
-#     return render(request,'evaluator/evaluationdashboard.html')
 
 

@@ -35,17 +35,17 @@
         <li><a href="#security" class="nav-link">Contact</a></li>
       </ul>
       <div class="nav-actions">
-      <button class="btn-login" onclick="window.location.href='{% url "login" %}'">
-  Login
-</button>
-
-
-        <button class="btn-register"onclick="window.location.href='{% url 'register' %}'">Register</button>
-
+        <button class="btn-login" onclick="openRoleModal('login')">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+        <button class="btn-register" onclick="openRoleModal('register')">
+          <i class="fas fa-user-plus"></i> Register
+        </button>
         <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
       </div>
     </div>
   </nav>
+
 
   <!-- HERO -->
   <section class="hero" id="home">
@@ -438,6 +438,45 @@
     </div>
   </section>
 
+  <!-- ROLE SELECTION MODAL -->
+  <div id="roleModal" class="role-modal">
+    <div class="role-modal-content">
+      <span class="close-modal" onclick="closeRoleModal()">&times;</span>
+      <h2>Select Your Role</h2>
+      <p class="role-sub" id="modalActionText">Choose how you want to continue</p>
+
+      <div class="role-buttons">
+        <!-- Officer Login Option -->
+        <button class="role-btn officer" onclick="redirectToAuth('officer', 'login')">
+          <i class="fas fa-user-shield"></i>
+          <span>Officer Login</span>
+          <small>Government Officials</small>
+        </button>
+
+        <!-- Officer Register Option -->
+        <button class="role-btn officer register" onclick="redirectToAuth('officer', 'register')">
+          <i class="fas fa-user-plus"></i>
+          <span>Officer Register</span>
+          <small>New Government User</small>
+        </button>
+
+        <!-- Bidder/Company Login Option -->
+        <button class="role-btn bidder" onclick="redirectToAuth('bidder', 'login')">
+          <i class="fas fa-briefcase"></i>
+          <span>Company Login</span>
+          <small>Registered Vendors</small>
+        </button>
+
+        <!-- Bidder/Company Register Option -->
+        <button class="role-btn bidder register" onclick="redirectToAuth('bidder', 'register')">
+          <i class="fas fa-building"></i>
+          <span>Company Register</span>
+          <small>New Vendors</small>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-inner">
@@ -483,5 +522,238 @@
   </footer>
 
   <script src="{% static 'js/script.js' %}"></script>
+  
+  <!-- Add this script block for modal functionality -->
+  <script>
+    // Modal functionality
+    function openRoleModal(action) {
+      const modal = document.getElementById('roleModal');
+      const modalText = document.getElementById('modalActionText');
+      
+      // Update modal text based on action
+      if (action === 'login') {
+        modalText.textContent = 'Login to your account';
+      } else {
+        modalText.textContent = 'Create a new account';
+      }
+      
+      modal.style.display = 'flex';
+      
+      // Prevent scrolling when modal is open
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeRoleModal() {
+      const modal = document.getElementById('roleModal');
+      modal.style.display = 'none';
+      
+      // Restore scrolling
+      document.body.style.overflow = 'auto';
+    }
+
+    function redirectToAuth(role, action) {
+      // Close the modal
+      closeRoleModal();
+      
+      // Redirect to appropriate authentication page
+      // You can modify these URLs based on your Django URL patterns
+      let redirectUrl = '';
+      
+      if (role === 'officer') {
+        redirectUrl = action === 'login' ? '/login/' : '/register/';
+      } else if (role === 'bidder') {
+        redirectUrl = action === 'login' ? '/login_view/' : '/bidder_register/';
+      }
+      
+      // Use Django's URL template tag if needed, or direct redirect
+      window.location.href = redirectUrl;
+      
+      // For demonstration, you can uncomment this line to see the selected option
+      // alert(`Redirecting to: ${role} ${action}`);
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('roleModal');
+      if (event.target === modal) {
+        closeRoleModal();
+      }
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeRoleModal();
+      }
+    });
+
+    // Hamburger menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const hamburger = document.getElementById('hamburger');
+      const navLinks = document.querySelector('.nav-links');
+      
+      if (hamburger) {
+        hamburger.addEventListener('click', function() {
+          navLinks.classList.toggle('active');
+        });
+      }
+      
+      // Close mobile menu when clicking a link
+      const navLinksItems = document.querySelectorAll('.nav-links a');
+      navLinksItems.forEach(link => {
+        link.addEventListener('click', function() {
+          navLinks.classList.remove('active');
+        });
+      });
+    });
+  </script>
+
+  <!-- Add CSS for modal -->
+  <style>
+    .role-modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      animation: modalFadeIn 0.3s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .role-modal-content {
+      background: linear-gradient(135deg, #1a2a3a 0%, #0f1a24 100%);
+      padding: 40px;
+      border-radius: 24px;
+      width: 90%;
+      max-width: 700px;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .close-modal {
+      position: absolute;
+      right: 25px;
+      top: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      opacity: 0.7;
+    }
+
+    .close-modal:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .role-modal-content h2 {
+      color: #fff;
+      font-size: 2rem;
+      margin-bottom: 10px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .role-sub {
+      color: #94a3b8;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1rem;
+    }
+
+    .role-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .role-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 25px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      width: 100%;
+    }
+
+    .role-btn i {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .role-btn span {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .role-btn small {
+      color: #94a3b8;
+      font-size: 0.85rem;
+    }
+
+    .role-btn.officer i {
+      color: #60a5fa;
+    }
+
+    .role-btn.bidder i {
+      color: #34d399;
+    }
+
+    .role-btn.register {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(37, 99, 235, 0.1));
+      border-color: #2563eb;
+    }
+
+    .role-btn:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .role-btn.register:hover {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.3), rgba(37, 99, 235, 0.2));
+    }
+
+    @media (max-width: 640px) {
+      .role-buttons {
+        grid-template-columns: 1fr;
+      }
+      
+      .role-modal-content {
+        padding: 30px 20px;
+        margin: 20px;
+      }
+      
+      .role-modal-content h2 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
 </body>
 </html>

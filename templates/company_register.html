@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bidder Registration</title>
+  <style>
+  :root {
+    --bg-primary: #fafaf9;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f5f5f4;
+    --text-primary: #1c1917;
+    --text-secondary: #57534e;
+    --text-tertiary: #a8a29e;
+    --border-light: #e7e5e4;
+    --border-medium: #d6d3d1;
+    --accent-primary: #0f766e;
+    --accent-secondary: #14b8a6;
+    --accent-soft: #ccfbf1;
+    --accent-glow: rgba(20, 184, 166, 0.15);
+    --success: #10b981;
+    --error: #ef4444;
+    --glass-bg: rgba(255, 255, 255, 0.78);
+    --glass-border: rgba(255, 255, 255, 0.55);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.02);
+    --shadow-md: 0 8px 22px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 24px 45px rgba(15, 118, 110, 0.09);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --transition-base: 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--text-primary);
+    line-height: 1.5;
+    background:
+      radial-gradient(circle at 8% 10%, var(--accent-glow), transparent 36%),
+      radial-gradient(circle at 92% 12%, rgba(15, 118, 110, 0.08), transparent 42%),
+      linear-gradient(135deg, var(--bg-primary), var(--bg-tertiary));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 16px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 860px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .header h1 {
+    margin: 0;
+    letter-spacing: -0.02em;
+    font-size: clamp(1.9rem, 4vw, 2.2rem);
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .header p {
+    margin-top: 10px;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+
+  .stepper { margin-bottom: 22px; }
+
+  .step-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto 1fr auto;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .step {
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-medium);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-base);
+  }
+
+  .step.active {
+    color: #ffffff;
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    box-shadow: 0 8px 20px rgba(15, 118, 110, 0.25);
+  }
+
+  .step.done {
+    color: #ffffff;
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--success), #34d399);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.24);
+    font-size: 18px;
+  }
+
+  .step-line {
+    height: 4px;
+    border-radius: 999px;
+    background: var(--border-light);
+    transition: var(--transition-base);
+  }
+
+  .step-line.done {
+    background: linear-gradient(90deg, var(--success), #34d399);
+  }
+
+  .step-labels {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-tertiary);
+    font-size: 0.75rem;
+  }
+
+  .card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 28px;
+  }
+
+  .step-panel { display: none; }
+  .step-panel.active { display: block; }
+
+  h3 {
+    margin: 0 0 18px;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+  }
+
+  .field { margin-bottom: 16px; }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .input-wrap { position: relative; }
+
+  .icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    font-size: 14px;
+    pointer-events: none;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--text-primary);
+    padding: 11px 12px;
+    font-size: 0.95rem;
+    transition: border-color var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #a8a29e;
+  }
+
+  .with-icon { padding-left: 36px; }
+
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.14);
+  }
+
+  textarea {
+    min-height: 96px;
+    resize: vertical;
+  }
+
+  .docs {
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid var(--border-light);
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+
+  .docs p {
+    margin: 0 0 12px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+
+  .doc-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 7px 0;
+  }
+
+  .doc-item span {
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+  }
+
+  .upload-btn {
+    border: 1px solid var(--border-medium);
+    border-radius: 10px;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: var(--transition-base);
+  }
+
+  .upload-btn:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    background: var(--accent-soft);
+  }
+
+  .info {
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(20, 184, 166, 0.3);
+    background: rgba(204, 251, 241, 0.45);
+    color: #0f766e;
+    font-size: 0.86rem;
+    padding: 12px;
+    margin-bottom: 14px;
+    line-height: 1.45;
+  }
+
+  .checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin-top: 6px;
+  }
+
+  .checkbox-row input {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    accent-color: var(--accent-primary);
+  }
+
+  .error {
+    margin-top: 8px;
+    color: var(--error);
+    font-size: 0.82rem;
+    min-height: 18px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  button {
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 12px;
+    font-size: 0.94rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-base);
+  }
+
+  button:active { transform: translateY(1px); }
+
+  .btn-secondary {
+    flex: 1;
+    border: 1px solid var(--border-medium);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    background: var(--accent-soft);
+  }
+
+  .btn-primary {
+    flex: 1;
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    box-shadow: 0 10px 22px -14px rgba(15, 118, 110, 0.8);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 26px -14px rgba(15, 118, 110, 0.9);
+  }
+
+  .btn-primary:disabled {
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 14px;
+    color: var(--text-tertiary);
+    font-size: 0.78rem;
+  }
+
+  .footer a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .footer a:hover { color: var(--accent-secondary); }
+
+  .success {
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    background: rgba(16, 185, 129, 0.1);
+    color: #047857;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 640px) {
+    .card { padding: 20px; }
+    .step-labels { font-size: 0.68rem; }
+    .actions { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Bidder Registration</h1>
+      <p>Register your business to participate in government tenders</p>
+    </div>
+
+    <div class="stepper" aria-label="Registration progress">
+      <div class="step-row">
+        <div class="step active" data-step="1">1</div>
+        <div class="step-line" data-line="1"></div>
+        <div class="step" data-step="2">2</div>
+        <div class="step-line" data-line="2"></div>
+        <div class="step" data-step="3">3</div>
+      </div>
+      <div class="step-labels">
+        <span>Company Details</span>
+        <span>Contact Info</span>
+        <span>Verification</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <form id="registrationForm" novalidate>
+        <section class="step-panel active" data-panel="1">
+          <h3>Company Information</h3>
+
+          <div class="field">
+            <label for="companyName">Company Name *</label>
+            <div class="input-wrap">
+              <span class="icon">&#127970;</span>
+              <input class="with-icon" id="companyName" name="companyName" type="text" placeholder="Enter company name" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="registrationNumber">Registration Number *</label>
+            <div class="input-wrap">
+              <span class="icon">&#128196;</span>
+              <input class="with-icon" id="registrationNumber" name="registrationNumber" type="text" placeholder="Enter registration number" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="gst">GST Number *</label>
+            <div class="input-wrap">
+              <span class="icon">&#128196;</span>
+              <input class="with-icon" id="gst" name="gst" type="text" placeholder="Enter GST number" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="pan">PAN Number *</label>
+            <div class="input-wrap">
+              <span class="icon">&#128196;</span>
+              <input class="with-icon" id="pan" name="pan" type="text" placeholder="Enter PAN number" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="address">Business Address *</label>
+            <textarea id="address" name="address" placeholder="Enter complete business address" required></textarea>
+          </div>
+        </section>
+
+        <section class="step-panel" data-panel="2">
+          <h3>Contact Information</h3>
+
+          <div class="field">
+            <label for="email">Email Address *</label>
+            <div class="input-wrap">
+              <span class="icon">&#9993;</span>
+              <input class="with-icon" id="email" name="email" type="email" placeholder="Enter email address" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="phone">Phone Number *</label>
+            <div class="input-wrap">
+              <span class="icon">&#9742;</span>
+              <input class="with-icon" id="phone" name="phone" type="tel" placeholder="Enter phone number" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="password">Password *</label>
+            <div class="input-wrap">
+              <span class="icon">&#128274;</span>
+              <input class="with-icon" id="password" name="password" type="password" placeholder="Create password" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="confirmPassword">Confirm Password *</label>
+            <div class="input-wrap">
+              <span class="icon">&#128274;</span>
+              <input class="with-icon" id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm password" required />
+            </div>
+          </div>
+        </section>
+
+        <section class="step-panel" data-panel="3">
+          <h3>Document Verification</h3>
+
+          <div class="docs">
+            <p>Please upload the following documents for verification:</p>
+            <div class="doc-item"><span>Company Registration Certificate</span><button class="upload-btn" type="button">Upload</button></div>
+            <div class="doc-item"><span>GST Certificate</span><button class="upload-btn" type="button">Upload</button></div>
+            <div class="doc-item"><span>PAN Card</span><button class="upload-btn" type="button">Upload</button></div>
+            <div class="doc-item"><span>Bank Details</span><button class="upload-btn" type="button">Upload</button></div>
+          </div>
+
+          <div class="info">
+            By registering, you agree to our Terms of Service and Privacy Policy.
+            All documents will be verified within 24-48 hours.
+          </div>
+
+          <label class="checkbox-row" for="terms">
+            <input id="terms" name="terms" type="checkbox" required />
+            <span>I confirm that all provided information is accurate and complete</span>
+          </label>
+        </section>
+
+        <div id="error" class="error" aria-live="polite"></div>
+
+        <div class="actions">
+          <button id="backBtn" class="btn-secondary" type="button" style="display: none;">Back</button>
+          <button id="nextBtn" class="btn-primary" type="submit">Continue &#8594;</button>
+        </div>
+
+        <div id="success" class="success" style="display: none;">
+          Registration submitted successfully. Redirecting to login...
+        </div>
+      </form>
+    </div>
+
+    <p class="footer">Already have an account? <a href="{% url 'login_view' %}">Sign in here</a></p>
+  </div>
+
+  <script>
+  const form = document.getElementById("registrationForm");
+  const panels = Array.from(document.querySelectorAll(".step-panel"));
+  const stepEls = Array.from(document.querySelectorAll(".step"));
+  const lineEls = Array.from(document.querySelectorAll(".step-line"));
+  const backBtn = document.getElementById("backBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const errorEl = document.getElementById("error");
+  const successEl = document.getElementById("success");
+
+  let step = 1;
+
+  function validateCurrentStep() {
+    errorEl.textContent = "";
+    const panel = panels[step - 1];
+    const fields = Array.from(panel.querySelectorAll("input, textarea"));
+
+    for (const field of fields) {
+      if (!field.checkValidity()) {
+        if (field.type === "checkbox") {
+          errorEl.textContent = "Please confirm the declaration to continue.";
+        } else {
+          errorEl.textContent = "Please fill all required fields correctly.";
+        }
+        field.focus();
+        return false;
+      }
+    }
+
+    if (step === 2) {
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      if (password !== confirmPassword) {
+        errorEl.textContent = "Password and confirm password do not match.";
+        document.getElementById("confirmPassword").focus();
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function render() {
+    panels.forEach((panel, idx) => panel.classList.toggle("active", idx === step - 1));
+
+    stepEls.forEach((el, idx) => {
+      el.classList.remove("active", "done");
+      if (idx + 1 < step) {
+        el.classList.add("done");
+        el.textContent = "\u2713";
+      } else if (idx + 1 === step) {
+        el.classList.add("active");
+        el.textContent = String(idx + 1);
+      } else {
+        el.textContent = String(idx + 1);
+      }
+    });
+
+    lineEls.forEach((line, idx) => line.classList.toggle("done", idx + 1 < step));
+
+    backBtn.style.display = step > 1 ? "block" : "none";
+    nextBtn.textContent = step === 3 ? "Submit Registration \u2192" : "Continue \u2192";
+  }
+
+  backBtn.addEventListener("click", () => {
+    if (step > 1) {
+      step -= 1;
+      render();
+    }
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!validateCurrentStep()) return;
+
+    if (step < 3) {
+      step += 1;
+      render();
+      return;
+    }
+
+    errorEl.textContent = "";
+    successEl.style.display = "block";
+    nextBtn.disabled = true;
+    backBtn.disabled = true;
+    nextBtn.style.opacity = "0.65";
+
+    setTimeout(() => {
+      window.location.href = "/login";
+    }, 1500);
+  });
+
+  render();
+</script>
+</body>
+</html>
+
+
+

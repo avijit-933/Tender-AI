@@ -33,6 +33,58 @@
       });
     }
   }
+  // Role Modal Functions
+function openRoleModal(action) {
+    const modal = document.getElementById('roleModal');
+    const modalContent = modal.querySelector('.role-modal-content h2');
+    
+    // Update modal title based on action
+    if (action === 'login') {
+        modalContent.textContent = 'Login - Select Your Role';
+    } else {
+        modalContent.textContent = 'Register - Select Your Role';
+    }
+    
+    modal.style.display = 'flex';
+    
+    // Store the action for later use
+    modal.setAttribute('data-action', action);
+}
+
+function closeRoleModal() {
+    const modal = document.getElementById('roleModal');
+    modal.style.display = 'none';
+}
+
+function redirectRole(role, action) {
+    let url = '';
+    
+    if (role === 'officer') {
+        if (action === 'login') {
+            url = "{% url 'officer_login' %}";  // Will be replaced by Django template
+        } else {
+            url = "{% url 'officer_register' %}";  // Will be replaced by Django template
+        }
+    } else if (role === 'bidder') {
+        if (action === 'login') {
+            url = "{% url 'company_login' %}";  // Will be replaced by Django template
+        } else {
+            url = "{% url 'company_register' %}";  // Will be replaced by Django template
+        }
+    }
+    
+    window.location.href = url;
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('roleModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Rest of your existing JavaScript code remains the same
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
@@ -413,4 +465,5 @@ document.head.appendChild(rippleStyle);
       setTimeout(() => loader.remove(), 700);
     }, 1800);
   });
+  
 })();
