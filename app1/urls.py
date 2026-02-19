@@ -20,22 +20,17 @@ urlpatterns = [
     
     
     
-    path('login/',views.officer_login, name= 'login'),
-    path('forget/',views.forget, name = 'forget'),
-    path('register/', views.register, name = 'register'),
+    
     path('Government_dashboard/', views.dashboard,name='Government_dashboard'),
     path('createtender/', views.createtender, name = 'createtender'),
     path('evaluation/', views.evaluation, name = 'evaluation'),
     path('managetender/', views.managetender, name = 'managetender'),
-     path('browse_tenders/', views.browse_tenders, name = 'browse_tenders'),
-      path('submit_bid/', views.submit_bid, name = 'submit_bid'),
-       path('track_submissions/', views.track_submissions, name = 'track_submissions'),
-        path('watchedtenders/', views.watchedtenders, name = 'watchedtenders'),
+    path('browse_tenders/', views.browse_tenders, name = 'browse_tenders'),
+    path('submit_bid/', views.submit_bid, name = 'submit_bid'),
+    path('track_submissions/', views.track_submissions, name = 'track_submissions'),
+    path('watchedtenders/', views.watchedtenders, name = 'watchedtenders'),
     
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 77c74223082d31c2dc1efd9212e8a178a3683d38
 ]

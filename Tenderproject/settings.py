@@ -58,15 +58,15 @@ ROOT_URLCONF = 'Tenderproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-<<<<<<< HEAD
+
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),  # This tells Django to look in the templates folder
         ],
 
         
-=======
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
->>>>>>> 77c74223082d31c2dc1efd9212e8a178a3683d38
+
+    
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -145,4 +145,4 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-'
+

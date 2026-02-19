@@ -180,8 +180,6 @@ def managetender(request):
     return render(request, 'managetender.html',{'username': username})
 
 
-<<<<<<< HEAD
-=======
 
 
 
@@ -229,6 +227,7 @@ def createtender(request):
         'username': request.user.username,
     }
     return render(request, 'createtender.html', context)
+
 def browse_tenders(request):
     return render(request, "browse_tenders.html")
 def submit_bid(request):
@@ -237,4 +236,3 @@ def track_submissions(request):
     return render(request, "track_submissions.html")
 def watchedtenders(request):
     return render(request, "watchtenders.html")
->>>>>>> 77c74223082d31c2dc1efd9212e8a178a3683d38
