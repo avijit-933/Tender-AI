@@ -1,16 +1,19 @@
+{% load widget_tweaks %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Tender · Dept Admin · AI Tender System</title>
-  <!-- Font & Icons -->
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
   <style>
-    * {
+     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -414,30 +417,30 @@
 </head>
 <body>
 <div class="app">
-  <!-- SIDEBAR with working links to all pages -->
+  <!-- Sidebar -->
   <aside class="sidebar">
     <div class="logo-area">
       <div class="logo-icon"><i class="fas fa-scale-balanced"></i></div>
       <div class="logo-text">TenderAI <span>Dept. Admin</span></div>
     </div>
     <nav class="nav">
-      <a href="{% url 'Government_dashboard' %}"><button class="nav-item active"><i class="fas fa-chart-pie"></i> Dashboard</button></a>
-      <a href="{% url 'createtender' %}"><button class="nav-item"><i class="fas fa-file-alt"></i> Create Tender</button></a>
-      <a href="{% url 'managetender'%}"><button class="nav-item"><i class="fas fa-list-check"></i> Manage Tenders</button></a>
-      <a href="{% url 'evaluation'%}"><button class="nav-item"><i class="fas fa-star"></i> Evaluation Results</button></a>
+      <a href="{% url 'Government_dashboard' %}" class="nav-item active"><i class="fas fa-chart-pie"></i> Dashboard</button></a>
+      <a href="{% url 'createtender' %}" class="nav-item"><i class="fas fa-file-alt"></i> Create Tender</button></a>
+      <a href="{% url 'managetender'%}" class="nav-item"><i class="fas fa-list-check"></i> Manage Tenders</button></a>
+      <a href="{% url 'evaluation'%}" class="nav-item"><i class="fas fa-star"></i> Evaluation Results</button></a>
     </nav>
-    <div class="profile-mini">
-      <div class="profile-avatar"><i class="fas fa-user-tie"></i></div>
-      <div class="profile-info">
-        <h4>Anita Sharma, IAS</h4>
-        <p>Urban Development</p>
-      </div>
-    </div>
+    <div class="user-profile">
+        <i class="far fa-user-circle"></i>
+          {% if username %}
+            <span>{{ username }}</span>
+          {% endif %}
+        <i class="fas fa-chevron-down" style="font-size:0.7rem; color:#6d8da8;"></i>
+        </div>
   </aside>
 
-  <!-- MAIN CONTENT (Create Tender) -->
+  <!-- Main content -->
   <main class="main">
-    <!-- top navbar with working notification -->
+    <!-- Top navbar -->
     <div class="top-bar">
       <div class="page-title">
         <h1>Create new tender</h1>
@@ -450,13 +453,13 @@
         </div>
         <div class="user-profile" onclick="alert('Profile settings (demo)')">
           <i class="far fa-user-circle"></i>
-          <span>Anita S.</span>
+          <span>{{ username }}</span>
           <i class="fas fa-chevron-down" style="font-size:0.7rem; color:#6d8da8;"></i>
         </div>
       </div>
     </div>
 
-    <!-- notification dropdown -->
+    <!-- Notification dropdown -->
     <div class="notification-dropdown" id="notificationDropdown">
       <div class="notification-item"><i class="fas fa-file-signature"></i> New bid on GEM/2026/112</div>
       <div class="notification-item"><i class="fas fa-file-signature"></i> Bidder uploaded docs: Road widening</div>
@@ -464,258 +467,186 @@
       <div class="notification-item"><i class="fas fa-exclamation-triangle"></i> Tender GEM/2026/098 closing tomorrow</div>
     </div>
 
-    <!-- create tender form panel -->
+    <!-- Form card -->
     <div class="form-card">
       <h2 style="font-weight: 400; margin-bottom: 2rem; color: #1a4f43;">
         <i class="far fa-pen-to-square" style="margin-right:12px;"></i>New tender draft
       </h2>
 
-      <div class="form-grid">
-        <!-- Tender ID -->
-        <div class="full-width">
-          <label class="field-label"><i class="fas fa-hashtag" style="color:#1b7260;"></i> Tender ID <span style="color:#b14a3c;">*</span></label>
-          <input class="field-input" type="text" placeholder="e.g., GEM/2026/301" value="GEM/2026/301" id="tenderId">
-        </div>
+      <!-- Django Form -->
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-grid">
 
-        <!-- Title + Department -->
-        <div>
-          <label class="field-label">Tender title</label>
-          <input class="field-input" value="Smart city - phase 4" id="tenderTitle">
-        </div>
-        <div>
-          <label class="field-label">Department</label>
-          <input class="field-input" value="Urban development" id="deptName">
-        </div>
-
-        <!-- MODIFIED: BOQ Upload with full working functionality -->
-        <div class="full-width">
-          <label class="field-label"><i class="fas fa-file-excel"></i> BOQ Upload (CSV, Excel, PDF)</label>
-          <div class="upload-zone" id="dropZone">
-            <i class="fas fa-cloud-upload-alt" style="font-size:2rem; color:#1e6e5c; margin-bottom:0.3rem;"></i>
-            <p id="fileStatus">drag & drop or <span style="color:#0f5c4b; font-weight:600; cursor:pointer;">browse</span></p>
-            <p style="font-size:0.7rem; color:#5f8db0; margin-top:0.2rem;">Supported: .csv, .xlsx, .xls, .pdf (max 10MB)</p>
-            <input type="file" id="boqFile" accept=".csv,.xlsx,.xls,.pdf" style="display:none;">
+          <!-- Tender ID -->
+          <div class="full-width">
+            <label class="field-label"><i class="fas fa-hashtag" style="color:#1b7260;"></i> Tender ID <span style="color:#b14a3c;">*</span></label>
+            {{ form.tender_id|add_class:"field-input" }}
+            {% if form.tender_id.errors %}
+              <div style="color:#cc4b3c; font-size:0.8rem;">{{ form.tender_id.errors }}</div>
+            {% endif %}
           </div>
-          <div id="fileError" style="color:#cc4b3c; font-size:0.8rem; margin-top:0.3rem; display:none;"></div>
-          <div id="fileSuccess" style="color:#1b7260; font-size:0.9rem; margin-top:0.5rem; display:none;"></div>
-        </div>
 
-        <!-- Eligibility & AI weight config -->
-        <div class="full-width eligibility-box">
-          <h4 style="font-weight:500; margin-bottom:1.2rem; color:#195a4b;">
-            <i class="fas fa-clipboard-check"></i> Eligibility & AI scoring weights
-          </h4>
-          <div class="form-grid" style="gap:1.5rem;">
-            <div>
-              <label class="field-label">Min. turnover (₹)</label>
-              <input class="field-input" value="5 Cr" id="minTurnover">
+          <!-- Title + Department -->
+          <div>
+            <label class="field-label">Tender title</label>
+            {{ form.title|add_class:"field-input" }}
+            {% if form.title.errors %}
+              <div style="color:#cc4b3c; font-size:0.8rem;">{{ form.title.errors }}</div>
+            {% endif %}
+          </div>
+          <div>
+            <label class="field-label">Department</label>
+            {{ form.department|add_class:"field-input" }}
+            {% if form.department.errors %}
+              <div style="color:#cc4b3c; font-size:0.8rem;">{{ form.department.errors }}</div>
+            {% endif %}
+          </div>
+
+          <!-- BOQ Upload -->
+          <div class="full-width">
+            <label class="field-label"><i class="fas fa-file-excel"></i> BOQ Upload (CSV, Excel, PDF)</label>
+            <div class="upload-zone" id="dropZone">
+              <i class="fas fa-cloud-upload-alt" style="font-size:2rem; color:#1e6e5c; margin-bottom:0.3rem;"></i>
+              <p id="fileStatus">drag & drop or <span style="color:#0f5c4b; font-weight:600; cursor:pointer;">browse</span></p>
+              <p style="font-size:0.7rem; color:#5f8db0; margin-top:0.2rem;">Supported: .csv, .xlsx, .xls, .pdf (max 10MB)</p>
+              {{ form.boq_file }}
             </div>
-            <div>
-              <label class="field-label">Min. experience</label>
-              <input class="field-input" value="7 years" id="minExp">
-            </div>
-            <div>
-              <label class="field-label">Required certificates</label>
-              <input class="field-input" value="ISO 9001, CIDC" id="certificates">
-            </div>
-            <div>
-              <label class="field-label">Required manpower</label>
-              <input class="field-input" value="2 Project Managers" id="manpower">
-            </div>
-            <div class="full-width">
-              <label class="field-label"><i class="fas fa-scale-balanced"></i> AI weight configuration</label>
-              <div class="weight-row">
-                <div class="weight-item"><span>Price:</span> <input type="number" value="35" id="weightPrice"> %</div>
-                <div class="weight-item"><span>Experience:</span> <input type="number" value="25" id="weightExp"> %</div>
-                <div class="weight-item"><span>Technical:</span> <input type="number" value="20" id="weightTech"> %</div>
-                <div class="weight-item"><span>Past perf.:</span> <input type="number" value="20" id="weightPerf"> %</div>
+            {% if form.boq_file.errors %}
+              <div style="color:#cc4b3c; font-size:0.8rem;">{{ form.boq_file.errors }}</div>
+            {% endif %}
+          </div>
+
+          <!-- Eligibility & AI weight config -->
+          <div class="full-width eligibility-box">
+            <h4 style="font-weight:500; margin-bottom:1.2rem; color:#195a4b;">
+              <i class="fas fa-clipboard-check"></i> Eligibility & AI scoring weights
+            </h4>
+            <div class="form-grid" style="gap:1.5rem;">
+              <div>
+                <label class="field-label">Min. turnover (₹)</label>
+                {{ form.min_turnover|add_class:"field-input" }}
               </div>
-              <span class="field-label" style="margin-top:0.3rem;">total should be 100%</span>
+              <div>
+                <label class="field-label">Min. experience</label>
+                {{ form.min_experience|add_class:"field-input" }}
+              </div>
+              <div>
+                <label class="field-label">Required certificates</label>
+                {{ form.certificates|add_class:"field-input" }}
+              </div>
+              <div>
+                <label class="field-label">Required manpower</label>
+                {{ form.manpower|add_class:"field-input" }}
+              </div>
+            <div class="full-width">
+    <label class="field-label"><i class="fas fa-scale-balanced"></i> AI weight configuration</label>
+    <div class="weight-row">
+        <div class="weight-item">
+            {{ form.weight_price|add_class:"field-input" }} %
+            <small>Price</small>
+        </div>
+        <div class="weight-item">
+            {{ form.weight_experience|add_class:"field-input" }} %
+            <small>Experience</small>
+        </div>
+        <div class="weight-item">
+            {{ form.weight_technical|add_class:"field-input" }} %
+            <small>Technical</small>
+        </div>
+        <div class="weight-item">
+            {{ form.weight_performance|add_class:"field-input" }} %
+            <small>Performance</small>
+        </div>
+    </div>
+    <span class="field-label">Total should be 100%</span>
+</div>
+                <span class="field-label" style="margin-top:0.3rem;">total should be 100%</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Last date + required docs -->
+          <!-- Last date + required docs -->
+            <div>
+    <label class="field-label">Last submission date</label>
+    {{ form.last_date|add_class:"field-input" }}
+    {% if form.last_date.errors %}
+        <div style="color:#cc4b3c;">{{ form.last_date.errors }}</div>
+    {% endif %}
+</div>
         <div>
-          <label class="field-label">Last submission date</label>
-          <input class="field-input" type="date" value="2026-04-30" id="lastDate">
-        </div>
-        <div>
-          <label class="field-label">Required documents</label>
-          <input class="field-input" placeholder="GST, PAN, etc." value="GST, PAN, EMD" id="reqDocs">
+    <label class="field-label">Required documents</label>
+    {{ form.required_documents|add_class:"field-input" }}
+    <small style="color:#5f7d95;">Separate by commas (e.g., GST, PAN, License)</small>
+    {% if form.required_documents.errors %}
+        <div style="color:#cc4b3c;">{{ form.required_documents.errors }}</div>
+    {% endif %}
+</div>
+
+          <!-- Category -->
+          <div class="full-width">
+            <label class="field-label"><i class="fas fa-tags"></i> Tender category</label>
+            <select name="category" class="field-input">
+              <option value="">-- Select Category --</option>
+              <option value="civil">Civil Department</option>
+              <option value="it">IT Department</option>
+              <option value="health">Health Department</option>
+              <option value="education">Education Department</option>
+              <option value="transport">Transport Department</option>
+            </select>
+          </div>
+
         </div>
 
-        <!-- Additional options -->
-        <div class="full-width">
-          <label class="field-label"><i class="fas fa-tags"></i> Tender category</label>
-          <select class="field-input" id="category">
-            <option>Works (infrastructure)</option>
-            <option>Goods & supplies</option>
-            <option>Consultancy services</option>
-          </select>
+        <!-- action buttons -->
+        <div style="display:flex; gap:1rem; justify-content:flex-end; margin-top:2.8rem;">
+          <button class="btn-secondary" type="submit" name="draft"><i class="far fa-save"></i> Save draft</button>
+          <button class="btn-primary" type="submit" name="publish"><i class="far fa-paper-plane"></i> Publish tender</button>
         </div>
-      </div>
+      </form>
 
-      <!-- action buttons -->
-      <div style="display:flex; gap:1rem; justify-content:flex-end; margin-top:2.8rem;">
-        <button class="btn-secondary" id="saveDraftBtn"><i class="far fa-save"></i> Save draft</button>
-        <button class="btn-primary" id="publishBtn"><i class="far fa-paper-plane"></i> Publish tender</button>
-      </div>
+      <!-- draft confirmation -->
+      {% if draft_message %}
+        <div id="draftMessage" style="margin-top:1rem; text-align:center; font-size:0.9rem; color:#1b7260;">
+          <i class="fas fa-check-circle"></i> {{ draft_message }}
+        </div>
+      {% endif %}
 
-      <!-- draft confirmation message -->
-      <div id="draftMessage" style="margin-top:1rem; text-align:center; font-size:0.9rem; color:#1b7260;"></div>
     </div>
 
-    <!-- footer note -->
     <div class="footer-note">
       <i class="fas fa-lock"></i> secure government-grade platform · AI-based evaluation
     </div>
   </main>
 </div>
 
-<!-- JavaScript for BOQ upload, draft save, and notifications -->
+<!-- JS -->
 <script>
   (function() {
-    // ---------- Working BOQ Upload (CSV, Excel, PDF) ----------
     const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('boqFile');
+    const fileInput = dropZone.querySelector('input[type="file"]');
     const fileStatus = document.getElementById('fileStatus');
-    const fileError = document.getElementById('fileError');
-    const fileSuccess = document.getElementById('fileSuccess');
-    
-    const allowedExtensions = ['.csv', '.xlsx', '.xls', '.pdf'];
-    const maxSize = 10 * 1024 * 1024; // 10MB
 
-    function validateFile(file) {
-      const fileName = file.name.toLowerCase();
-      const fileSize = file.size;
-      
-      const hasValidExtension = allowedExtensions.some(ext => fileName.endsWith(ext));
-      if (!hasValidExtension) {
-        return { valid: false, message: 'Invalid file type. Please upload CSV, Excel, or PDF files only.' };
-      }
-      
-      if (fileSize > maxSize) {
-        return { valid: false, message: 'File size exceeds 10MB limit.' };
-      }
-      
-      return { valid: true };
-    }
-
-    function handleFile(file) {
-      if (!file) {
-        fileStatus.innerHTML = 'drag & drop or <span style="color:#0f5c4b; font-weight:600; cursor:pointer;">browse</span>';
-        dropZone.style.borderColor = '#9fc5d4';
-        dropZone.style.background = '#f9feff';
-        fileError.style.display = 'none';
-        fileSuccess.style.display = 'none';
-        return;
-      }
-
-      const validation = validateFile(file);
-      
-      if (validation.valid) {
-        fileStatus.innerHTML = `<i class="fas fa-check-circle" style="color:#1b806b;"></i> <span style="color:#1b7260; font-weight:500;">${file.name}</span>`;
-        dropZone.style.borderColor = '#2b9d81';
-        dropZone.style.background = '#f0fcf9';
-        fileError.style.display = 'none';
-        fileSuccess.style.display = 'block';
-        fileSuccess.innerHTML = `<i class="fas fa-check-circle"></i> File ready: ${(file.size / 1024).toFixed(1)} KB`;
-      } else {
-        fileInput.value = '';
-        fileStatus.innerHTML = 'drag & drop or <span style="color:#0f5c4b; font-weight:600; cursor:pointer;">browse</span>';
-        dropZone.style.borderColor = '#cc4b3c';
-        dropZone.style.background = '#fff2f0';
-        fileError.style.display = 'block';
-        fileError.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${validation.message}`;
-        fileSuccess.style.display = 'none';
-        
-        setTimeout(() => {
-          dropZone.style.borderColor = '#9fc5d4';
-          dropZone.style.background = '#f9feff';
-        }, 3000);
-      }
-    }
-
-    dropZone.addEventListener('click', function(e) {
-      if (e.target.tagName !== 'SPAN') {
-        fileInput.click();
+    dropZone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+      if(fileInput.files.length > 0){
+        fileStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${fileInput.files[0].name}`;
       }
     });
 
-    const browseSpan = fileStatus.querySelector('span');
-    if (browseSpan) {
-      browseSpan.addEventListener('click', function(e) {
-        e.stopPropagation();
-        fileInput.click();
-      });
-    }
-
-    fileInput.addEventListener('change', function(e) {
-      e.stopPropagation();
-      handleFile(fileInput.files[0]);
-    });
-
-    dropZone.addEventListener('dragover', function(e) {
+    dropZone.addEventListener('dragover', e => e.preventDefault());
+    dropZone.addEventListener('drop', e => {
       e.preventDefault();
-      e.stopPropagation();
-      dropZone.style.borderColor = '#2b9d81';
-      dropZone.style.background = '#e5fff5';
-    });
-
-    dropZone.addEventListener('dragleave', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (!fileInput.files.length) {
-        dropZone.style.borderColor = '#9fc5d4';
-        dropZone.style.background = '#f9feff';
-      } else {
-        dropZone.style.borderColor = '#2b9d81';
-        dropZone.style.background = '#f0fcf9';
+      if(e.dataTransfer.files.length > 0){
+        fileInput.files = e.dataTransfer.files;
+        fileStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${fileInput.files[0].name}`;
       }
     });
 
-    dropZone.addEventListener('drop', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      const files = e.dataTransfer.files;
-      if (files.length > 0) {
-        fileInput.files = files;
-        handleFile(files[0]);
-        const event = new Event('change', { bubbles: true });
-        fileInput.dispatchEvent(event);
-      }
-    });
-
-    document.addEventListener('dragover', (e) => e.preventDefault());
-    document.addEventListener('drop', (e) => e.preventDefault());
-
-    // ---------- Notification dropdown ----------
     const bell = document.getElementById('notificationBell');
     const notifDropdown = document.getElementById('notificationDropdown');
-    bell.addEventListener('click', (e) => {
-      e.stopPropagation();
-      notifDropdown.classList.toggle('show');
-    });
-    document.addEventListener('click', (e) => {
-      if (!bell.contains(e.target) && !notifDropdown.contains(e.target)) {
-        notifDropdown.classList.remove('show');
-      }
-    });
-
-    // ---------- Save draft demo ----------
-    document.getElementById('saveDraftBtn').addEventListener('click', () => {
-      const tenderId = document.getElementById('tenderId').value;
-      document.getElementById('draftMessage').innerHTML = `<i class="fas fa-check-circle"></i> Draft for ${tenderId} saved at ${new Date().toLocaleTimeString()}`;
-    });
-
-    // ---------- Publish demo ----------
-    document.getElementById('publishBtn').addEventListener('click', () => {
-      alert('✨ Tender published (demo). In real app, it would be live.');
-    });
-
-    // ---------- Sidebar navigation is handled by href links ----------
+    bell.addEventListener('click', e => { e.stopPropagation(); notifDropdown.classList.toggle('show'); });
+    document.addEventListener('click', () => notifDropdown.classList.remove('show'));
   })();
 </script>
 </body>

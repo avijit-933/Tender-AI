@@ -2,6 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
+<<<<<<< HEAD
 from .models import Officer
 from .models import Bidder
 
@@ -33,3 +34,10 @@ class BidderAdmin(admin.ModelAdmin):
     email.short_description = 'Email Address'
 
 admin.site.register(Bidder, BidderAdmin)
+
+from .models import Officer,Tender
+
+
+admin.site.register(Officer)
+admin.site.register(Tender)
+
